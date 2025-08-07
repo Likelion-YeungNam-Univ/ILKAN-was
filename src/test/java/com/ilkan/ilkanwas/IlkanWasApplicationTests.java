@@ -1,4 +1,4 @@
-package com.springsecuritysessiong.ilkanwas;
+package com.ilkan.ilkanwas;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

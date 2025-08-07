@@ -1,4 +1,4 @@
-package com.springsecuritysessiong.ilkanwas;
+package com.ilkan.ilkanwas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
