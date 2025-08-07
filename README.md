@@ -3,24 +3,11 @@
 
 <br>
 
-## 👨‍💻 Backend Developers
+## 👨‍💻 Team
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/KDWorld81">
-        <img src="https://github.com/KDWorld81.png" width="120px;" alt="곽동욱 GitHub Profile"/><br />
-        <span style="font-size: 16px; font-weight: bold;">곽동욱 (KDWorld81)</span>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/lnahyun">
-        <img src="https://github.com/lnahyun.png" width="120px;" alt="이나현 GitHub Profile"/><br />
-        <span style="font-size: 16px; font-weight: bold;">이나현 (lnahyun)</span>
-      </a>
-    </td>
-  </tr>
-</table>
+| P&D | FE | FE | FE | BE | BE |
+|:---:|:--:|:--:|:--:|:--:|:--:|
+| <img src="https://avatars.githubusercontent.com/kimsoyun112" height="100"/> <br> [김소윤](https://github.com/kimsoyun112) | <img src="https://avatars.githubusercontent.com/moonchanju" height="100"/> <br> [문찬주](https://github.com/moonchanju) | <img src="https://avatars.githubusercontent.com/cryingdryice" height="100"/> <br> [박지원](https://github.com/cryingdryice) | <img src="https://avatars.githubusercontent.com/nyeonseok" height="100"/> <br> [안현석](https://github.com/nyeonseok) | <img src="https://avatars.githubusercontent.com/KDWorld81" height="100"/> <br> [곽동욱](https://github.com/KDWorld81) | <img src="https://avatars.githubusercontent.com/lnahyun" height="100"/> <br> [이나현](https://github.com/lnahyun) |
 
 <br>
 
@@ -50,3 +37,4 @@ fix: 회원가입 에러 수정
 
 💡 **사용 예시:**  
 [ILKAN-1] loginPage
+
