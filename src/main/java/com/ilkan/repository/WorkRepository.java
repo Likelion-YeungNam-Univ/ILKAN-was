@@ -1,4 +1,4 @@
-package com.ilkan.domain.repository;
+package com.ilkan.repository;
 
 import com.ilkan.domain.entity.Work;
 import org.springframework.data.jpa.repository.JpaRepository;
