@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 외부에서 기본생성자로 무의미한 , 불완전한 객체 생성을 방지
 @AllArgsConstructor
 @Builder
 @Entity
