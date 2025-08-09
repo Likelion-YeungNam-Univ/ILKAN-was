@@ -27,6 +27,20 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Column
+    private String profileImage;
+
+    @Column
+    private String bio;
+
+    @Column
+    private String portfolioUrl;
+
+    @Column
+    private String organization;
+
+
+
     // ==== 변경 메서드 ====
     public void updateName(String name) {
         this.name = name;
@@ -36,7 +50,20 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public void updateRole(Role role) {
-        this.role = role;
+    public void updateRole(Role role) { this.role = role; }
+
+    public void updateProfileImage(String profileImage) { this.profileImage = profileImage; }
+
+    public void updateBio(String bio) {
+        this.bio = bio;
     }
+
+    public void updatePortfolioUrl(String portfolioUrl) {
+        this.portfolioUrl = portfolioUrl;
+    }
+
+    public void updateOrganization(String organization) {
+        this.organization = organization;
+    }
+
 }
