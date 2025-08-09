@@ -24,6 +24,11 @@ public class Work {
     @JoinColumn(name = "requester_id", nullable = false)
     private User requester;
 
+    // 수행자 정보
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performer_id", nullable = false)
+    private User performer;
+
     @Column(nullable = false)
     private String title; // 제목
 
@@ -50,6 +55,7 @@ public class Work {
     private LocalDateTime taskEnd; // 일거리 마감시간
 
     // ==== 변경 메서드 ====
+    // 등록시간은 수정불가
     public void updateTitle(String title) {
         this.title = title;
     }
