@@ -55,6 +55,9 @@ jobs:
             {
               "parent": {
                 "key": "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
+              },
+              "issuetype": {
+                "id": "10002"
               }
             }
 
