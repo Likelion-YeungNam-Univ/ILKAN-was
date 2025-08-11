@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/my/commissions")
 @RequiredArgsConstructor
-public class UploadSearchController {
+public class UserWorkController {
     private final WorkService workService;
 
     @GetMapping("/upload")
     public ResponseEntity<Page<Work>> getMyUploadedWorks(
             @RequestParam Long userId,
-            @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) // 정렬, 페이지 크기 기본값 제어
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) // 정렬, 페이지 크기 기본값 제어
             Pageable pageable) {
 
         // 서비스 호출하여 페이징된 결과 조회
