@@ -1,8 +1,8 @@
 package com.ilkan.domain.enums;
 
 public enum Role {
-    // 일반 사용자 (의뢰자, 수행자 등 일반 권한)
-    CLIENT,
+    // 의뢰자
+    REQUESTER,
 
     // 수행자
     PERFORMER,
