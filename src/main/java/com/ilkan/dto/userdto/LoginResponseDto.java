@@ -14,4 +14,5 @@ public class LoginResponseDto {
 
     @Schema(description = "로그인 결과 메시지", example = "로그인 성공")
     private final String message;
+
 }
