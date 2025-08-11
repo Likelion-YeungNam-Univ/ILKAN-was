@@ -1,0 +1,34 @@
+package com.ilkan.auth;
+
+import org.springframework.http.HttpStatus;
+
+public final class RoleExceptions {
+    private RoleExceptions() {}
+
+    public static abstract class Base extends RuntimeException {
+        public Base(String message) { super(message); }
+        public abstract String code();
+        public abstract HttpStatus status();
+    }
+
+    // 1. X-ROLE 헤더가 없는 경우
+    public static class Missing extends Base {
+        public Missing() { super("헤더 X-Role 이 필요합니다."); }
+        @Override public String code() { return "ROLE_MISSING"; }
+        @Override public HttpStatus status() { return HttpStatus.BAD_REQUEST; }
+    }
+
+    // 2. X-ROLE 값이 유효하지 않은 경우
+    public static class Invalid extends Base {
+        public Invalid(String role) { super("유효하지 않은 역할: " + role); }
+        @Override public String code() { return "ROLE_INVALID"; }
+        @Override public HttpStatus status() { return HttpStatus.BAD_REQUEST; }
+    }
+
+    // 3. 해당 역할이 접근 권한 없는 서비스에 접근할 경우
+    public static class Denied extends Base {
+        public Denied() { super("해당 역할은 해당 서비스에 접근할 수 없습니다."); }
+        @Override public String code() { return "ACCESS_DENIED"; }
+        @Override public HttpStatus status() { return HttpStatus.FORBIDDEN; }
+    }
+}
