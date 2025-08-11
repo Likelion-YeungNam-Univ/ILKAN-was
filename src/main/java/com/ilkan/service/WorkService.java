@@ -9,14 +9,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+// WorkService.java
 @Service
 @RequiredArgsConstructor
 public class WorkService {
     private final WorkRepository workRepository;
 
     // createdAt 기준 내림차순 등록한 작업 조회
-    public Page<Work> getWorksByRequester(Long requesterId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징처리
+    public Page<Work> getWorksByRequester(Long requesterId, Pageable pageable) {
+        // pageable에 sort 기본값이 없는 경우를 대비해서 정렬 보정
+        if (pageable.getSort().isUnsorted()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                    Sort.by("createdAt").descending());
+        }
+
         return workRepository.findByRequesterId(requesterId, pageable);
     }
 }
+
