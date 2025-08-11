@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserWorkController {
     private final WorkService workService;
 
+    // 내가 등록한 일거리 조회 (의뢰자)
     @GetMapping("/upload")
     public ResponseEntity<Page<Work>> getMyUploadedWorks(
             @RequestParam Long userId,
@@ -27,8 +28,20 @@ public class UserWorkController {
 
         // 서비스 호출하여 페이징된 결과 조회
         Page<Work> works = workService.getWorksByRequester(userId, pageable);
-
         // 결과를 HTTP 200 OK와 함께 반환
         return ResponseEntity.ok(works);
     }
+
+    // 내가 수행중인 일거리 조회 (수행자)
+    @GetMapping("/doing")
+    public ResponseEntity<Page<Work>> doingWorksByPerformer(
+            @RequestParam Long userId,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+
+        Page<Work> works = workService.doingWorksByPerformer(userId, pageable);
+        return ResponseEntity.ok(works);
+    }
+
+
 }
