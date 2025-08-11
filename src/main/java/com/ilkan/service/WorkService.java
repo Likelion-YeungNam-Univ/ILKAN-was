@@ -2,40 +2,29 @@ package com.ilkan.service;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.dto.workdto.WorkResponseDto;
 import com.ilkan.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-// WorkService.java
+
 @Service
 @RequiredArgsConstructor
 public class WorkService {
     private final WorkRepository workRepository;
 
-    // createdAt 기준 내림차순 등록한 작업 조회 ( 의뢰자 기준 )
-    public Page<Work> getWorksByRequester(Long requesterId, Pageable pageable) {
-        // pageable에 sort 기본값이 없는 경우를 대비해서 정렬 보정
-        if (pageable.getSort().isUnsorted()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                    Sort.by("createdAt").descending());
-        }
-
-        return workRepository.findByRequesterId(requesterId, pageable);
+    // 의뢰자로서 등록한 일거리 조회 (DTO 반환)
+    public Page<WorkResponseDto> getWorksByRequester(Long requesterId, Pageable pageable) {
+        Page<Work> works = workRepository.findByRequesterId(requesterId, pageable);
+        return works.map(WorkResponseDto::fromEntity);
     }
 
-    // createdAt 기준 내림차순 수행중인 작업 조회 ( 수행자 기준 )
-    public Page<Work> doingWorksByPerformer(Long performerId, Pageable pageable) {
-        if (pageable.getSort().isUnsorted()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                    Sort.by("createdAt").descending());
-        }
-
-        return workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
+    // 수행자로서 수행중인 일거리 조회 (DTO 반환)
+    public Page<WorkResponseDto> doingWorksByPerformer(Long performerId, Pageable pageable) {
+        Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
+        return works.map(WorkResponseDto::fromEntity);
     }
-
 }
 
