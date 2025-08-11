@@ -15,7 +15,7 @@ public class WorkService {
     private final WorkRepository workRepository;
 
     // createdAt 기준 내림차순 등록한 작업 조회
-    public Page<Work> getWorksByRequester(Long requesterId, int page, int size) {
+    public Page<Work> getWorksByRequester(Long requesterId, Pageable pageable) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징처리
         return workRepository.findByRequesterId(requesterId, pageable);
     }
