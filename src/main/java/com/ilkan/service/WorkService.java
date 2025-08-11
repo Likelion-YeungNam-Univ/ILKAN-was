@@ -34,7 +34,7 @@ public class WorkService {
                     Sort.by("createdAt").descending());
         }
 
-        return workRepository.findByPerformerId(performerId, Status.IN_PROGRESS, pageable);
+        return workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
     }
 
 }
