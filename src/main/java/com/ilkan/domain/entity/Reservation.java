@@ -1,5 +1,6 @@
 package com.ilkan.domain.entity;
 
+import com.ilkan.domain.enums.BuildingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,10 @@ public class Reservation {
 
     @Column(nullable = false)
     private Boolean isAccepted; // 이용 승인여부
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "building_status", nullable = false)
+    private BuildingStatus buildingStatus;
 
     // ==== 변경 메서드 ====
     public void updatePerformer(User performer) {
