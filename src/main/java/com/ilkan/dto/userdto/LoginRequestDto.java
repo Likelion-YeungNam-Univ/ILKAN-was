@@ -11,7 +11,7 @@ import lombok.Getter;
 @Schema(description = "역할 로그인 요청 DTO")
 public class LoginRequestDto {
 
-    @Schema(description = "사용자 역할", example = "CLIENT")
+    @Schema(description = "사용자 역할", example = "REQUESTER")
     private final String role;
 
 }
