@@ -36,4 +36,15 @@ public class UserWorkController {
         Page<WorkResponseDto> worksDto = workService.doingWorksByPerformer(roleHeader, pageable);
         return ResponseEntity.ok(worksDto);
     }
+
+    // 내가 지원한 일거리 조회 (수행자)
+    @GetMapping("/applied")
+    public ResponseEntity<Page<WorkResponseDto>> getAppliedWorks(
+            @RequestHeader("X-Role") String roleHeader,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<WorkResponseDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
+        return ResponseEntity.ok(appliedWorks);
+    }
+
 }
