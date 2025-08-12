@@ -20,7 +20,7 @@ public class Building {
     private Long id; // 건물 id
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "owner_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner; // 건물주
 
     @Column(name = "building_address", nullable = false)
