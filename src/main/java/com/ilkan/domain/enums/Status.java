@@ -1,6 +1,6 @@
 package com.ilkan.domain.enums;
 
-// 상태
+// 일거리 상태
 public enum Status {
     OPEN, // 모집중
     ASSIGNED, // 배정됨
