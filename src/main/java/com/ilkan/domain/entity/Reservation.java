@@ -20,11 +20,11 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performer_id")
-    private User performer;
+    private User performerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id")
-    private Building building;
+    private Building buildingId;
 
     @Column(nullable = false)
     private LocalDateTime startTime;
@@ -40,12 +40,12 @@ public class Reservation {
     private BuildingStatus buildingStatus;
 
     // ==== 변경 메서드 ====
-    public void updatePerformer(User performer) {
-        this.performer = performer;
+    public void updatePerformer(User performerId) {
+        this.performerId = performerId;
     }
 
-    public void updatePhoneNumber(Building building) {
-        this.building = building;
+    public void updatePhoneNumber(Building buildingId) {
+        this.buildingId = buildingId;
     }
 
     public void updateRole(LocalDateTime startTime) { this.startTime = startTime; }

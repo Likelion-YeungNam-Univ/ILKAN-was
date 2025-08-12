@@ -25,9 +25,9 @@ public class UserBuildingResDto {
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
                 .reservationId(reservation.getId())
-                .performer(UserResponseDto.fromEntity(reservation.getPerformer()))
-                .buildingId(reservation.getBuilding().getId())
-                .buildingAddress(reservation.getBuilding().getBuildingAddress())
+                .performer(UserResponseDto.fromEntity(reservation.getPerformerId()))
+                .buildingId(reservation.getBuildingId().getId())
+                .buildingAddress(reservation.getBuildingId().getBuildingAddress())
                 .startTime(reservation.getStartTime())
                 .endTime(reservation.getEndTime())
                 .isAccepted(reservation.getIsAccepted())
