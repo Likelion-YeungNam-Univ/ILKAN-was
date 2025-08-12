@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Table(name = "user")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA 기본 생성자
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class User {
@@ -58,9 +58,7 @@ public class User {
         this.bio = bio;
     }
 
-    public void updatePortfolioUrl(String portfolioUrl) {
-        this.portfolioUrl = portfolioUrl;
-    }
+    public void updatePortfolioUrl(String portfolioUrl) { this.portfolioUrl = portfolioUrl; }
 
     public void updateOrganization(String organization) {
         this.organization = organization;
