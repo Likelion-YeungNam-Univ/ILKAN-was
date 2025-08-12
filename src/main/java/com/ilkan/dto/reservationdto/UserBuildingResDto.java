@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ReservationResDto {
+public class UserBuildingResDto {
     private Long reservationId;
     private UserResponseDto performer;
     private Long buildingId;
@@ -22,8 +22,8 @@ public class ReservationResDto {
     private Boolean isAccepted;
     private BuildingStatus buildingStatus;
 
-    public static ReservationResDto fromEntity(Reservation reservation) {
-        return ReservationResDto.builder()
+    public static UserBuildingResDto fromEntity(Reservation reservation) {
+        return UserBuildingResDto.builder()
                 .reservationId(reservation.getId())
                 .performer(UserResponseDto.fromEntity(reservation.getPerformer()))
                 .buildingId(reservation.getBuilding().getId())
