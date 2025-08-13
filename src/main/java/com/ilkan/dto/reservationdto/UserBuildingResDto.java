@@ -1,7 +1,7 @@
 package com.ilkan.dto.reservationdto;
 
 import com.ilkan.domain.entity.Reservation;
-import com.ilkan.domain.enums.BuildingStatus;
+import com.ilkan.domain.enums.ReservationStatus;
 import com.ilkan.dto.userdto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class UserBuildingResDto {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Boolean isAccepted;
-    private BuildingStatus buildingStatus;
+    private ReservationStatus buildingStatus;
 
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
