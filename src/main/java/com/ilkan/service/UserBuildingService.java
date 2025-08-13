@@ -2,6 +2,7 @@ package com.ilkan.service;
 
 import com.ilkan.domain.entity.Reservation;
 import com.ilkan.domain.enums.ReservationStatus;
+import com.ilkan.dto.reservationdto.OwnerBuildingResDto;
 import com.ilkan.dto.reservationdto.UserBuildingResDto;
 import com.ilkan.repository.UserBuildingRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,22 @@ public class UserBuildingService {
 
     private final UserBuildingRepository userBuildingRepository;
 
-    // // role 기반 수행자가 사용중인 공간 조회
+    // 수행자가 사용중인 공간 조회
     public Page<UserBuildingResDto> findUsingBuildingsByPerformer(String role, Pageable pageable) {
         Long performerId = getUserIdByRole(role);
-        Page<Reservation> reservations = userBuildingRepository.findByPerformerIdAndBuildingStatus(performerId, ReservationStatus.IN_USE, pageable);
+        Page<Reservation> reservations = userBuildingRepository.findByPerformerId_IdAndBuildingStatus(performerId, ReservationStatus.IN_USE, pageable);
         return reservations.map(UserBuildingResDto::fromEntity);
     }
+
+    // 건물주가 등록한 건물 조회
+    public Page<OwnerBuildingResDto> getRegisteredBuildings(String role, Pageable pageable) {
+        Long ownerId = getUserIdByRole(role);
+        Page<Reservation> buildings = userBuildingRepository.findByBuildingId_Owner_IdAndBuildingStatus(
+                ownerId, ReservationStatus.REGISTERED, pageable
+        );
+        return buildings.map(OwnerBuildingResDto::fromEntity);
+    }
+
 
     // role → userId 매핑
     private Long getUserIdByRole(String role) {
