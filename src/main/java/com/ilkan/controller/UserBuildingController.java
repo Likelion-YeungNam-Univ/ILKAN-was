@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,6 +29,12 @@ public class UserBuildingController {
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "startTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
+        // 역할 검증 로직 추가
+        if (!"PERFORMER".equals(roleHeader)) {
+            // 권한이 없으므로 403 Forbidden 에러 반환
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Page<UserBuildingResDto> reservations = userBuildingService.findUsingBuildingsByPerformer(roleHeader, pageable);
         if (reservations.isEmpty()) {
             return ResponseEntity.ok().body(Page.empty());
@@ -39,10 +46,16 @@ public class UserBuildingController {
     @GetMapping("/registered")
     public ResponseEntity<Page<OwnerBuildingResDto>> getRegisteredBuildings(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-    ) {
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        // 역할 검증 로직 추가
+        if (!"OWNER".equals(roleHeader)) {
+            // 권한이 없으므로 403 Forbidden 에러 반환
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Page<OwnerBuildingResDto> buildings = ownerBuildingService.getRegisteredBuildings(roleHeader, pageable);
-        if (buildings.isEmpty()) {
+        if (buildings.isEmpty()) { // 성공 및 데이터는 없음
             return ResponseEntity.ok().body(Page.empty());
         }
         return ResponseEntity.ok(buildings);
