@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateReservationRequestDto {
+public class CreateReservationReqDto {
 
     private Long buildingId;
     private LocalDate checkInDate;   // 포함

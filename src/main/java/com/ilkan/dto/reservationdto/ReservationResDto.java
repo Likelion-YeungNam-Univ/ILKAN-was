@@ -8,12 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class ReservationResponseDto {
+public class ReservationResDto {
 
     private Long reservationId;
     private Long buildingId;
@@ -26,8 +25,8 @@ public class ReservationResponseDto {
     private LocalDateTime endTime;
     private ReservationStatus reservationStatus;
 
-    public static ReservationResponseDto fromEntity(Reservation r) {
-        return ReservationResponseDto.builder()
+    public static ReservationResDto fromEntity(Reservation r) {
+        return ReservationResDto.builder()
                 .reservationId(r.getId())
                 .buildingId(r.getBuildingId().getId())
                 .performerId(r.getPerformerId().getId())

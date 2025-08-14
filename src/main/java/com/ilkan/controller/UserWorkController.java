@@ -2,7 +2,7 @@ package com.ilkan.controller;
 
 import com.ilkan.auth.AllowedRoles;
 import com.ilkan.domain.enums.Role;
-import com.ilkan.dto.workdto.WorkResponseDto;
+import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,12 +25,12 @@ public class UserWorkController {
     // 내가 등록한 일거리 조회 (의뢰자)
     @AllowedRoles(Role.REQUESTER)
     @GetMapping("/upload")
-    public ResponseEntity<Page<WorkResponseDto>> getMyUploadedWorks(
+    public ResponseEntity<Page<WorkResDto>> getMyUploadedWorks(
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         // 서비스 호출하여 DTO로 변환된 페이징 결과 조회
-        Page<WorkResponseDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
+        Page<WorkResDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
         if (worksDto.isEmpty()) { // 성공 및 데이터는 없음
             return ResponseEntity.ok().body(Page.empty());
         }
@@ -40,11 +40,11 @@ public class UserWorkController {
     // 내가 수행중인 일거리 조회 (수행자)
     @AllowedRoles(Role.PERFORMER)
     @GetMapping("/doing")
-    public ResponseEntity<Page<WorkResponseDto>> doingWorksByPerformer(
+    public ResponseEntity<Page<WorkResDto>> doingWorksByPerformer(
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<WorkResponseDto> worksDto = workService.doingWorksByPerformer(roleHeader, pageable);
+        Page<WorkResDto> worksDto = workService.doingWorksByPerformer(roleHeader, pageable);
         if (worksDto.isEmpty()) { // 성공 및 데이터는 없음
             return ResponseEntity.ok().body(Page.empty());
         }
@@ -54,11 +54,11 @@ public class UserWorkController {
     // 내가 지원한 일거리 조회 (수행자)
     @AllowedRoles(Role.PERFORMER)
     @GetMapping("/applied")
-    public ResponseEntity<Page<WorkResponseDto>> getAppliedWorks(
+    public ResponseEntity<Page<WorkResDto>> getAppliedWorks(
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<WorkResponseDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
+        Page<WorkResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
         if (appliedWorks.isEmpty()) { // 성공 및 데이터는 없음
             return ResponseEntity.ok().body(Page.empty());
         }

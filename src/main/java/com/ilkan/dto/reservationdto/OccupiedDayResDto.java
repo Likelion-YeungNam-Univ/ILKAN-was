@@ -11,18 +11,18 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class OccupiedDayResponseDto {
+public class OccupiedDayResDto {
     private Long buildingId;
     private LocalDate day;
 
-    public static OccupiedDayResponseDto fromEntity(ReservationDay d) {
-        return OccupiedDayResponseDto.builder()
+    public static OccupiedDayResDto fromEntity(ReservationDay d) {
+        return OccupiedDayResDto.builder()
                 .buildingId(d.getBuildingId())
                 .day(d.getDay())
                 .build();
     }
 
-    public static List<OccupiedDayResponseDto> fromEntities(List<ReservationDay> list) {
-        return list.stream().map(OccupiedDayResponseDto::fromEntity).toList();
+    public static List<OccupiedDayResDto> fromEntities(List<ReservationDay> list) {
+        return list.stream().map(OccupiedDayResDto::fromEntity).toList();
     }
 }

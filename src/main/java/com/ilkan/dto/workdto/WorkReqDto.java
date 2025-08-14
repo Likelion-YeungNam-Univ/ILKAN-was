@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class WorkRequestDto {
+public class WorkReqDto {
 
     private final Long id;
     private final Long requesterId;

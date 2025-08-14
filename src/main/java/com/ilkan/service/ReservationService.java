@@ -7,9 +7,9 @@ import com.ilkan.domain.entity.Building;
 import com.ilkan.domain.entity.Reservation;
 import com.ilkan.domain.entity.User;
 import com.ilkan.domain.enums.ReservationStatus;
-import com.ilkan.dto.reservationdto.CreateReservationRequestDto;
-import com.ilkan.dto.reservationdto.OccupiedDayResponseDto;
-import com.ilkan.dto.reservationdto.ReservationResponseDto;
+import com.ilkan.dto.reservationdto.CreateReservationReqDto;
+import com.ilkan.dto.reservationdto.OccupiedDayResDto;
+import com.ilkan.dto.reservationdto.ReservationResDto;
 import com.ilkan.repository.BuildingRepository;
 import com.ilkan.repository.ReservationDayRepository;
 import com.ilkan.repository.ReservationRepository;
@@ -43,7 +43,7 @@ public class ReservationService {
      * @param req 예약 생성 요청 DTO
      * @param role 예약 생성 요청자 역할
      *
-     * @return 생성된 {@link Reservation} 정보를 담은 {@link ReservationResponseDto}.
+     * @return 생성된 {@link Reservation} 정보를 담은 {@link ReservationResDto}.
      *
      * @throws com.ilkan.exception.ReservationExceptions.InvalidRange
      *         체크인 또는 체크아웃 날짜가 {@code null}이거나, 체크아웃 날짜가 체크인 날짜와 같거나 이전인 경우
@@ -55,7 +55,7 @@ public class ReservationService {
      *         지정한 기간에 건물이 이미 예약되어 있는 경우
      *
      */
-    public ReservationResponseDto create(CreateReservationRequestDto req, Role role) {
+    public ReservationResDto create(CreateReservationReqDto req, Role role) {
 
         if (req.getBuildingId() == null) {
             throw new ReservationExceptions.BuildingNotFound();
@@ -100,7 +100,7 @@ public class ReservationService {
             throw new ReservationExceptions.AlreadyOccupied();
         }
 
-        return ReservationResponseDto.fromEntity(reservation);
+        return ReservationResDto.fromEntity(reservation);
     }
 
     /**
@@ -128,17 +128,17 @@ public class ReservationService {
      * @param buildingId 점유 일자를 조회할 건물의 ID
      * @param from 조회 시작 날짜
      * @param to 조회 종료 날짜
-     * @return 점유 일자 목록을 담은 {@link OccupiedDayResponseDto} 리스트
+     * @return 점유 일자 목록을 담은 {@link OccupiedDayResDto} 리스트
      *
      *  @throws com.ilkan.exception.ReservationExceptions.InvalidRange
      *          날짜 범위가 유효하지 않거나, 최대 허용 범위(6개월)를 초과하는 경우
      *
      */
     @Transactional(readOnly = true)
-    public List<OccupiedDayResponseDto> getOccupiedDays(Long buildingId, LocalDate from, LocalDate to) {
+    public List<OccupiedDayResDto> getOccupiedDays(Long buildingId, LocalDate from, LocalDate to) {
         validateRange(from, to);
         var days = dayRepo.findByBuildingIdAndDayBetweenOrderByDayAsc(buildingId, from, to);
-        return OccupiedDayResponseDto.fromEntities(days);
+        return OccupiedDayResDto.fromEntities(days);
     }
 
     /**
