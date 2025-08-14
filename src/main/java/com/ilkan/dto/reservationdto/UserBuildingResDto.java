@@ -20,7 +20,7 @@ public class UserBuildingResDto {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Boolean isAccepted;
-    private ReservationStatus buildingStatus;
+    private ReservationStatus reservationStatus;
 
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
@@ -30,8 +30,7 @@ public class UserBuildingResDto {
                 .buildingAddress(reservation.getBuildingId().getBuildingAddress())
                 .startTime(reservation.getStartTime())
                 .endTime(reservation.getEndTime())
-                .isAccepted(reservation.getIsAccepted())
-                .buildingStatus(reservation.getBuildingStatus())
+                .reservationStatus(reservation.getReservationStatus())
                 .build();
     }
 }

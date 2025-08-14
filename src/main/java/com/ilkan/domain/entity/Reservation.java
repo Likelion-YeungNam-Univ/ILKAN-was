@@ -47,12 +47,9 @@ public class Reservation {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
-    private Boolean isAccepted; // 이용 승인여부
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "building_status", nullable = false)
-    private ReservationStatus buildingStatus;
+    @Column(name = "reservation_status", nullable = false)
+    private ReservationStatus reservationStatus;
 
     // ==== 변경 메서드 ====
     public void updatePerformer(User performerId) {
@@ -67,6 +64,20 @@ public class Reservation {
 
     public void updateProfileImage(LocalDateTime endTime) { this.endTime = endTime; }
 
-    public void updateBioBoolean (Boolean isAccepted) { this.isAccepted = isAccepted; }
+    public void toReserved() {
+        this.reservationStatus = ReservationStatus.RESERVED;
+    }
+    public void toInUse() {
+        if (reservationStatus == ReservationStatus.CANCELED || reservationStatus == ReservationStatus.COMPLETE) return;
+        this.reservationStatus = ReservationStatus.IN_USE;
+    }
+    public void toComplete() {
+        if (reservationStatus == ReservationStatus.CANCELED) return;
+        this.reservationStatus = ReservationStatus.COMPLETE;
+    }
+    public void cancel() {
+        if (reservationStatus == ReservationStatus.COMPLETE) return; // 필요 시 규칙 조정
+        this.reservationStatus = ReservationStatus.CANCELED;
+    }
 
 }

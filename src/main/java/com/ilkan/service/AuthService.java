@@ -1,6 +1,6 @@
 package com.ilkan.service;
 
-import com.ilkan.auth.RoleExceptions;
+import com.ilkan.exception.RoleExceptions;
 import com.ilkan.domain.enums.Role;
 import org.springframework.stereotype.Service;
 

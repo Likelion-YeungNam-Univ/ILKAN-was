@@ -1,4 +1,4 @@
-package com.ilkan.auth;
+package com.ilkan.exception;
 
 import org.springframework.http.HttpStatus;
 
