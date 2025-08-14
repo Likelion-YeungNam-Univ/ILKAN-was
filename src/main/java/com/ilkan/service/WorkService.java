@@ -4,6 +4,7 @@ import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.WorkResponseDto;
 import com.ilkan.repository.WorkRepository;
+import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,34 +17,25 @@ public class WorkService {
 
     // 의뢰자가 등록한 작업 조회
     public Page<WorkResponseDto> getWorksByRequester(String role, Pageable pageable) {
-        Long requesterId = getUserIdByRole(role);
+        Long requesterId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByRequesterId(requesterId, pageable);
         return works.map(WorkResponseDto::fromEntity);
     }
 
     // 수행자가 수행중인 작업 조회
     public Page<WorkResponseDto> doingWorksByPerformer(String role, Pageable pageable) {
-        Long performerId = getUserIdByRole(role);
+        Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
         return works.map(WorkResponseDto::fromEntity);
     }
 
     // 수행자가 지원한 작업 조회
     public Page<WorkResponseDto> getAppliedWorksByPerformer(String role, Pageable pageable) {
-        Long performerId = getUserIdByRole(role);
+        Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.APPLY_TO, pageable);
         return works.map(WorkResponseDto::fromEntity);
     }
 
-    // role → userId 매핑
-    private Long getUserIdByRole(String role) {
-        switch (role.toUpperCase()) {
-            case "REQUESTER": return 1L;
-            case "PERFORMER": return 2L;
-            case "OWNER": return 3L;
-            default: throw new IllegalArgumentException("Unknown role: " + role);
-        }
-    }
 }
 
 

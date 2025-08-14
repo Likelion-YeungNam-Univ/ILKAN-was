@@ -10,4 +10,6 @@ public interface UserBuildingRepository extends JpaRepository<Reservation, Long>
     Page<Reservation> findByPerformerId_IdAndReservationStatus(
             Long performerId, ReservationStatus status, Pageable pageable);
 
+    Page<Reservation> findByBuildingId_Owner_IdAndBuildingStatus(Long ownerId, ReservationStatus buildingStatus, Pageable pageable); // 건물주 등록한 건물조회
+
 }
