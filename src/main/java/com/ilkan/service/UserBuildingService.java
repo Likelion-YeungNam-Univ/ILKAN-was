@@ -27,7 +27,7 @@ public class UserBuildingService {
     // 건물주가 등록한 건물 조회
     public Page<OwnerBuildingResDto> getRegisteredBuildings(String role, Pageable pageable) {
         Long ownerId = RoleMapper.getUserIdByRole(role);
-        Page<Reservation> buildings = userBuildingRepository.findByBuildingId_Owner_IdAndBuildingStatus(ownerId, ReservationStatus.REGISTERED, pageable);
+        Page<Reservation> buildings = userBuildingRepository.findByBuildingId_Owner_IdAndReservationStatus(ownerId, ReservationStatus.REGISTERED, pageable);
         return buildings.map(OwnerBuildingResDto::fromEntity);
     }
 
