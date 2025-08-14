@@ -20,7 +20,7 @@ public class UserBuildingService {
     // 수행자가 사용중인 공간 조회
     public Page<UserBuildingResDto> findUsingBuildingsByPerformer(String role, Pageable pageable) {
         Long performerId = RoleMapper.getUserIdByRole(role);
-        Page<Reservation> reservations = userBuildingRepository.findByPerformerId_IdAndBuildingStatus(performerId, ReservationStatus.IN_USE, pageable);
+        Page<Reservation> reservations = userBuildingRepository.findByPerformerId_IdAndReservationStatus(performerId, ReservationStatus.IN_USE, pageable);
         return reservations.map(UserBuildingResDto::fromEntity);
     }
 
