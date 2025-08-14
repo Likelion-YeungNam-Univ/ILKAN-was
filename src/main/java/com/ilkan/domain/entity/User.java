@@ -51,6 +51,9 @@ public class User {
     @Column
     private String organization;
 
+    @Column
+    private String eMail;
+
 
 
     // ==== 변경 메서드 ====
@@ -75,5 +78,7 @@ public class User {
     public void updateOrganization(String organization) {
         this.organization = organization;
     }
+
+    public void updateEmail(String eMail) {this.eMail = eMail;}
 
 }
