@@ -3,6 +3,7 @@ package com.ilkan.dto.workdto;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.userdto.UserRespDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class WorkResDto {
 
     private final Long id;                     // 일거리 ID
