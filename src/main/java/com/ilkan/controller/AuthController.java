@@ -2,13 +2,22 @@ package com.ilkan.controller;
 
 import com.ilkan.dto.userdto.LoginResDto;
 import com.ilkan.domain.enums.Role;
+import com.ilkan.exception.ApiErrorResponse;
 import com.ilkan.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.ilkan.controller.api.AuthApi;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthController {
+@Tag(name = "Auth", description = "로그인 API")
+public class AuthController implements AuthApi {
 
     private final AuthService authService;
     public AuthController(AuthService authService) { this.authService = authService; }
