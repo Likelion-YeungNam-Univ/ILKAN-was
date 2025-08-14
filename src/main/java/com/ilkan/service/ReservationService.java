@@ -118,7 +118,7 @@ public class ReservationService {
             throw new ReservationExceptions.InvalidRange("invalid range");
         }
         if (from.plusMonths(6).isBefore(to)) { // 최대 6개월 같은 가드
-            throw new ReservationExceptions.InvalidRange("range too large (max 6 months)");
+            throw new ReservationExceptions.InvalidRange("최대 6개월 범위만 지정할 수 있습니다.");
         }
     }
 
