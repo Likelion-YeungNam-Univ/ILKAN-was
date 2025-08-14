@@ -31,8 +31,8 @@ public class UserWorkController {
 
         // 서비스 호출하여 DTO로 변환된 페이징 결과 조회
         Page<WorkResDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
-        if (worksDto.isEmpty()) { // 성공 및 데이터는 없음
-            return ResponseEntity.ok().body(Page.empty());
+        if (worksDto.isEmpty()) {
+            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
         }
         return ResponseEntity.ok(worksDto);
     }
@@ -45,8 +45,8 @@ public class UserWorkController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkResDto> worksDto = workService.doingWorksByPerformer(roleHeader, pageable);
-        if (worksDto.isEmpty()) { // 성공 및 데이터는 없음
-            return ResponseEntity.ok().body(Page.empty());
+        if (worksDto.isEmpty()) {
+            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
         }
         return ResponseEntity.ok(worksDto);
     }
@@ -59,8 +59,8 @@ public class UserWorkController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
-        if (appliedWorks.isEmpty()) { // 성공 및 데이터는 없음
-            return ResponseEntity.ok().body(Page.empty());
+        if (appliedWorks.isEmpty()) {
+            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
         }
         return ResponseEntity.ok(appliedWorks);
     }

@@ -34,7 +34,7 @@ public class UserBuildingController {
 
         Page<UserBuildingResDto> reservations = userBuildingService.findUsingBuildingsByPerformer(roleHeader, pageable);
         if (reservations.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty());
+            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
         }
         return ResponseEntity.ok(reservations);
     }
@@ -47,8 +47,8 @@ public class UserBuildingController {
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OwnerBuildingResDto> buildings = ownerBuildingService.getRegisteredBuildings(roleHeader, pageable);
-        if (buildings.isEmpty()) { // 성공 및 데이터는 없음
-            return ResponseEntity.ok().body(Page.empty());
+        if (buildings.isEmpty()) {
+            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
         }
         return ResponseEntity.ok(buildings);
     }

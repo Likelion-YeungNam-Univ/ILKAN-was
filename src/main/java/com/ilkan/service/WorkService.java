@@ -2,6 +2,7 @@ package com.ilkan.service;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.repository.WorkRepository;
 import com.ilkan.util.RoleMapper;
@@ -34,6 +35,12 @@ public class WorkService {
         Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.APPLY_TO, pageable);
         return works.map(WorkResDto::fromEntity);
+    }
+
+    // 일거리 목록 조회
+    public Page<WorkListResDto> getWorkList(Pageable pageable) {
+        Page<Work> works = workRepository.findAll(pageable);
+        return works.map(WorkListResDto::fromEntity);
     }
 
 }

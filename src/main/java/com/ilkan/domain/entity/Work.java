@@ -63,11 +63,14 @@ public class Work {
     @Column(nullable = false)
     private Status status; // 일거리 상태
 
-    @Column(name = "task_start", nullable = false)
+    @Column(name = "task_start")
     private LocalDateTime taskStart; // 일거리 시작시간
 
-    @Column(name = "task_end", nullable = false)
+    @Column(name = "task_end")
     private LocalDateTime taskEnd; // 일거리 마감시간
+
+    @Column(name = "task_duration", nullable = false)
+    private LocalDateTime taskDuration; // 일거리 작업기간
 
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
