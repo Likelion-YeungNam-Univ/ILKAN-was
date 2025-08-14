@@ -2,7 +2,7 @@ package com.ilkan.dto.workdto;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
-import com.ilkan.dto.userdto.UserResponseDto;
+import com.ilkan.dto.userdto.UserRespDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class WorkResponseDto {
+public class WorkResDto {
 
     private final Long id;                     // 일거리 ID
-    private final UserResponseDto requester;   // 의뢰자 정보 (UserResponseDto로 매핑)
+    private final UserRespDto requester;   // 의뢰자 정보 (UserResponseDto로 매핑)
     private final String title;                 // 제목
     private final String description;           // 상세 설명
     private final LocalDateTime createdAt;      // 등록 시간
@@ -25,10 +25,10 @@ public class WorkResponseDto {
 
 
     // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
-    public static WorkResponseDto fromEntity(Work work) {
-        return WorkResponseDto.builder()
+    public static WorkResDto fromEntity(Work work) {
+        return WorkResDto.builder()
                 .id(work.getId())
-                .requester(UserResponseDto.fromEntity(work.getRequester()))
+                .requester(UserRespDto.fromEntity(work.getRequester()))
                 .title(work.getTitle())
                 .description(work.getDescription())
                 .createdAt(work.getCreatedAt())

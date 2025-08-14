@@ -2,9 +2,9 @@ package com.ilkan.controller;
 
 import com.ilkan.auth.AllowedRoles;
 import com.ilkan.domain.enums.Role;
-import com.ilkan.dto.reservationdto.CreateReservationRequestDto;
-import com.ilkan.dto.reservationdto.OccupiedDayResponseDto;
-import com.ilkan.dto.reservationdto.ReservationResponseDto;
+import com.ilkan.dto.reservationdto.CreateReservationReqDto;
+import com.ilkan.dto.reservationdto.OccupiedDayResDto;
+import com.ilkan.dto.reservationdto.ReservationResDto;
 import com.ilkan.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +23,7 @@ public class ReservationController {
     // 수행자 건물 예약
     @AllowedRoles(Role.PERFORMER)
     @PostMapping("/reservations")
-    public ReservationResponseDto create(@RequestBody CreateReservationRequestDto req, @RequestHeader("X-Role") Role role) {
+    public ReservationResDto create(@RequestBody CreateReservationReqDto req, @RequestHeader("X-Role") Role role) {
         return reservationService.create(req, role);
     }
 
@@ -38,7 +38,7 @@ public class ReservationController {
     // 점유일
     @AllowedRoles(Role.PERFORMER)
     @GetMapping("/reservations/{buildingId}/occupied-days")
-    public List<OccupiedDayResponseDto> occupiedDays(
+    public List<OccupiedDayResDto> occupiedDays(
             @PathVariable Long buildingId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {

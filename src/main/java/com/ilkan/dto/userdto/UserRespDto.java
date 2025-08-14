@@ -6,23 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+
 @Getter
 @Builder
 @AllArgsConstructor
-public class UserRequestDto {
+public class UserRespDto {
 
     private final Long id;          // 회원 고유 ID
     private final String name;      // 이름
     private final String phoneNumber; // 전화번호
     private final Role role;        // 역할 (REQUESTER, PERFORMER, OWNER)
 
-    // DB에 저장할 엔티티 객체 생성하기 위함
-    public User toEntity() {
-        return User.builder()
-                .id(this.id)
-                .name(this.name)
-                .phoneNumber(this.phoneNumber)
-                .role(this.role)
+
+    // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
+    public static UserRespDto fromEntity(User user) {
+        return UserRespDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
                 .build();
     }
 }

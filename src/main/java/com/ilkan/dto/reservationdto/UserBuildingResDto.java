@@ -2,7 +2,7 @@ package com.ilkan.dto.reservationdto;
 
 import com.ilkan.domain.entity.Reservation;
 import com.ilkan.domain.enums.ReservationStatus;
-import com.ilkan.dto.userdto.UserResponseDto;
+import com.ilkan.dto.userdto.UserRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserBuildingResDto {
     private Long reservationId;
-    private UserResponseDto performer;
+    private UserRespDto performer;
     private Long buildingId;
     private String buildingAddress;
     private LocalDateTime startTime;
@@ -25,7 +25,7 @@ public class UserBuildingResDto {
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
                 .reservationId(reservation.getId())
-                .performer(UserResponseDto.fromEntity(reservation.getPerformerId()))
+                .performer(UserRespDto.fromEntity(reservation.getPerformerId()))
                 .buildingId(reservation.getBuildingId().getId())
                 .buildingAddress(reservation.getBuildingId().getBuildingAddress())
                 .startTime(reservation.getStartTime())
