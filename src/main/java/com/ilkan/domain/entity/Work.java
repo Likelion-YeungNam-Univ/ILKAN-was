@@ -70,7 +70,22 @@ public class Work {
     private LocalDateTime taskEnd; // 일거리 마감시간
 
     @Column(name = "task_duration", nullable = false)
-    private LocalDateTime taskDuration; // 일거리 작업기간
+    private String taskDuration; // 일거리 작업기간
+
+    @Column()
+    private Long headCount; // 모집인원
+
+    @Column
+    private String academicBackGround; // 학력
+
+    @Column
+    private String preferred; // 우대사항
+
+    @Column
+    private String etc; // 기타조건
+
+    @Column
+    private LocalDateTime recruitmentPeriod; // 모집 기한
 
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
@@ -105,4 +120,16 @@ public class Work {
         this.taskStart = taskStart;
         this.taskEnd = taskEnd;
     }
+
+    public void updateTaskDuration(String taskDuration) {this.taskDuration = taskDuration;}
+
+    public void uqdateHeadCount(Long headCount) {this.headCount = headCount;}
+
+    public void updateAcademicBackground(String academicBackGround) {this.academicBackGround = academicBackGround;}
+
+    public void updatePreferred(String preferred) {this.preferred = preferred;}
+
+    public void updateEtc(String etc) {this.etc = etc;}
+
+    public void updateRecruitmentPeriod(LocalDateTime recruitmentPeriod) {this.recruitmentPeriod = recruitmentPeriod;}
 }
