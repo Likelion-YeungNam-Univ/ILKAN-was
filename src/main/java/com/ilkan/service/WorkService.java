@@ -2,6 +2,7 @@ package com.ilkan.service;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.repository.WorkRepository;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,12 @@ public class WorkService {
         return works.map(WorkListResDto::fromEntity);
     }
 
+    // 일거리 상세 조회
+    public WorkDetailResDto getWorkDetail(Long taskId) {
+        Work work = workRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("해당 일거리가 존재하지 않습니다."));
+        return WorkDetailResDto.fromEntity(work);
+    }
 }
 
 
