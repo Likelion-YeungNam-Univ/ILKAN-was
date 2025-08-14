@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/my/commissions")
+@RequestMapping("/api/v1/myprofile/commissions")
 @RequiredArgsConstructor
 public class UserWorkController {
     private final WorkService workService;

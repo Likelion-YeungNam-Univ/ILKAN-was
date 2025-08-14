@@ -1,6 +1,6 @@
 package com.ilkan.domain.enums;
 
-// 건물 상태
+// 건물 예약 상태
 public enum ReservationStatus {
     REGISTERED, // 등록된 (건물주 공간조회)
     RESERVED, // 예약 중
