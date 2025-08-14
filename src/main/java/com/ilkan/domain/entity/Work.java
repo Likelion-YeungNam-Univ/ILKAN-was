@@ -70,7 +70,7 @@ public class Work {
     private LocalDateTime taskEnd; // 일거리 마감시간
 
     @Column(name = "task_duration", nullable = false)
-    private LocalDateTime taskDuration; // 일거리 작업기간
+    private String taskDuration; // 일거리 작업기간
 
     @Column()
     private Long headCount; // 모집인원
@@ -121,7 +121,7 @@ public class Work {
         this.taskEnd = taskEnd;
     }
 
-    public void updateTaskDuration(LocalDateTime taskDuration) {this.taskDuration = taskDuration;}
+    public void updateTaskDuration(String taskDuration) {this.taskDuration = taskDuration;}
 
     public void uqdateHeadCount(Long headCount) {this.headCount = headCount;}
 
