@@ -1,6 +1,7 @@
 package com.ilkan.auth;
 
 import com.ilkan.domain.enums.Role;
+import com.ilkan.exception.RoleExceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
