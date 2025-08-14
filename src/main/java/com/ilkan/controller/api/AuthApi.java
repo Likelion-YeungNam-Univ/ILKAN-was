@@ -21,7 +21,7 @@ public interface AuthApi {
 
     @Operation(
             summary = "역할 로그인",
-            description = "헤더 <code>X-Role</code> 값(PERFORMER/OWNER 등)을 검증하고 토큰 없이 역할만 확인하는 로그인"
+            description = "헤더 <code>X-Role</code> 값(PERFORMER/OWNER 등) 검증 후 로그인"
     )
     @ApiResponses({
             @ApiResponse(
