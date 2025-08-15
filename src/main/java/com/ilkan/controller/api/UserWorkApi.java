@@ -24,11 +24,21 @@ public interface UserWorkApi {
     @Operation(summary = "내가 등록한 일거리 조회", description = "의뢰자(REQUESTER) 역할 전용")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = WorkResDto.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = WorkResDto.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
                             examples = @ExampleObject(value = """
                     {"code":"REQUESTER_FORBIDDEN","message":"의뢰자 권한이 없습니다.","status":403,
+                     "path":"/api/v1/myprofile/commissions/upload","timestamp":"2025-08-15T14:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "등록한 일거리가 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                    {"code":"WORK_NOT_FOUND","message":"등록한 일거리가 없습니다.","status":404,
                      "path":"/api/v1/myprofile/commissions/upload","timestamp":"2025-08-15T14:00:00Z"}""")
                     )
             )
@@ -50,6 +60,13 @@ public interface UserWorkApi {
                     {"code":"PERFORMER_FORBIDDEN","message":"수행자 권한이 없습니다.","status":403,
                      "path":"/api/v1/myprofile/commissions/doing","timestamp":"2025-08-15T14:00:00Z"}""")
                     )
+            ),
+            @ApiResponse(responseCode = "404", description = "수행중인 일거리가 없음",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                    {"code":"WORK_NOT_FOUND","message":"수행중인 일거리가 없습니다.","status":404,
+                     "path":"/api/v1/myprofile/commissions/doing","timestamp":"2025-08-15T14:00:00Z"}""")
+                    )
             )
     })
     @GetMapping("/doing")
@@ -69,11 +86,18 @@ public interface UserWorkApi {
                     {"code":"PERFORMER_FORBIDDEN","message":"수행자 권한이 없습니다.","status":403,
                      "path":"/api/v1/myprofile/commissions/applied","timestamp":"2025-08-15T14:00:00Z"}""")
                     )
+            ),
+            @ApiResponse(responseCode = "404", description = "지원한 일거리가 없음",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                    {"code":"WORK_NOT_FOUND","message":"지원한 일거리가 없습니다.","status":404,
+                     "path":"/api/v1/myprofile/commissions/applied","timestamp":"2025-08-15T14:00:00Z"}""")
+                    )
             )
     })
     @GetMapping("/applied")
     ResponseEntity<Page<WorkResDto>> getAppliedWorks(
-            @Parameter(description = "의뢰자 역할 (PERFORMER)", required = true, example = "PERFORMER")
+            @Parameter(description = "요청자 역할 (PERFORMER)", required = true, example = "PERFORMER")
             @RequestHeader("X-Role") String roleHeader,
             @Parameter(description = "페이지네이션 정보") Pageable pageable
     );
