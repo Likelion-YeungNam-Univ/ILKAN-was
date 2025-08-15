@@ -29,9 +29,6 @@ public class WorksController implements WorksApi {
     public ResponseEntity<Page<WorkListResDto>> getWorkList(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<WorkListResDto> worksList = workService.getWorkList(pageable);
-        if (worksList.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(worksList);
     }
 

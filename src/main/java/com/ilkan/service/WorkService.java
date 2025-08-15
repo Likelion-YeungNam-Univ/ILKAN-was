@@ -5,14 +5,13 @@ import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkResDto;
+import com.ilkan.exception.UserWorkExceptions;
 import com.ilkan.repository.WorkRepository;
 import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,37 +20,62 @@ public class WorkService {
 
     // 의뢰자가 등록한 작업 조회
     public Page<WorkResDto> getWorksByRequester(String role, Pageable pageable) {
+        if (!"REQUESTER".equals(role)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
         Long requesterId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByRequesterId(requesterId, pageable);
+
+        if (works.isEmpty()) {
+            throw new UserWorkExceptions.NoUploadedWorks(); // 등록한 일거리 없음 예외
+        }
+
         return works.map(WorkResDto::fromEntity);
     }
 
     // 수행자가 수행중인 작업 조회
     public Page<WorkResDto> doingWorksByPerformer(String role, Pageable pageable) {
+        if (!"PERFORMER".equals(role)) {
+            throw new UserWorkExceptions.PerformerForbidden();
+        }
         Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
+
+        if (works.isEmpty()) {
+            throw new UserWorkExceptions.NoDoingWorks(); // 수행중인 일거리 없음 예외
+        }
+
         return works.map(WorkResDto::fromEntity);
     }
 
     // 수행자가 지원한 작업 조회
     public Page<WorkResDto> getAppliedWorksByPerformer(String role, Pageable pageable) {
+        if (!"PERFORMER".equals(role)) {
+            throw new UserWorkExceptions.PerformerForbidden();
+        }
         Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.APPLY_TO, pageable);
+
+        if (works.isEmpty()) {
+            throw new UserWorkExceptions.NoAppliedWorks(); // 지원한 일거리 없음 예외
+        }
+
         return works.map(WorkResDto::fromEntity);
     }
 
     // 일거리 목록 조회
     public Page<WorkListResDto> getWorkList(Pageable pageable) {
         Page<Work> works = workRepository.findAll(pageable);
+        if (works.isEmpty()) {
+            throw new UserWorkExceptions.WorkNotFound(); // 전체 일거리 없음 예외
+        }
         return works.map(WorkListResDto::fromEntity);
     }
 
-    // 일거리 상세 조회
+    // 일거리 상세 조회 (예외처리 적용)
     public WorkDetailResDto getWorkDetail(Long taskId) {
         Work work = workRepository.findById(taskId)
-                .orElseThrow(() -> new NoSuchElementException("해당 일거리가 존재하지 않습니다."));
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         return WorkDetailResDto.fromEntity(work);
     }
 }
-
-

@@ -1,10 +1,12 @@
 package com.ilkan.controller;
 
 import com.ilkan.auth.AllowedRoles;
+import com.ilkan.controller.api.UserBuildingApi;
 import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.reservationdto.OwnerBuildingResDto;
 import com.ilkan.dto.reservationdto.UserBuildingResDto;
 import com.ilkan.service.UserBuildingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/myprofile/buildings")
 @RequiredArgsConstructor
-public class UserBuildingController {
+@Tag(name = "UserBuilding", description = "사용자/건물주 기반 건물 조회 API")
+public class UserBuildingController implements UserBuildingApi {
 
     private final UserBuildingService userBuildingService;
     private final UserBuildingService ownerBuildingService;
@@ -33,9 +36,6 @@ public class UserBuildingController {
             @PageableDefault(sort = "startTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<UserBuildingResDto> reservations = userBuildingService.findUsingBuildingsByPerformer(roleHeader, pageable);
-        if (reservations.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(reservations);
     }
 
@@ -47,9 +47,6 @@ public class UserBuildingController {
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OwnerBuildingResDto> buildings = ownerBuildingService.getRegisteredBuildings(roleHeader, pageable);
-        if (buildings.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(buildings);
     }
 
