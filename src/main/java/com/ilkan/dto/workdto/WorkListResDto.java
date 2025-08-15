@@ -20,14 +20,14 @@ public class WorkListResDto {
     @Schema(description = "보수", example = "5000원~")
     private final Long price; // 보수
 
-    @Schema(description = "기한", example = "~25/08/30")
-    private final LocalDateTime taskEnd; // 기한
+    @Schema(description = "모집 기한", example = "~25/08/30")
+    private final LocalDateTime recruitmentPeriod; // 기한
 
     public static WorkListResDto fromEntity(Work work){
         return WorkListResDto.builder()
                 .title(work.getTitle())
                 .price(work.getPrice())
-                .taskEnd(work.getTaskEnd())
+                .recruitmentPeriod(work.getRecruitmentPeriod())
                 .build();
     }
 

@@ -1,9 +1,11 @@
 package com.ilkan.controller;
 
 import com.ilkan.auth.AllowedRoles;
+import com.ilkan.controller.api.UserWorkApi;
 import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.service.WorkService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/myprofile/commissions")
 @RequiredArgsConstructor
-public class UserWorkController {
+@Tag(name = "UserWork", description = "사용자 기반 일거리 조회 API")
+public class UserWorkController implements UserWorkApi {
     private final WorkService workService;
 
     // 내가 등록한 일거리 조회 (의뢰자)
@@ -31,9 +34,6 @@ public class UserWorkController {
 
         // 서비스 호출하여 DTO로 변환된 페이징 결과 조회
         Page<WorkResDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
-        if (worksDto.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(worksDto);
     }
 
@@ -45,9 +45,6 @@ public class UserWorkController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkResDto> worksDto = workService.doingWorksByPerformer(roleHeader, pageable);
-        if (worksDto.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(worksDto);
     }
 
@@ -59,9 +56,6 @@ public class UserWorkController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
-        if (appliedWorks.isEmpty()) {
-            return ResponseEntity.ok().body(Page.empty()); // 성공 및 데이터는 없음
-        }
         return ResponseEntity.ok(appliedWorks);
     }
 

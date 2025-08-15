@@ -5,6 +5,7 @@ import com.ilkan.domain.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.Optional;
 
 public interface WorkRepository extends JpaRepository<Work, Long> {
@@ -15,4 +16,6 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     Page<Work> findAll(Pageable pageable); // 모든 일거리조회
 
     Optional<Work> findById(Long taskId); // 모집중 일거리 상세조회
+
+    Work findByIdAndRequesterId(Long taskId, Long requesterId); // 일거리 수정/삭제 시 권한체크용
 }
