@@ -54,8 +54,6 @@ public class User {
     @Column
     private String eMail;
 
-
-
     // ==== 변경 메서드 ====
     public void updateName(String name) {
         this.name = name;

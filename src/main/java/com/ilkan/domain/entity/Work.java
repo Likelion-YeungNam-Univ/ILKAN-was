@@ -41,7 +41,7 @@ public class Work {
 
     // 수행자 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performer_id", nullable = false)
+    @JoinColumn(name = "performer_id")
     private User performer;
 
     @Column(nullable = false)
@@ -87,6 +87,12 @@ public class Work {
     @Column
     private LocalDateTime recruitmentPeriod; // 모집 기한
 
+    @Column
+    private String workEmail; // 일거리등록시 사용 이메일
+
+    @Column
+    private String workPhoneNumber; // 일거리등록시 사용 번호
+
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
     public void updateTitle(String title) {
@@ -104,9 +110,6 @@ public class Work {
         this.price = price;
     }
 
-    public void updateIsNegotiable(Boolean isNegotiable) {
-        this.isNegotiable = isNegotiable;
-    }
 
     public void updateStatus(Status status) {
         // 상태 변경 로직(예: 완료 → 진행중 불가) 검증 가능
@@ -123,7 +126,7 @@ public class Work {
 
     public void updateTaskDuration(String taskDuration) {this.taskDuration = taskDuration;}
 
-    public void uqdateHeadCount(Long headCount) {this.headCount = headCount;}
+    public void updateHeadCount(Long headCount) {this.headCount = headCount;}
 
     public void updateAcademicBackground(String academicBackGround) {this.academicBackGround = academicBackGround;}
 
@@ -132,4 +135,8 @@ public class Work {
     public void updateEtc(String etc) {this.etc = etc;}
 
     public void updateRecruitmentPeriod(LocalDateTime recruitmentPeriod) {this.recruitmentPeriod = recruitmentPeriod;}
+
+    public void updateWorkEmail(String workEmail) {this.workEmail = workEmail;}
+
+    public void updateWorkPhoneNumber(String workPhoneNumber) {this.workPhoneNumber = workPhoneNumber;}
 }
