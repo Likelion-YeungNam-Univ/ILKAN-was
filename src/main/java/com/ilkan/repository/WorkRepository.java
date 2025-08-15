@@ -17,5 +17,5 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
 
     Optional<Work> findById(Long taskId); // 모집중 일거리 상세조회
 
-    Work findByIdAndRequesterId(Long taskId, Long requesterId); // 일거리 수정/삭제 시 권한체크용
+    Optional<Work> findByIdAndRequesterId(Long taskId, Long requesterId); // 일거리 수정/삭제 시 권한체크용
 }
