@@ -1,8 +1,10 @@
 package com.ilkan.controller;
 
+import com.ilkan.controller.api.WorksApi;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.service.WorkService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/works")
 @RequiredArgsConstructor
-public class WorksController {
+@Tag(name = "Works", description = "일거리 조회 API")
+public class WorksController implements WorksApi {
 
     private final WorkService workService;
 
