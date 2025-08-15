@@ -1,11 +1,14 @@
 package com.ilkan.service;
 
+import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
+import com.ilkan.dto.workdto.WorkReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.exception.UserWorkExceptions;
+import com.ilkan.repository.UserRepository;
 import com.ilkan.repository.WorkRepository;
 import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WorkService {
     private final WorkRepository workRepository;
+    private final UserRepository userRepository;
 
     // 의뢰자가 등록한 작업 조회
     @Transactional(readOnly = true)
@@ -84,4 +88,43 @@ public class WorkService {
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         return WorkDetailResDto.fromEntity(work);
     }
+
+    // 일거리 등록
+    @Transactional
+    public Work createWork(Long requesterId, WorkReqDto dto) {
+        User requester = userRepository.findById(requesterId)
+                .orElseThrow(UserWorkExceptions.RequesterForbidden::new);
+        Work work = dto.toEntity(requester);
+        return workRepository.save(work);
+    }
+
+    // 일거리 수정
+    @Transactional
+    public Work updateWork(Long taskId, Long requesterId, WorkReqDto dto) {
+        Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        work.updateTitle(dto.getTitle());
+        work.updateRecruitmentPeriod(dto.getRecruitmentPeriod());
+        work.updateTaskDuration(dto.getTaskDuration());
+        work.updatePrice(dto.getPrice());
+        work.updateHeadCount(dto.getHeadCount());
+        work.updateAcademicBackground(dto.getAcademicBackground());
+        work.updatePreferred(dto.getPreferred());
+        work.updateEtc(dto.getEtc());
+        work.updateDescription(dto.getDescription());
+        work.updateWorkEmail(dto.getWorkEmail());
+        work.updateWorkPhoneNumber(dto.getWorkPhoneNumber());
+
+        return work;
+    }
+
+    // 일거리 삭제
+    @Transactional
+    public void deleteWork(Long taskId, Long requesterId) {
+        Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+        workRepository.delete(work);
+    }
 }
+

@@ -1,8 +1,5 @@
 package com.ilkan.dto.workdto;
 
-import com.ilkan.domain.entity.User;
-import com.ilkan.domain.entity.Work;
-import com.ilkan.domain.enums.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +10,19 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@Schema(description = "의뢰자 일거리 등록/수정 DTO")
-public class WorkReqDto {
+@Schema(description = "의뢰자 일거리 등록/조회용 DTO")
+public class WorkUserResDto {
+
+    @Schema(description = "일거리 ID", example = "14")
+    private final Long id;
 
     @Schema(description = "제목", example = "[카페 반절] 인스타 BI 로고 디자인")
     private final String title;
 
-    @Schema(description = "공고 기한", example = " ~ 2025-09-15")
+    @Schema(description = "공고 기한", example = "2025-09-15T00:00:00")
     private final LocalDateTime recruitmentPeriod;
 
-    @Schema(description = "작업 기간", example = " 3")
+    @Schema(description = "작업 기간", example = "3개월")
     private final String taskDuration;
 
     @Schema(description = "보수", example = "5000")
@@ -31,7 +31,7 @@ public class WorkReqDto {
     @Schema(description = "이메일", example = "adsf@naver.com")
     private final String workEmail;
 
-    @Schema(description = "전화", example = " 010-1234-1243")
+    @Schema(description = "전화", example = "010-1234-1243")
     private final String workPhoneNumber;
 
     @Schema(description = "모집 인원", example = "1")
@@ -49,22 +49,24 @@ public class WorkReqDto {
     @Schema(description = "상세설명", example = "의뢰내용 : ----- / 지원자격 : ----")
     private final String description;
 
-    public Work toEntity(User requester) {
-        return Work.builder()
-                .title(this.title)
-                .recruitmentPeriod(this.recruitmentPeriod)
-                .taskDuration(this.taskDuration)
-                .price(this.price)
-                .headCount(this.headCount)
-                .academicBackGround(this.academicBackground)
-                .preferred(this.preferred)
-                .etc(this.etc)
-                .description(this.description)
-                .workEmail(this.workEmail)
-                .workPhoneNumber(this.workPhoneNumber)
-                .createdAt(LocalDateTime.now())
-                .requester(requester)
-                .status(Status.OPEN) // 기본상태는 모집중으로
+    @Schema(description = "생성일", example = "2025-08-15T20:36:37")
+    private final LocalDateTime createdAt;
+
+    public static WorkUserResDto fromEntity(com.ilkan.domain.entity.Work work) {
+        return WorkUserResDto.builder()
+                .id(work.getId())
+                .title(work.getTitle())
+                .recruitmentPeriod(work.getRecruitmentPeriod())
+                .taskDuration(work.getTaskDuration())
+                .price(work.getPrice())
+                .workEmail(work.getWorkEmail())
+                .workPhoneNumber(work.getWorkPhoneNumber())
+                .headCount(work.getHeadCount())
+                .academicBackground(work.getAcademicBackGround())
+                .preferred(work.getPreferred())
+                .etc(work.getEtc())
+                .description(work.getDescription())
+                .createdAt(work.getCreatedAt())
                 .build();
     }
 }

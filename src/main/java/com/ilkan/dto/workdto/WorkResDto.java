@@ -20,7 +20,6 @@ public class WorkResDto {
     private final String description;           // 상세 설명
     private final LocalDateTime createdAt;      // 등록 시간
     private final Long price;                   // 가격
-    private final Boolean isNegotiable;         // 금액 협의 가능 여부
     private final Status status;                // 일거리 상태
     private final LocalDateTime taskStart;      // 작업 시작 시간
     private final LocalDateTime taskEnd;        // 작업 마감 시간
@@ -35,7 +34,6 @@ public class WorkResDto {
                 .description(work.getDescription())
                 .createdAt(work.getCreatedAt())
                 .price(work.getPrice())
-                .isNegotiable(work.getIsNegotiable())
                 .status(work.getStatus())
                 .taskStart(work.getTaskStart())
                 .taskEnd(work.getTaskEnd())

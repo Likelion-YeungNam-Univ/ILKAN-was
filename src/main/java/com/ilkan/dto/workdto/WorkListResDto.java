@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 @Schema(description = "일거리목록 DTO")
 public class WorkListResDto {
 
+    @Schema(description = "일거리 id", example = "1")
+    private final Long taskId;
+
     @Schema(description = "기업명/공고", example = "[카페 반절] 인스타분위기 카페 로고 디자인 외주 의뢰")
     private final String title; // 기업명/공고
 
@@ -25,6 +28,7 @@ public class WorkListResDto {
 
     public static WorkListResDto fromEntity(Work work){
         return WorkListResDto.builder()
+                .taskId(work.getId())
                 .title(work.getTitle())
                 .price(work.getPrice())
                 .recruitmentPeriod(work.getRecruitmentPeriod())
