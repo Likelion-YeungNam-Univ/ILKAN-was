@@ -13,6 +13,9 @@ import lombok.Getter;
 @Schema(description = "일거리 상세조회 DTO")
 public class WorkDetailResDto {
 
+    @Schema(description = "일거리 id", example = "1")
+    private Long taskId;
+
     @Schema(description = "제목", example = "[카페 반절] 인스타 분위기 카페 BI 로고 디자인 외주 의뢰")
     private String title;
 
@@ -46,6 +49,7 @@ public class WorkDetailResDto {
     public static WorkDetailResDto fromEntity(Work work) {
         User user = work.getRequester();
         return WorkDetailResDto.builder()
+                .taskId(work.getId())
                 .title(work.getTitle())
                 .taskDuration(work.getTaskDuration())
                 .price(work.getPrice())
