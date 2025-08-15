@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class WorkService {
     private final WorkRepository workRepository;
 
     // 의뢰자가 등록한 작업 조회
+    @Transactional(readOnly = true)
     public Page<WorkResDto> getWorksByRequester(String role, Pageable pageable) {
         if (!"REQUESTER".equals(role)) {
             throw new UserWorkExceptions.RequesterForbidden();
@@ -34,6 +36,7 @@ public class WorkService {
     }
 
     // 수행자가 수행중인 작업 조회
+    @Transactional(readOnly = true)
     public Page<WorkResDto> doingWorksByPerformer(String role, Pageable pageable) {
         if (!"PERFORMER".equals(role)) {
             throw new UserWorkExceptions.PerformerForbidden();
@@ -49,6 +52,7 @@ public class WorkService {
     }
 
     // 수행자가 지원한 작업 조회
+    @Transactional(readOnly = true)
     public Page<WorkResDto> getAppliedWorksByPerformer(String role, Pageable pageable) {
         if (!"PERFORMER".equals(role)) {
             throw new UserWorkExceptions.PerformerForbidden();
@@ -64,6 +68,7 @@ public class WorkService {
     }
 
     // 일거리 목록 조회
+    @Transactional(readOnly = true)
     public Page<WorkListResDto> getWorkList(Pageable pageable) {
         Page<Work> works = workRepository.findAll(pageable);
         if (works.isEmpty()) {
@@ -73,6 +78,7 @@ public class WorkService {
     }
 
     // 일거리 상세 조회 (예외처리 적용)
+    @Transactional(readOnly = true)
     public WorkDetailResDto getWorkDetail(Long taskId) {
         Work work = workRepository.findById(taskId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);

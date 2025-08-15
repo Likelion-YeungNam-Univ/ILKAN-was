@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class UserBuildingService {
     private final UserBuildingRepository userBuildingRepository;
 
     // 수행자가 사용중인 공간 조회
+    @Transactional(readOnly = true)
     public Page<UserBuildingResDto> findUsingBuildingsByPerformer(String role, Pageable pageable) {
         if (!"PERFORMER".equals(role)) {
             throw new UserBuildingExceptions.PerformerForbidden();
@@ -32,6 +34,7 @@ public class UserBuildingService {
     }
 
     // 건물주가 등록한 건물 조회
+    @Transactional(readOnly = true)
     public Page<OwnerBuildingResDto> getRegisteredBuildings(String role, Pageable pageable) {
         if (!"OWNER".equals(role)) {
             throw new UserBuildingExceptions.OwnerForbidden();
