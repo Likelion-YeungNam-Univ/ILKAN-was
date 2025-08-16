@@ -15,28 +15,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserBuildingResDto {
     @Schema(description = "예약 ID", example = "101")
-    private Long reservationId;
+    private final Long reservationId;
 
     @Schema(description = "수행자 정보")
-    private UserRespDto performer;
+    private final UserRespDto performer;
 
     @Schema(description = "건물 ID", example = "55")
-    private Long buildingId;
+    private final Long buildingId;
 
     @Schema(description = "건물 주소", example = "서울시 강남구 123")
-    private String buildingAddress;
+    private final String buildingAddress;
 
     @Schema(description = "예약 시작 시간", example = "2025-08-20T09:00:00")
-    private LocalDateTime startTime;
+    private final LocalDateTime startTime;
 
     @Schema(description = "예약 종료 시간", example = "2025-08-20T18:00:00")
-    private LocalDateTime endTime;
-
-    @Schema(description = "예약 승인 여부", example = "true")
-    private Boolean isAccepted;
+    private final LocalDateTime endTime;
 
     @Schema(description = "예약 상태", example = "REGISTERED")
-    private ReservationStatus reservationStatus;
+    private final ReservationStatus reservationStatus;
+
+    @Schema(description = "건물 이름", example = "야호빌딩")
+    private final String buildingName;
 
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
@@ -46,6 +46,7 @@ public class UserBuildingResDto {
                 .buildingAddress(reservation.getBuildingId().getBuildingAddress())
                 .startTime(reservation.getStartTime())
                 .endTime(reservation.getEndTime())
+                .buildingName(reservation.getBuildingId().getBuildingName())
                 .reservationStatus(reservation.getReservationStatus())
                 .build();
     }
