@@ -23,7 +23,7 @@ public class WorkResDto {
     private final Status status;                // 일거리 상태
     private final LocalDateTime taskStart;      // 작업 시작 시간
     private final LocalDateTime taskEnd;        // 작업 마감 시간
-    private final LocalDateTime recruitmentPeriod;
+    private final LocalDateTime recruitmentPeriod; // 모집 기한
 
 
     // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
@@ -38,7 +38,7 @@ public class WorkResDto {
                 .status(work.getStatus())
                 .taskStart(work.getTaskStart())
                 .taskEnd(work.getTaskEnd())
-
+                .recruitmentPeriod(work.getRecruitmentPeriod())
                 .build();
     }
 }
