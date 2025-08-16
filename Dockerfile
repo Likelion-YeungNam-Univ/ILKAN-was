@@ -6,11 +6,11 @@ COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
 RUN microdnf install findutils
-RUN ./gradlew build -x test
+RUN ./gradlew clean bootJar -x test --no-daemon
 
 
 FROM openjdk:17
 RUN mkdir /opt/app
-COPY --from=builder build/libs/*.jar /opt/app/spring-boot-application.jar
+COPY --from=builder /app/build/libs/*.jar /opt/app/spring-boot-application.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/opt/app/spring-boot-application.jar"]
