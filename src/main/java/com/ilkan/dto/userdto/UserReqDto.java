@@ -21,7 +21,7 @@ public class UserReqDto {
     @Schema(description = "전화번호", example = "010-1234-1234")
     private final String phoneNumber; // 전화번호
 
-    @Schema(description = "유저 ID", example = "REQUESTER")
+    @Schema(description = "역할", example = "역할명")
     private final Role role;        // 역할 (REQUESTER, PERFORMER, OWNER)
 
     // DB에 저장할 엔티티 객체 생성하기 위함
