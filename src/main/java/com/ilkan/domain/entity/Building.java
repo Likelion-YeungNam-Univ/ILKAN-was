@@ -53,6 +53,9 @@ public class Building {
     @Column(name = "building_tag", nullable = false)
     private BuildingTag buildingTag; // 건물 태그
 
+    @Column(name = "building_name", nullable = false)
+    private String buildingName; // 건물 이름
+
     // ==== 변경 메서드 ====
     public void updateOwner (User owner) {
         this.owner = owner;
@@ -67,5 +70,8 @@ public class Building {
     public void updateBuildingImage (String buildingImage) { this.buildingImage = buildingImage; }
 
     public void updateBuildingRegion (String buildingRegion) { this.buildingRegion = buildingRegion; }
+
     // 건물 태그수정 불가, 구현X
+
+    public void updateBuildingName (String buildingName) {this.buildingName = buildingName;}
 }
