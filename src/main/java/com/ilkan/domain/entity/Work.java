@@ -56,9 +56,6 @@ public class Work {
     @Column
     private Long price; // 가격
 
-    @Column(name = "is_negotiable")
-    private Boolean isNegotiable; // 금액 협의 가능여부
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status; // 일거리 상태
