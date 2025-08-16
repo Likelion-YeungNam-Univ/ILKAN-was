@@ -10,6 +10,7 @@ import com.ilkan.dto.workdto.WorkReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.dto.workdto.WorkUserResDto;
 import com.ilkan.service.WorkService;
+import com.ilkan.util.RoleMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,14 +24,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/works")
 @RequiredArgsConstructor
-@Tag(name = "Works", description = "일거리 조회 API")
+@Tag(name = "Works", description = "일거리 관련 API")
 public class WorksController implements WorksApi {
 
     private final WorkService workService;
@@ -54,9 +55,10 @@ public class WorksController implements WorksApi {
     @AllowedRoles(Role.REQUESTER)
     @PostMapping
     public ResponseEntity<WorkResDto> createWork(
-            @RequestParam Long requesterId,
+            @RequestHeader("X-Role") String roleHeader,
             @RequestBody WorkReqDto dto) {
 
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work savedWork = workService.createWork(requesterId, dto);
         return ResponseEntity.ok(WorkResDto.fromEntity(savedWork));
     }
@@ -67,9 +69,10 @@ public class WorksController implements WorksApi {
     @PutMapping("/{taskId}")
     public ResponseEntity<WorkUserResDto> updateWork(
             @PathVariable Long taskId,
-            @RequestParam Long requesterId,
+            @RequestHeader("X-Role") String roleHeader,
             @RequestBody WorkReqDto dto) {
 
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work updatedWork = workService.updateWork(taskId, requesterId, dto);
         return ResponseEntity.ok(WorkUserResDto.fromEntity(updatedWork));
     }
@@ -79,8 +82,9 @@ public class WorksController implements WorksApi {
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteWork(
             @PathVariable Long taskId,
-            @RequestParam Long requesterId) {
+            @RequestHeader ("X-Role") String roleHeader) {
 
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         workService.deleteWork(taskId, requesterId);
         return ResponseEntity.noContent().build();
     }
