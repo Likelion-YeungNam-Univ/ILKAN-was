@@ -6,7 +6,7 @@ COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
 RUN microdnf install findutils
-RUN ./gradlew build -x test
+RUN ./gradlew clean bootJar -x test --no-daemon
 
 
 FROM openjdk:17

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/api/v1/works", produces = "application/json")
 public interface WorksApi {
 
-    @Operation(summary = "모든 일거리 조회", description = "페이지네이션으로 모든 일거리를 조회합니다.")
+    @Operation(summary = "모든 일거리 조회", description = "페이지네이션으로 모든 일거리를 조회합니당.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(mediaType = "application/json",
