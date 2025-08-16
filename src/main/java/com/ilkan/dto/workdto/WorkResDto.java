@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WorkResDto {
 
-    private final Long id;                     // 일거리 ID
+    private final Long taskId;                     // 일거리 ID
     private final UserRespDto requester;   // 의뢰자 정보 (UserResponseDto로 매핑)
     private final String title;                 // 제목
     private final String description;           // 상세 설명
@@ -28,7 +28,7 @@ public class WorkResDto {
     // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
     public static WorkResDto fromEntity(Work work) {
         return WorkResDto.builder()
-                .id(work.getId())
+                .taskId(work.getId())
                 .requester(UserRespDto.fromEntity(work.getRequester()))
                 .title(work.getTitle())
                 .description(work.getDescription())

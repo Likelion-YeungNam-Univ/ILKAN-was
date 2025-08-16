@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class WorkUserResDto {
 
     @Schema(description = "일거리 ID", example = "14")
-    private final Long id;
+    private final Long taskId;
 
     @Schema(description = "제목", example = "[카페 반절] 인스타 BI 로고 디자인")
     private final String title;
@@ -54,7 +54,7 @@ public class WorkUserResDto {
 
     public static WorkUserResDto fromEntity(com.ilkan.domain.entity.Work work) {
         return WorkUserResDto.builder()
-                .id(work.getId())
+                .taskId(work.getId())
                 .title(work.getTitle())
                 .recruitmentPeriod(work.getRecruitmentPeriod())
                 .taskDuration(work.getTaskDuration())
