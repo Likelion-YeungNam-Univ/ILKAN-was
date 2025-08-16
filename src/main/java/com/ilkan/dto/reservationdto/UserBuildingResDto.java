@@ -38,6 +38,9 @@ public class UserBuildingResDto {
     @Schema(description = "건물 이름", example = "야호빌딩")
     private final String buildingName;
 
+    @Schema(description = "건물 이미지 URL", example = "https://example.com/images/building.jpg")
+    private String buildingImage;
+
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
                 .reservationId(reservation.getId())
@@ -48,6 +51,7 @@ public class UserBuildingResDto {
                 .endTime(reservation.getEndTime())
                 .buildingName(reservation.getBuildingId().getBuildingName())
                 .reservationStatus(reservation.getReservationStatus())
+                .buildingImage(reservation.getBuildingId().getBuildingImage())
                 .build();
     }
 }
