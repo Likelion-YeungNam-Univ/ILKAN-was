@@ -1,6 +1,7 @@
 package com.ilkan.controller.api;
 
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -101,5 +105,19 @@ public interface UserWorkApi {
             @Parameter(description = "요청자 역할 (PERFORMER)", required = true, example = "PERFORMER")
             @RequestHeader("X-Role") String roleHeader,
             @Parameter(description = "페이지네이션 정보") Pageable pageable
+    );
+
+    @Operation(summary = "일거리 지원", description = "수행자(PERFORMER)가 특정 일거리(taskId)에 지원합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "지원 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (이미 지원했거나 지원 불가능한 상태)"),
+            @ApiResponse(responseCode = "403", description = "권한 없음"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 일거리(taskId)")
+    })
+    @PostMapping("/{taskId}/requests")
+    ResponseEntity<ApplicationResDto> applyWork(
+            @RequestHeader("X-Role") String role,
+            @PathVariable Long taskId,
+            @RequestBody WorkApplyReqDto dto
     );
 }
