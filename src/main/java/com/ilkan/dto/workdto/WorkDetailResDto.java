@@ -14,22 +14,22 @@ import lombok.Getter;
 public class WorkDetailResDto {
 
     @Schema(description = "일거리 id", example = "1")
-    private Long taskId;
+    private final Long taskId;
 
     @Schema(description = "제목", example = "[카페 반절] 인스타 분위기 카페 BI 로고 디자인 외주 의뢰")
-    private String title;
+    private final String title;
 
     @Schema(description = "작업기간", example = "~3개월")
-    private String taskDuration;
+    private final String taskDuration;
 
     @Schema(description = "작업보수", example = "500원~")
-    private Long price;
+    private final Long price;
 
     @Schema(description = "이메일", example = "adf@naver.com")
-    private String eMail;
+    private final String eMail;
 
     @Schema(description = "연락처", example = "010-1234-5678")
-    private String phoneNumber;
+    private final String phoneNumber;
 
     @Schema(description = "모집인원", example = "1명")
     private final Long headcount;
