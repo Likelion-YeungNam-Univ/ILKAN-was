@@ -70,7 +70,7 @@ public class WorkService {
 
         // TaskApplication 기준으로 조회
         Page<TaskApplication> applications =
-                taskApplicationRepository.findByPerformerId(performerId, pageable);
+                taskApplicationRepository.findByPerformerId_IdAndStatus(performerId, Status.APPLY_TO, pageable);
 
         if (applications.isEmpty()) {
             throw new UserWorkExceptions.NoAppliedWorks(); // 지원한 일거리 없음 예외
