@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class UserRespDto {
+public class UserResDto {
 
     @Schema(description = "유저 ID", example = "1")
     private final Long id;          // 회원 고유 ID
@@ -27,8 +27,8 @@ public class UserRespDto {
 
 
     // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
-    public static UserRespDto fromEntity(User user) {
-        return UserRespDto.builder()
+    public static UserResDto fromEntity(User user) {
+        return UserResDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())

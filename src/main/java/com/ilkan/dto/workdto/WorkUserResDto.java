@@ -1,5 +1,6 @@
 package com.ilkan.dto.workdto;
 
+import com.ilkan.domain.enums.WorkCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,9 @@ public class WorkUserResDto {
 
     @Schema(description = "공고 기한", example = "2025-09-15T00:00:00")
     private final LocalDateTime recruitmentPeriod;
+
+    @Schema(description = "카테고리 선택", example = "개발/디자인 .....")
+    private final WorkCategory workCategory;
 
     @Schema(description = "작업 기간", example = "3개월")
     private final String taskDuration;
@@ -67,6 +71,7 @@ public class WorkUserResDto {
                 .etc(work.getEtc())
                 .description(work.getDescription())
                 .createdAt(work.getCreatedAt())
+                .workCategory(work.getWorkCategory())
                 .build();
     }
 }
