@@ -3,6 +3,7 @@ package com.ilkan.controller;
 import com.ilkan.auth.AllowedRoles;
 import com.ilkan.controller.api.UserWorkApi;
 import com.ilkan.domain.enums.Role;
+import com.ilkan.dto.workdto.ApplicationResDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.service.WorkService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,11 +52,11 @@ public class UserWorkController implements UserWorkApi {
     // 내가 지원한 일거리 조회 (수행자)
     @AllowedRoles(Role.PERFORMER)
     @GetMapping("/applied")
-    public ResponseEntity<Page<WorkResDto>> getAppliedWorks(
+    public ResponseEntity<Page<ApplicationResDto>> getAppliedWorks(
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<WorkResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
+        Page<ApplicationResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
         return ResponseEntity.ok(appliedWorks);
     }
 
