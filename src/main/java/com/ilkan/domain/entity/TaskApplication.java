@@ -46,12 +46,8 @@ public class TaskApplication {
     @Column(name = "applied_at", nullable = false)
     private LocalDateTime appliedAt;
 
-    @Column
-    private String message; // 자기소개
-
     public void updateStatus(Status status) {this.status = status;}
 
     public void updateAppliedAt(LocalDateTime appliedAt) {this.appliedAt = appliedAt;}
 
-    public void updateMessage(String message) {this.message = message;}
 }

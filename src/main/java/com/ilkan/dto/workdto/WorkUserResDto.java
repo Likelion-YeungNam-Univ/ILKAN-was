@@ -1,5 +1,6 @@
 package com.ilkan.dto.workdto;
 
+import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.WorkCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -56,7 +57,7 @@ public class WorkUserResDto {
     @Schema(description = "생성일", example = "2025-08-15T20:36:37")
     private final LocalDateTime createdAt;
 
-    public static WorkUserResDto fromEntity(com.ilkan.domain.entity.Work work) {
+    public static WorkUserResDto fromEntity(Work work) {
         return WorkUserResDto.builder()
                 .taskId(work.getId())
                 .title(work.getTitle())
