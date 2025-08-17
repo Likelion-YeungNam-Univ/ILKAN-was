@@ -1,5 +1,6 @@
 package com.ilkan.exception;
 
+import com.ilkan.domain.enums.Role;
 import org.springframework.http.HttpStatus;
 
 public final class RoleExceptions {
@@ -30,5 +31,17 @@ public final class RoleExceptions {
         public Denied() { super("해당 역할은 해당 서비스에 접근할 수 없습니다."); }
         @Override public String code() { return "ACCESS_DENIED"; }
         @Override public HttpStatus status() { return HttpStatus.FORBIDDEN; }
+    }
+
+    // 4. 주어진 역할에 해당하는 유저가 없을 때
+    public static class NotFound extends Base {
+        private final Role role;
+        public NotFound(Role role) {
+            super("역할에 해당하는 유저가 없습니다. =" + role);
+            this.role = role;
+        }
+        @Override public String code() { return "USER_NOT_FOUND"; }
+        @Override public HttpStatus status() { return HttpStatus.NOT_FOUND; }
+        public Role role() { return role; }
     }
 }
