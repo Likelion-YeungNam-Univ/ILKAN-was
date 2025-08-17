@@ -53,7 +53,7 @@ public class UserWorkController implements UserWorkApi {
     @GetMapping("/applied")
     public ResponseEntity<Page<WorkResDto>> getAppliedWorks(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkResDto> appliedWorks = workService.getAppliedWorksByPerformer(roleHeader, pageable);
         return ResponseEntity.ok(appliedWorks);
