@@ -5,6 +5,7 @@ import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkReqDto;
@@ -136,5 +137,21 @@ public class WorkService {
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         workRepository.delete(work);
     }
+
+    // 수행자 일거리 신청
+    public TaskApplication applyWork(String role, Long taskId, WorkApplyReqDto dto) {
+        if (!"PERFORMER".equals(role)) {
+            throw new UserWorkExceptions.PerformerForbidden();
+        }
+
+        Long performerId = RoleMapper.getUserIdByRole(role);
+        Work work = workRepository.findById(taskId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+        User performer = userRepository.findById(performerId)
+                .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
+
+        return taskApplicationRepository.save(dto.toEntity(work, performer));
+    }
 }
+
 
