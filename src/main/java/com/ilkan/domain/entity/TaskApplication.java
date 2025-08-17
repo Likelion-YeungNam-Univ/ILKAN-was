@@ -46,8 +46,17 @@ public class TaskApplication {
     @Column(name = "applied_at", nullable = false)
     private LocalDateTime appliedAt;
 
+    @Column
+    private String bio; // 자기소개
+
+    @Column
+    private String portfolioUrl;
+
     public void updateStatus(Status status) {this.status = status;}
 
     public void updateAppliedAt(LocalDateTime appliedAt) {this.appliedAt = appliedAt;}
 
+    public void updateMessage(String message) {this.bio = message;}
+
+    public void updatePortfolioUrl(String portfolioUrl) { this.portfolioUrl = portfolioUrl; }
 }

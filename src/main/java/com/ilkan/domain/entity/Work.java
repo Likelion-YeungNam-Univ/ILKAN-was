@@ -95,9 +95,6 @@ public class Work {
     @Column
     private WorkCategory workCategory;
 
-    @Column
-    private String bio; // 자기소개
-
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
     public void updateTitle(String title) {
@@ -145,6 +142,4 @@ public class Work {
     public void updateWorkPhoneNumber(String workPhoneNumber) {this.workPhoneNumber = workPhoneNumber;}
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
-
-    public void updateBio(String bio) {this.bio = bio;}
 }

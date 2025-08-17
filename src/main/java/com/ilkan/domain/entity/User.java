@@ -46,9 +46,6 @@ public class User {
     private String bio;
 
     @Column
-    private String portfolioUrl;
-
-    @Column
     private String organization;
 
     @Column
@@ -70,8 +67,6 @@ public class User {
     public void updateBio(String bio) {
         this.bio = bio;
     }
-
-    public void updatePortfolioUrl(String portfolioUrl) { this.portfolioUrl = portfolioUrl; }
 
     public void updateOrganization(String organization) {
         this.organization = organization;
