@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/myprofile/commissions")
 @RequiredArgsConstructor
-@Tag(name = "UserWork", description = "사용자 기반 일거리 조회 API")
+@Tag(name = "UserWork", description = "사용자 기반 일거리 API")
 public class UserWorkController implements UserWorkApi {
     private final WorkService workService;
 
@@ -67,12 +67,13 @@ public class UserWorkController implements UserWorkApi {
 
     // 일거리 지원 (수행자)
     @PostMapping("/{taskId}/requests")
-    public ResponseEntity<TaskApplication> applyWork(
+    public ResponseEntity<ApplicationResDto> applyWork(
             @RequestHeader("X-Role") String role,
             @PathVariable Long taskId,
             @RequestBody WorkApplyReqDto dto
     ) {
         TaskApplication application = workService.applyWork(role, taskId, dto);
-        return ResponseEntity.ok(application);
+        ApplicationResDto response = ApplicationResDto.fromEntity(application);
+        return ResponseEntity.ok(response);
     }
 }
