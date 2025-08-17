@@ -1,5 +1,6 @@
 package com.ilkan.controller.api;
 
+import com.ilkan.dto.workdto.ApplicationResDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,7 +80,7 @@ public interface UserWorkApi {
     @Operation(summary = "내가 지원한 일거리 조회", description = "수행자(PERFORMER) 역할 전용")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = WorkResDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApplicationResDto.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
                             examples = @ExampleObject(value = """
@@ -96,7 +97,7 @@ public interface UserWorkApi {
             )
     })
     @GetMapping("/applied")
-    ResponseEntity<Page<WorkResDto>> getAppliedWorks(
+    ResponseEntity<Page<ApplicationResDto>> getAppliedWorks(
             @Parameter(description = "요청자 역할 (PERFORMER)", required = true, example = "PERFORMER")
             @RequestHeader("X-Role") String roleHeader,
             @Parameter(description = "페이지네이션 정보") Pageable pageable
