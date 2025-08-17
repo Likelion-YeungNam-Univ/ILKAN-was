@@ -9,7 +9,6 @@
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
 
-    import java.util.Optional;
 
     @Service
     @RequiredArgsConstructor
@@ -36,7 +35,6 @@
                     .phoneNumber(user.getPhoneNumber())
                     .role(user.getRole().name())
                     .profileImage(user.getProfileImage())
-                    .portfolioUrl(user.getPortfolioUrl())
                     .organization(user.getOrganization())
                     .build();
 
