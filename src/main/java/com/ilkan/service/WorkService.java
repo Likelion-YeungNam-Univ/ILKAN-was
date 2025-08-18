@@ -117,19 +117,7 @@ public class WorkService {
         Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
-
-        work.updateTitle(dto.getTitle());
-        work.updateRecruitmentPeriod(dto.getRecruitmentPeriod());
-        work.updateTaskDuration(dto.getTaskDuration());
-        work.updatePrice(dto.getPrice());
-        work.updateHeadCount(dto.getHeadCount());
-        work.updateAcademicBackground(dto.getAcademicBackground());
-        work.updatePreferred(dto.getPreferred());
-        work.updateEtc(dto.getEtc());
-        work.updateDescription(dto.getDescription());
-        work.updateWorkEmail(dto.getWorkEmail());
-        work.updateWorkPhoneNumber(dto.getWorkPhoneNumber());
-
+        work.updateFromDto(dto);
         return work;
     }
 
