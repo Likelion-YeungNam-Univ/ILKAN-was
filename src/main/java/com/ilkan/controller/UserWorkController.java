@@ -5,11 +5,11 @@ import com.ilkan.controller.api.UserWorkApi;
 import com.ilkan.domain.entity.TaskApplication;
 import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyDetailResDto;
 import com.ilkan.dto.workdto.WorkApplyListResDto;
 import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.service.WorkService;
-import com.ilkan.util.RoleMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -82,13 +82,25 @@ public class UserWorkController implements UserWorkApi {
 
     // 의뢰자 기준 수행자들이 지원한 지원서 목록조회
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/applicants")
+    @GetMapping("/applies")
     public ResponseEntity<Page<WorkApplyListResDto>> getApplicants(
             @RequestHeader("X-Role") String roleHeader,
             @PageableDefault(sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
-        Page<WorkApplyListResDto> applicants = workService.getApplicantsByRequester(requesterId, pageable);
+        Page<WorkApplyListResDto> applicants = workService.getApplicantsByRequester(roleHeader, pageable);
         return ResponseEntity.ok(applicants);
     }
+
+    // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
+    @AllowedRoles(Role.REQUESTER)
+    @GetMapping("/{workId}/applies/{applyId}")
+    public ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
+            @RequestHeader("X-Role") String role,
+            @PathVariable Long workId,
+            @PathVariable Long applyId
+    ) {
+        WorkApplyDetailResDto response = workService.getWorkApplyDetail(role, workId, applyId);
+        return ResponseEntity.ok(response);
+    }
+
 }
