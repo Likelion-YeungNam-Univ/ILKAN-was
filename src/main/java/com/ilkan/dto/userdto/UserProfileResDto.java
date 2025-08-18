@@ -1,7 +1,6 @@
 package com.ilkan.dto.userdto;
 
 import com.ilkan.domain.entity.User;
-import com.ilkan.domain.enums.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -25,9 +24,6 @@ public class UserProfileResDto {
     @Schema(description = "프로필 사진", example = "https://cdn.example.com/u/3/profile.jpg")
     private String profileImage;
 
-    @Schema(description = "포트폴리오 링크", example = "https://pf.example.com/hong")
-    private String portfolioUrl;
-
     @Schema(description = "조직", example = "와플대학")
     private String organization;
 
@@ -50,7 +46,6 @@ public class UserProfileResDto {
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole().name())
                 .profileImage(user.getProfileImage())
-                .portfolioUrl(user.getPortfolioUrl())
                 .organization(user.getOrganization())
                 .address(user.getAddress())
                 .education(user.getEducation())
