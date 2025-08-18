@@ -170,7 +170,7 @@ public class WorkService {
 
         Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findById(workId)
-                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new); // 삭제된 일거리 접근 시 안전하게 처리하기 위한 방어 코드
 
         if (!work.getRequester().getId().equals(requesterId)) {
             throw new UserWorkExceptions.InvalidRequest("다른 의뢰자의 일거리 입니다."); // 다른 의뢰자의 작업 접근 불가
