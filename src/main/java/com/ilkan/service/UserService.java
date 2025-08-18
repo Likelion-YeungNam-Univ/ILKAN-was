@@ -9,7 +9,6 @@
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
 
-
     @Service
     @RequiredArgsConstructor
     public class UserService {
@@ -29,15 +28,8 @@
             User user = userRepository.findFirstByRole(role)
                     .orElseThrow(() -> new RoleExceptions.NotFound(role));
 
-            return UserProfileResDto.builder()
-                    .userId(user.getId())
-                    .name(user.getName())
-                    .phoneNumber(user.getPhoneNumber())
-                    .role(user.getRole().name())
-                    .profileImage(user.getProfileImage())
-                    .organization(user.getOrganization())
-                    .build();
 
+            return UserProfileResDto.fromEntity(user);
         }
 
     }

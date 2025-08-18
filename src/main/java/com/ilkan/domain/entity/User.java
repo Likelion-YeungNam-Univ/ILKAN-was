@@ -1,14 +1,9 @@
 package com.ilkan.domain.entity;
 
+import com.ilkan.domain.enums.Gender;
 import com.ilkan.domain.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // id 자동증가
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -39,17 +34,27 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column
+    @Column(name = "profile_image", length = 255)
     private String profileImage;
 
-    @Column
-    private String bio;
-
-    @Column
+    @Column(name = "organization", length = 20)
     private String organization;
 
-    @Column
+    @Column(name = "email", length = 255, nullable = false)
     private String eMail;
+
+    @Column(name = "address" , nullable = false)
+    private String address;
+
+    @Column(name = "education", length = 255)
+    private String education;
+
+    @Column(name = "age", nullable = false)
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
 
     // ==== 변경 메서드 ====
     public void updateName(String name) {
@@ -64,9 +69,6 @@ public class User {
 
     public void updateProfileImage(String profileImage) { this.profileImage = profileImage; }
 
-    public void updateBio(String bio) {
-        this.bio = bio;
-    }
 
     public void updateOrganization(String organization) {
         this.organization = organization;

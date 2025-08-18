@@ -37,7 +37,11 @@ public interface UserApi {
                               "role": "PERFORMER",
                               "profileImage": "https://cdn.example.com/u/3/profile.jpg",
                               "portfolioUrl": "https://pf.example.com/hong",
-                              "organization": null
+                              "organization": null,
+                              "address": "대구광역시 북구 동천동 떡잎방범대 3호",
+                              "education": "영남대학교 컴퓨터공학과 23학번",
+                              "age": 22,
+                              "gender": "여자"
                             }""")
                     )
             ),
