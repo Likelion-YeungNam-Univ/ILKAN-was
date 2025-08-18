@@ -21,11 +21,11 @@ public class UserBuildingService {
 
     // 수행자가 사용중인 공간 조회
     @Transactional(readOnly = true)
-    public Page<UserBuildingResDto> findUsingBuildingsByPerformer(String role, Pageable pageable) {
-        if (!"PERFORMER".equals(role)) {
+    public Page<UserBuildingResDto> findUsingBuildingsByPerformer(String roleHeader, Pageable pageable) {
+        if (!"PERFORMER".equals(roleHeader)) {
             throw new UserBuildingExceptions.PerformerForbidden();
         }
-        Long performerId = RoleMapper.getUserIdByRole(role);
+        Long performerId = RoleMapper.getUserIdByRole(roleHeader);
         Page<Reservation> reservations = userBuildingRepository.findByPerformerId_IdAndReservationStatus(performerId, ReservationStatus.IN_USE, pageable);
         if (reservations.isEmpty()) { // 조회 결과가 없으면 예외
             throw new UserBuildingExceptions.UserBuildingNotFound();
@@ -35,11 +35,11 @@ public class UserBuildingService {
 
     // 건물주가 등록한 건물 조회
     @Transactional(readOnly = true)
-    public Page<OwnerBuildingResDto> getRegisteredBuildings(String role, Pageable pageable) {
-        if (!"OWNER".equals(role)) {
+    public Page<OwnerBuildingResDto> getRegisteredBuildings(String roleHeader, Pageable pageable) {
+        if (!"OWNER".equals(roleHeader)) {
             throw new UserBuildingExceptions.OwnerForbidden();
         }
-        Long ownerId = RoleMapper.getUserIdByRole(role);
+        Long ownerId = RoleMapper.getUserIdByRole(roleHeader);
         Page<Reservation> buildings = userBuildingRepository.findByBuildingId_Owner_IdAndReservationStatus(ownerId, ReservationStatus.REGISTERED, pageable);
         if (buildings.isEmpty()) { // 조회 결과가 없으면 예외
             throw new UserBuildingExceptions.OwnerBuildingNotFound();

@@ -7,5 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskApplicationRepository extends JpaRepository<TaskApplication,Long> {
-    Page<TaskApplication> findByPerformerId_IdAndStatus(Long performerId, Status status, Pageable pageable);
+    Page<TaskApplication> findByPerformerId_IdAndStatus(Long performerId, Status status, Pageable pageable); // 수행자 자신이 지원한 일거리 내역조회
+
+    Page<TaskApplication> findByTaskId_Requester_IdAndStatus(Long requesterId, Status status, Pageable pageable); // 의뢰자 기준 해당 일거리 지원서목록 조회
 }
