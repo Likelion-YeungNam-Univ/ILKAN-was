@@ -2,7 +2,7 @@ package com.ilkan.dto.workdto;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
-import com.ilkan.dto.userdto.UserRespDto;
+import com.ilkan.dto.userdto.UserResDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +19,7 @@ public class WorkResDto {
     private final Long taskId;
 
     @Schema(description = "의뢰자 정보")
-    private final UserRespDto requester;
+    private final UserResDto requester;
 
     @Schema(description = "제목", example = "홈페이지 제작")
     private final String title;
@@ -50,7 +50,7 @@ public class WorkResDto {
     public static WorkResDto fromEntity(Work work) {
         return WorkResDto.builder()
                 .taskId(work.getId())
-                .requester(UserRespDto.fromEntity(work.getRequester()))
+                .requester(UserResDto.fromEntity(work.getRequester()))
                 .title(work.getTitle())
                 .description(work.getDescription())
                 .createdAt(work.getCreatedAt())

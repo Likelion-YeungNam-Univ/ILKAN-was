@@ -1,6 +1,7 @@
 package com.ilkan.domain.entity;
 
 import com.ilkan.domain.enums.Status;
+import com.ilkan.domain.enums.WorkCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -69,7 +70,7 @@ public class Work {
     @Column(name = "task_duration", nullable = false)
     private String taskDuration; // 일거리 작업기간
 
-    @Column()
+    @Column
     private Long headCount; // 모집인원
 
     @Column
@@ -90,6 +91,10 @@ public class Work {
     @Column
     private String workPhoneNumber; // 일거리등록시 사용 번호
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private WorkCategory workCategory;
+
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
     public void updateTitle(String title) {
@@ -109,7 +114,6 @@ public class Work {
 
 
     public void updateStatus(Status status) {
-        // 상태 변경 로직(예: 완료 → 진행중 불가) 검증 가능
         this.status = status;
     }
 
@@ -136,4 +140,6 @@ public class Work {
     public void updateWorkEmail(String workEmail) {this.workEmail = workEmail;}
 
     public void updateWorkPhoneNumber(String workPhoneNumber) {this.workPhoneNumber = workPhoneNumber;}
+
+    public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
 }

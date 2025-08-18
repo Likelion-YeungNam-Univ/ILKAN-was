@@ -1,13 +1,17 @@
 package com.ilkan.service;
 
+import com.ilkan.domain.entity.TaskApplication;
 import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.exception.UserWorkExceptions;
+import com.ilkan.repository.TaskApplicationRepository;
 import com.ilkan.repository.UserRepository;
 import com.ilkan.repository.WorkRepository;
 import com.ilkan.util.RoleMapper;
@@ -22,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkService {
     private final WorkRepository workRepository;
     private final UserRepository userRepository;
+    private final TaskApplicationRepository taskApplicationRepository;
 
     // 의뢰자가 등록한 작업 조회
     @Transactional(readOnly = true)
@@ -57,19 +62,25 @@ public class WorkService {
 
     // 수행자가 지원한 작업 조회
     @Transactional(readOnly = true)
-    public Page<WorkResDto> getAppliedWorksByPerformer(String role, Pageable pageable) {
+    public Page<ApplicationResDto> getAppliedWorksByPerformer(String role, Pageable pageable) {
         if (!"PERFORMER".equals(role)) {
             throw new UserWorkExceptions.PerformerForbidden();
         }
-        Long performerId = RoleMapper.getUserIdByRole(role);
-        Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.APPLY_TO, pageable);
 
-        if (works.isEmpty()) {
+        Long performerId = RoleMapper.getUserIdByRole(role);
+
+        // TaskApplication 기준으로 조회
+        Page<TaskApplication> applications =
+                taskApplicationRepository.findByPerformerId_IdAndStatus(performerId, Status.APPLY_TO, pageable);
+
+        if (applications.isEmpty()) {
             throw new UserWorkExceptions.NoAppliedWorks(); // 지원한 일거리 없음 예외
         }
 
-        return works.map(WorkResDto::fromEntity);
+        // 지원내역 → ApplicationResDto로 변환
+        return applications.map(ApplicationResDto::fromEntity);
     }
+
 
     // 일거리 목록 조회
     @Transactional(readOnly = true)
@@ -126,5 +137,21 @@ public class WorkService {
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         workRepository.delete(work);
     }
+
+    // 수행자 일거리 신청
+    public TaskApplication applyWork(String role, Long taskId, WorkApplyReqDto dto) {
+        if (!"PERFORMER".equals(role)) {
+            throw new UserWorkExceptions.PerformerForbidden();
+        }
+
+        Long performerId = RoleMapper.getUserIdByRole(role);
+        Work work = workRepository.findById(taskId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+        User performer = userRepository.findById(performerId)
+                .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
+
+        return taskApplicationRepository.save(dto.toEntity(work, performer));
+    }
 }
+
 

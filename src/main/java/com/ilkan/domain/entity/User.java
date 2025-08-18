@@ -37,9 +37,6 @@ public class User {
     @Column(name = "profile_image", length = 255)
     private String profileImage;
 
-    @Column(name = "portfolio_url", length = 255)
-    private String portfolioUrl;
-
     @Column(name = "organization", length = 20)
     private String organization;
 
@@ -72,7 +69,6 @@ public class User {
 
     public void updateProfileImage(String profileImage) { this.profileImage = profileImage; }
 
-    public void updatePortfolioUrl(String portfolioUrl) { this.portfolioUrl = portfolioUrl; }
 
     public void updateOrganization(String organization) {
         this.organization = organization;

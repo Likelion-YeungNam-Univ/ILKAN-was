@@ -28,6 +28,7 @@
             User user = userRepository.findFirstByRole(role)
                     .orElseThrow(() -> new RoleExceptions.NotFound(role));
 
+
             return UserProfileResDto.fromEntity(user);
         }
 

@@ -2,7 +2,7 @@ package com.ilkan.dto.reservationdto;
 
 import com.ilkan.domain.entity.Reservation;
 import com.ilkan.domain.enums.ReservationStatus;
-import com.ilkan.dto.userdto.UserRespDto;
+import com.ilkan.dto.userdto.UserResDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class UserBuildingResDto {
     private final Long reservationId;
 
     @Schema(description = "수행자 정보")
-    private final UserRespDto performer;
+    private final UserResDto performer;
 
     @Schema(description = "건물 ID", example = "55")
     private final Long buildingId;
@@ -44,7 +44,7 @@ public class UserBuildingResDto {
     public static UserBuildingResDto fromEntity(Reservation reservation) {
         return UserBuildingResDto.builder()
                 .reservationId(reservation.getId())
-                .performer(UserRespDto.fromEntity(reservation.getPerformerId()))
+                .performer(UserResDto.fromEntity(reservation.getPerformerId()))
                 .buildingId(reservation.getBuildingId().getId())
                 .buildingAddress(reservation.getBuildingId().getBuildingAddress())
                 .startTime(reservation.getStartTime())
