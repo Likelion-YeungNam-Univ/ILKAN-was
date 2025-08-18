@@ -5,6 +5,7 @@ import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyListResDto;
 import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
@@ -139,6 +140,7 @@ public class WorkService {
     }
 
     // 수행자 일거리 신청
+    @Transactional
     public TaskApplication applyWork(String role, Long taskId, WorkApplyReqDto dto) {
         if (!"PERFORMER".equals(role)) {
             throw new UserWorkExceptions.PerformerForbidden();
@@ -152,6 +154,16 @@ public class WorkService {
 
         return taskApplicationRepository.save(dto.toEntity(work, performer));
     }
+
+    // 의뢰자기준 수행자들이 지원한 지원서 목록 조회
+    @Transactional(readOnly = true)
+    public Page<WorkApplyListResDto> getApplicantsByRequester(Long requesterId, Pageable pageable) {
+        Page<TaskApplication> applications = taskApplicationRepository
+                .findByTaskId_Requester_IdAndStatus(requesterId, Status.APPLY_TO, pageable);
+
+        return applications.map(WorkApplyListResDto::fromEntity);
+    }
 }
+
 
 
