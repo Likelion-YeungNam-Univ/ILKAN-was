@@ -5,6 +5,7 @@ import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyDetailResDto;
 import com.ilkan.dto.workdto.WorkApplyListResDto;
 import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkDetailResDto;
@@ -155,13 +156,41 @@ public class WorkService {
         return taskApplicationRepository.save(dto.toEntity(work, performer));
     }
 
-    // 의뢰자기준 수행자들이 지원한 지원서 목록 조회
+    // 의뢰자 기준 수행자들이 지원한 지원서 목록 조회
     @Transactional(readOnly = true)
-    public Page<WorkApplyListResDto> getApplicantsByRequester(Long requesterId, Pageable pageable) {
+    public Page<WorkApplyListResDto> getApplicantsByRequester(String role, Pageable pageable) {
+        if (!"REQUESTER".equals(role)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
+
+        Long requesterId = RoleMapper.getUserIdByRole(role);
         Page<TaskApplication> applications = taskApplicationRepository
                 .findByTaskId_Requester_IdAndStatus(requesterId, Status.APPLY_TO, pageable);
 
         return applications.map(WorkApplyListResDto::fromEntity);
+    }
+
+
+    // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
+    @Transactional(readOnly = true)
+    public WorkApplyDetailResDto getWorkApplyDetail(String role, Long workId, Long applyId) {
+        if (!"REQUESTER".equals(role)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
+
+        Long requesterId = RoleMapper.getUserIdByRole(role);
+        Work work = workRepository.findById(workId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        if (!work.getRequester().getId().equals(requesterId)) {
+            throw new UserWorkExceptions.InvalidRequest("다른 의뢰자의 일거리 입니다."); // 다른 의뢰자의 작업 접근 불가
+        }
+
+        TaskApplication application = taskApplicationRepository.findById(applyId)
+                .orElseThrow(UserWorkExceptions.NoAppliedWorks::new);
+        return WorkApplyDetailResDto.fromEntity(application);
+
+
     }
 }
 
