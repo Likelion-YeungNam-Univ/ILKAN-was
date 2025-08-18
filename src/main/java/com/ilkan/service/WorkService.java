@@ -79,7 +79,6 @@ public class WorkService {
             throw new UserWorkExceptions.NoAppliedWorks(); // 지원한 일거리 없음 예외
         }
 
-        // 지원내역 → ApplicationResDto로 변환
         return applications.map(ApplicationResDto::fromEntity);
     }
 
@@ -104,7 +103,8 @@ public class WorkService {
 
     // 일거리 등록
     @Transactional
-    public Work createWork(Long requesterId, WorkReqDto dto) {
+    public Work createWork(String roleHeader, WorkReqDto dto) {
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         User requester = userRepository.findById(requesterId)
                 .orElseThrow(UserWorkExceptions.RequesterForbidden::new);
         Work work = dto.toEntity(requester);
@@ -113,7 +113,8 @@ public class WorkService {
 
     // 일거리 수정
     @Transactional
-    public Work updateWork(Long taskId, Long requesterId, WorkReqDto dto) {
+    public Work updateWork(Long taskId, String roleHeader, WorkReqDto dto) {
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
 
@@ -134,7 +135,8 @@ public class WorkService {
 
     // 일거리 삭제
     @Transactional
-    public void deleteWork(Long taskId, Long requesterId) {
+    public void deleteWork(Long taskId, String roleHeader) {
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         workRepository.delete(work);
@@ -142,12 +144,12 @@ public class WorkService {
 
     // 수행자 일거리 신청
     @Transactional
-    public TaskApplication applyWork(String role, Long taskId, WorkApplyReqDto dto) {
-        if (!"PERFORMER".equals(role)) {
+    public TaskApplication applyWork(String roleHeader, Long taskId, WorkApplyReqDto dto) {
+        if (!"PERFORMER".equals(roleHeader)) {
             throw new UserWorkExceptions.PerformerForbidden();
         }
 
-        Long performerId = RoleMapper.getUserIdByRole(role);
+        Long performerId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findById(taskId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         User performer = userRepository.findById(performerId)
@@ -158,12 +160,12 @@ public class WorkService {
 
     // 의뢰자 기준 수행자들이 지원한 지원서 목록 조회
     @Transactional(readOnly = true)
-    public Page<WorkApplyListResDto> getApplicantsByRequester(String role, Pageable pageable) {
-        if (!"REQUESTER".equals(role)) {
+    public Page<WorkApplyListResDto> getApplicantsByRequester(String roleHeader, Pageable pageable) {
+        if (!"REQUESTER".equals(roleHeader)) {
             throw new UserWorkExceptions.RequesterForbidden();
         }
 
-        Long requesterId = RoleMapper.getUserIdByRole(role);
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Page<TaskApplication> applications = taskApplicationRepository
                 .findByTaskId_Requester_IdAndStatus(requesterId, Status.APPLY_TO, pageable);
 
@@ -173,12 +175,12 @@ public class WorkService {
 
     // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
     @Transactional(readOnly = true)
-    public WorkApplyDetailResDto getWorkApplyDetail(String role, Long workId, Long applyId) {
-        if (!"REQUESTER".equals(role)) {
+    public WorkApplyDetailResDto getWorkApplyDetail(String roleHeader, Long workId, Long applyId) {
+        if (!"REQUESTER".equals(roleHeader)) {
             throw new UserWorkExceptions.RequesterForbidden();
         }
 
-        Long requesterId = RoleMapper.getUserIdByRole(role);
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findById(workId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
 
