@@ -52,9 +52,9 @@ public class BuildingDetailResDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    @Schema(description = "가격 VO")
+    @Schema(description = "가격")
     public static class Price {
-        @Schema(description = "금액(정수, KRW)", example = "50000")
+        @Schema(description = "금액", example = "50000")
         private final Long amount;
         @Schema(description = "통화", example = "KRW")
         private final String currency;
@@ -65,7 +65,7 @@ public class BuildingDetailResDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    @Schema(description = "이미지 VO")
+    @Schema(description = "이미지")
     public static class Images {
         @Schema(description = "대표 이미지", example = "https://.../cover.jpg")
         private final String cover;
@@ -76,7 +76,7 @@ public class BuildingDetailResDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    @Schema(description = "연락처 VO")
+    @Schema(description = "연락처")
     public static class Contact {
         @Schema(description = "이메일", example = "highfive@naver.com")
         private final String email;
