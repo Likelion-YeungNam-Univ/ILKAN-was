@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
+@Schema(description = "사용자 기반 건물관련 DTO")
 public class UserBuildingResDto {
     @Schema(description = "예약 ID", example = "101")
     private final Long reservationId;
