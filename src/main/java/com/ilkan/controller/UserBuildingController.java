@@ -4,6 +4,7 @@ import com.ilkan.auth.AllowedRoles;
 import com.ilkan.controller.api.UserBuildingApi;
 import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.reservationdto.OwnerBuildingResDto;
+import com.ilkan.dto.reservationdto.OwnersInUseResDto;
 import com.ilkan.dto.reservationdto.UserBuildingResDto;
 import com.ilkan.service.UserBuildingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,6 +50,18 @@ public class UserBuildingController implements UserBuildingApi {
         Page<OwnerBuildingResDto> buildings = ownerBuildingService.getRegisteredBuildings(roleHeader, pageable);
         return ResponseEntity.ok(buildings);
     }
+
+    // 건물주 - 자신이 등록한 건물 중 사용되는중인것 조회
+    @AllowedRoles(Role.OWNER)
+    @GetMapping("/inuse")
+    public ResponseEntity<Page<OwnersInUseResDto>> getBuildingsInUse(
+            @RequestHeader("X-Role") String roleHeader,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<OwnersInUseResDto> buildings = ownerBuildingService.getBuildingsInUse(roleHeader, pageable);
+        return ResponseEntity.ok(buildings);
+    }
+
 
 
 }
