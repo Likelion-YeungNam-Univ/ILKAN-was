@@ -2,14 +2,12 @@ package com.ilkan.domain.entity;
 
 import com.ilkan.domain.enums.Gender;
 import com.ilkan.domain.enums.Role;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Entity
 @Getter
