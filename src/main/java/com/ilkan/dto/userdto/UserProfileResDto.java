@@ -39,6 +39,9 @@ public class UserProfileResDto {
     @Schema(description = "성별", example = "여자")
     private String gender;
 
+    @Schema(description = "이메일", examples = "example@naver.com")
+    private String eMail;
+
     public static UserProfileResDto fromEntity(User user) {
         return UserProfileResDto.builder()
                 .userId(user.getId())
@@ -51,6 +54,7 @@ public class UserProfileResDto {
                 .education(user.getEducation())
                 .age(user.getAge())
                 .gender(user.getGender().getKor())
+                .eMail(user.getEMail())
                 .build();
     }
 
