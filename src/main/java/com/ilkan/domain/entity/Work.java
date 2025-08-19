@@ -2,6 +2,7 @@ package com.ilkan.domain.entity;
 
 import com.ilkan.domain.enums.Status;
 import com.ilkan.domain.enums.WorkCategory;
+import com.ilkan.dto.workdto.WorkReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -97,21 +98,19 @@ public class Work {
 
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
-    public void updateTitle(String title) {
-        this.title = title;
+    public void updateFromDto(WorkReqDto dto) {
+        this.title = dto.getTitle();
+        this.recruitmentPeriod = dto.getRecruitmentPeriod();
+        this.taskDuration = dto.getTaskDuration();
+        this.price = dto.getPrice();
+        this.headCount = dto.getHeadCount();
+        this.academicBackGround = dto.getAcademicBackground();
+        this.preferred = dto.getPreferred();
+        this.etc = dto.getEtc();
+        this.description = dto.getDescription();
+        this.workEmail = dto.getWorkEmail();
+        this.workPhoneNumber = dto.getWorkPhoneNumber();
     }
-
-    public void updateDescription(String description) {
-        this.description = description;
-    }
-
-    public void updatePrice(Long price) {
-        if (price != null && price < 0) {
-            throw new IllegalArgumentException("가격은 0 이상이어야 합니다.");
-        }
-        this.price = price;
-    }
-
 
     public void updateStatus(Status status) {
         this.status = status;
@@ -124,22 +123,6 @@ public class Work {
         this.taskStart = taskStart;
         this.taskEnd = taskEnd;
     }
-
-    public void updateTaskDuration(String taskDuration) {this.taskDuration = taskDuration;}
-
-    public void updateHeadCount(Long headCount) {this.headCount = headCount;}
-
-    public void updateAcademicBackground(String academicBackGround) {this.academicBackGround = academicBackGround;}
-
-    public void updatePreferred(String preferred) {this.preferred = preferred;}
-
-    public void updateEtc(String etc) {this.etc = etc;}
-
-    public void updateRecruitmentPeriod(LocalDateTime recruitmentPeriod) {this.recruitmentPeriod = recruitmentPeriod;}
-
-    public void updateWorkEmail(String workEmail) {this.workEmail = workEmail;}
-
-    public void updateWorkPhoneNumber(String workPhoneNumber) {this.workPhoneNumber = workPhoneNumber;}
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
 }

@@ -1,6 +1,8 @@
 package com.ilkan.controller.api;
 
 import com.ilkan.dto.workdto.ApplicationResDto;
+import com.ilkan.dto.workdto.WorkApplyDetailResDto;
+import com.ilkan.dto.workdto.WorkApplyListResDto;
 import com.ilkan.dto.workdto.WorkApplyReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.exception.ApiErrorResponse;
@@ -120,4 +122,84 @@ public interface UserWorkApi {
             @PathVariable Long taskId,
             @RequestBody WorkApplyReqDto dto
     );
+
+    @Operation(
+            summary = "내 일거리에 지원한 수행자 조회",
+            description = "의뢰자(REQUESTER) 역할 전용: 본인이 등록한 일거리에 지원한 수행자들의 목록을 조회합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WorkApplyListResDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "권한 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                        {"code":"REQUESTER_FORBIDDEN","message":"의뢰자 권한이 없습니다.","status":403,
+                         "path":"/api/v1/myprofile/commissions/applicants","timestamp":"2025-08-18T14:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "지원자가 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                        {"code":"APPLICANTS_NOT_FOUND","message":"지원자가 없습니다.","status":404,
+                         "path":"/api/v1/myprofile/commissions/applicants","timestamp":"2025-08-18T14:00:00Z"}""")
+                    )
+            )
+    })
+    @GetMapping("/applicants")
+    ResponseEntity<Page<WorkApplyListResDto>> getApplicants(
+            @Parameter(description = "요청자 역할 (REQUESTER)", required = true, example = "REQUESTER")
+            @RequestHeader("X-Role") String roleHeader,
+            @Parameter(description = "페이지네이션 정보")
+            Pageable pageable
+    );
+
+    @Operation(
+            summary = "의뢰자 기준 수행자 지원서 상세 조회",
+            description = "의뢰자가 자신이 등록한 일거리에 지원한 특정 수행자의 지원서를 상세 조회합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = WorkApplyDetailResDto.class))
+            ),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = """
+                    {"code":"REQUESTER_FORBIDDEN","message":"의뢰자 권한이 없습니다.","status":403,
+                     "path":"/api/v1/myprofile/commissions/{workId}/applies/{applyId}","timestamp":"2025-08-19T14:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "지원서 또는 일거리 없음",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = """
+                    {"code":"APPLICATION_NOT_FOUND","message":"해당 지원서를 찾을 수 없습니다.","status":404,
+                     "path":"/api/v1/myprofile/commissions/{workId}/applies/{applyId}","timestamp":"2025-08-19T14:00:00Z"}""")
+                    )
+            )
+    })
+    @GetMapping("/{workId}/applies/{applyId}")
+    ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
+            @Parameter(description = "요청자 역할 (REQUESTER)", required = true, example = "REQUESTER")
+            @RequestHeader("X-Role") String role,
+
+            @Parameter(description = "조회할 일거리 ID", required = true, example = "1")
+            @PathVariable Long workId,
+
+            @Parameter(description = "조회할 지원서 ID", required = true, example = "10")
+            @PathVariable Long applyId
+    );
 }
+

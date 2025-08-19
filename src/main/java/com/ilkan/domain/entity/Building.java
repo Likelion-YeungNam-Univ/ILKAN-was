@@ -1,5 +1,6 @@
 package com.ilkan.domain.entity;
 
+import com.ilkan.domain.enums.BuildingStatus;
 import com.ilkan.domain.enums.BuildingTag;
 import com.ilkan.domain.enums.Region;
 import jakarta.persistence.Column;
@@ -18,9 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-
 
 @Entity
 @Getter
@@ -80,6 +79,8 @@ public class Building {
     @Column(name = "building_image2")
     private String buildingImage2;
 
+    @Column(name = "building_status")
+    private BuildingStatus buildingStatus; // 건물 심사상태
 
     // ==== 변경 메서드 ====
     public void updateOwner (User owner) {

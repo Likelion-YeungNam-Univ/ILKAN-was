@@ -10,7 +10,6 @@ import com.ilkan.dto.workdto.WorkReqDto;
 import com.ilkan.dto.workdto.WorkResDto;
 import com.ilkan.dto.workdto.WorkUserResDto;
 import com.ilkan.service.WorkService;
-import com.ilkan.util.RoleMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -58,8 +57,7 @@ public class WorksController implements WorksApi {
             @RequestHeader("X-Role") String roleHeader,
             @RequestBody WorkReqDto dto) {
 
-        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
-        Work savedWork = workService.createWork(requesterId, dto);
+        Work savedWork = workService.createWork(roleHeader, dto);
         return ResponseEntity.ok(WorkResDto.fromEntity(savedWork));
     }
 
@@ -72,8 +70,7 @@ public class WorksController implements WorksApi {
             @RequestHeader("X-Role") String roleHeader,
             @RequestBody WorkReqDto dto) {
 
-        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
-        Work updatedWork = workService.updateWork(taskId, requesterId, dto);
+        Work updatedWork = workService.updateWork(taskId, roleHeader, dto);
         return ResponseEntity.ok(WorkUserResDto.fromEntity(updatedWork));
     }
 
@@ -84,8 +81,7 @@ public class WorksController implements WorksApi {
             @PathVariable Long taskId,
             @RequestHeader ("X-Role") String roleHeader) {
 
-        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
-        workService.deleteWork(taskId, requesterId);
+        workService.deleteWork(taskId, roleHeader);
         return ResponseEntity.noContent().build();
     }
 
