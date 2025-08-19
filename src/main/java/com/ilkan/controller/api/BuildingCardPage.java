@@ -1,6 +1,6 @@
 package com.ilkan.controller.api;
 
-import com.ilkan.dto.buildingdto.BuildingCardRespDto;
+import com.ilkan.dto.buildingdto.BuildingCardResDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 public class BuildingCardPage {
 
     @ArraySchema(arraySchema = @Schema(description = "카드 목록"))
-    private List<BuildingCardRespDto> content;
+    private List<BuildingCardResDto> content;
 
     @Schema(description = "현재 페이지 번호(0-base)", example = "1") private int number;
     @Schema(description = "페이지 크기", example = "15") private int size;

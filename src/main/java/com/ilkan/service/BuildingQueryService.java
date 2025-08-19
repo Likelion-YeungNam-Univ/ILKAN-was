@@ -3,7 +3,7 @@ package com.ilkan.service;
 import com.ilkan.domain.entity.Building;
 import com.ilkan.domain.enums.BuildingTag;
 import com.ilkan.domain.enums.Region;
-import com.ilkan.dto.buildingdto.BuildingCardRespDto;
+import com.ilkan.dto.buildingdto.BuildingCardResDto;
 import com.ilkan.exception.BuildingQueryExceptions;
 import com.ilkan.repository.BuildingRepository;
 import com.ilkan.repository.BuildingSpecs;
@@ -35,7 +35,7 @@ public class BuildingQueryService {
      *         DB 접근/쿼리 수행 중 오류
      */
 
-    public Page<BuildingCardRespDto> search(Region region,
+    public Page<BuildingCardResDto> search(Region region,
                                             BuildingTag tag,
                                             Pageable pageable) {
         try {
@@ -43,7 +43,7 @@ public class BuildingQueryService {
                     .where(BuildingSpecs.regionEq(region))
                     .and(BuildingSpecs.tagEq(tag));
 
-            return repo.findAll(spec, pageable).map(BuildingCardRespDto::fromEntity);
+            return repo.findAll(spec, pageable).map(BuildingCardResDto::fromEntity);
         } catch (IllegalArgumentException e) {
             throw new BuildingQueryExceptions.DbDataCorrupted(e.getMessage());
         } catch (DataAccessException e) {
