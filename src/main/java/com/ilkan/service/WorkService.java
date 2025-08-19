@@ -53,7 +53,7 @@ public class WorkService {
             throw new UserWorkExceptions.PerformerForbidden();
         }
         Long performerId = RoleMapper.getUserIdByRole(role);
-        Page<Work> works = workRepository.findByPerformerIdAndStatus(performerId, Status.IN_PROGRESS, pageable);
+        Page<Work> works = workRepository.findByPerformer_IdAndStatus(performerId, Status.IN_PROGRESS, pageable);
 
         if (works.isEmpty()) {
             throw new UserWorkExceptions.NoDoingWorks(); // 수행중인 일거리 없음 예외
