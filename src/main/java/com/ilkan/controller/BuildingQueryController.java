@@ -3,14 +3,16 @@ package com.ilkan.controller;
 import com.ilkan.controller.api.BuildingQueryApi;
 import com.ilkan.domain.enums.BuildingTag;
 import com.ilkan.domain.enums.Region;
-import com.ilkan.dto.buildingdto.BuildingCardRespDto;
+import com.ilkan.dto.buildingdto.BuildingCardResDto;
 import com.ilkan.exception.BuildingQueryExceptions;
 import com.ilkan.service.BuildingQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,18 +31,24 @@ public class BuildingQueryController implements BuildingQueryApi {
 
     @Override
     @GetMapping
-    public Page<BuildingCardRespDto> list(
+    public Page<BuildingCardResDto> list(
+            @ParameterObject
+            @PageableDefault(size = DEFAULT_SIZE, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
             @RequestParam(required = false) Region region,
-            @RequestParam(required = false) BuildingTag tag,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) Integer size
+            @RequestParam(required = false) BuildingTag tag
     ) {
-        if (page < 0) throw new BuildingQueryExceptions.InvalidPage();
 
-        int s = (size == null) ? DEFAULT_SIZE : size;
-        if (s < MIN_SIZE || s > MAX_SIZE) throw new BuildingQueryExceptions.InvalidSize();
+        if (pageable.getPageNumber() < 0) {
+            throw new BuildingQueryExceptions.InvalidPage();
+        }
+        int size = pageable.getPageSize();
+        if (size < MIN_SIZE || size > MAX_SIZE) {
+            throw new BuildingQueryExceptions.InvalidSize();
+        }
 
-        Pageable pageable = PageRequest.of(page, s, Sort.by(Sort.Direction.DESC, "id"));
-        return service.search(region, tag, pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), size, Sort.by(Sort.Direction.DESC, "id"));
+
+        return service.search(region, tag, fixed);
     }
 }
