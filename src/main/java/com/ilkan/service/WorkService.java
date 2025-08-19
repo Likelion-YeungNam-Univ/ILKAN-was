@@ -4,6 +4,7 @@ import com.ilkan.domain.entity.TaskApplication;
 import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.domain.enums.WorkCategory;
 import com.ilkan.dto.workdto.ApplicationResDto;
 import com.ilkan.dto.workdto.WorkApplyDetailResDto;
 import com.ilkan.dto.workdto.WorkApplyListResDto;
@@ -85,11 +86,13 @@ public class WorkService {
 
     // 일거리 목록 조회
     @Transactional(readOnly = true)
-    public Page<WorkListResDto> getWorkList(Pageable pageable) {
-        Page<Work> works = workRepository.findAll(pageable);
+    public Page<WorkListResDto> getWorkList(WorkCategory category, Pageable pageable) {
+        Page<Work> works = workRepository.findByWorkCategory(category, pageable); // 카테고리 필터만 사용
+
         if (works.isEmpty()) {
-            throw new UserWorkExceptions.WorkNotFound(); // 전체 일거리 없음 예외
+            throw new UserWorkExceptions.WorkNotFound(); // 일거리 없음 예외
         }
+
         return works.map(WorkListResDto::fromEntity);
     }
 

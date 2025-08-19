@@ -4,6 +4,7 @@ import com.ilkan.auth.AllowedRoles;
 import com.ilkan.controller.api.WorksApi;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Role;
+import com.ilkan.domain.enums.WorkCategory;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkReqDto;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,13 +37,16 @@ public class WorksController implements WorksApi {
 
     private final WorkService workService;
 
-    // 모든 일거리 조회
+    // 카테고리별 일거리 조회 (category 필수)
     @GetMapping
     public ResponseEntity<Page<WorkListResDto>> getWorkList(
+            @RequestParam WorkCategory category, // 필수로 변경
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<WorkListResDto> worksList = workService.getWorkList(pageable);
+
+        Page<WorkListResDto> worksList = workService.getWorkList(category, pageable);
         return ResponseEntity.ok(worksList);
     }
+
 
     // 일거리 상세 조회
     @GetMapping("/{taskId}")

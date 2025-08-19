@@ -1,5 +1,6 @@
 package com.ilkan.controller.api;
 
+import com.ilkan.domain.enums.WorkCategory;
 import com.ilkan.dto.workdto.WorkDetailResDto;
 import com.ilkan.dto.workdto.WorkListResDto;
 import com.ilkan.dto.workdto.WorkReqDto;
@@ -25,12 +26,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Works", description = "일거리 조회 및 관리 API")
 @RequestMapping(value = "/api/v1/works", produces = "application/json")
 public interface WorksApi {
 
-    @Operation(summary = "모든 일거리 조회", description = "페이지네이션으로 모든 일거리를 조회합니다.")
+    @Operation(summary = "카테고리별 일거리 조회", description = "선택한 카테고리에 해당하는 일거리를 페이지네이션으로 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(mediaType = "application/json",
@@ -38,9 +40,13 @@ public interface WorksApi {
     })
     @GetMapping
     ResponseEntity<Page<WorkListResDto>> getWorkList(
+            @Parameter(description = "조회할 일거리 카테고리 (필수)")
+            @RequestParam WorkCategory category, // 필수 파라미터로 변경
+
             @Parameter(description = "페이지네이션 정보 (기본 createdAt DESC 정렬)")
             @PageableDefault(sort = "createdAt", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable
     );
+
 
     @Operation(summary = "일거리 상세 조회", description = "taskId로 특정 일거리의 상세 정보를 조회합니다.")
     @ApiResponses({

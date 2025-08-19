@@ -3,6 +3,7 @@ package com.ilkan.dto.workdto;
 import com.ilkan.domain.entity.User;
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.domain.enums.WorkCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +50,10 @@ public class WorkReqDto {
     @Schema(description = "상세설명", example = "의뢰내용 : ----- / 지원자격 : ----")
     private final String description;
 
+    @Schema(description = "일거리 카테고리", example = "DESIGN")
+    private final WorkCategory category;
+
+
     public Work toEntity(User requester) {
         return Work.builder()
                 .title(this.title)
@@ -64,6 +69,7 @@ public class WorkReqDto {
                 .workPhoneNumber(this.workPhoneNumber)
                 .createdAt(LocalDateTime.now())
                 .requester(requester)
+                .workCategory(this.category) // 추가
                 .status(Status.OPEN) // 기본상태는 모집중으로
                 .build();
     }

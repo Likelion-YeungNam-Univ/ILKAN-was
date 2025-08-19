@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -45,6 +47,9 @@ public class WorkDetailResDto {
 
     @Schema(description = "상세설명", example = "의뢰내용 : ----- / 지원자격 : ----")
     private final String description;
+
+    @Schema(description = "모집기한", example = "2025/08/20")
+    private final LocalDateTime recruitmentPeriod;
 
     public static WorkDetailResDto fromEntity(Work work) {
         User user = work.getRequester();
