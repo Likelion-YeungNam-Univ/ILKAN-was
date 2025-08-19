@@ -15,4 +15,7 @@ public class LoginResDto {
     @Schema(description = "로그인 결과 메시지", example = "로그인 성공")
     private final String message;
 
+    @Schema(description = "사용자 이름", example = "이나현")
+    private final String name;
+
 }
