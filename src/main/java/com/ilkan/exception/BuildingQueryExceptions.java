@@ -24,6 +24,19 @@ public final class BuildingQueryExceptions {
         @Override public HttpStatus status() { return HttpStatus.BAD_REQUEST; }
     }
 
+    public static class InvalidId extends Base {
+        public InvalidId(Long id) { super("id는 1 이상이어야 합니다. id=" + id); }
+        @Override public String code() { return "BUILDING_INVALID_ID"; }
+        @Override public HttpStatus status() { return HttpStatus.BAD_REQUEST; }
+    }
+
+    // 404 계열
+    public static class NotFound extends Base {
+        public NotFound(Long id) { super("해당 건물을 찾을 수 없습니다. id=" + id); }
+        @Override public String code() { return "BUILDING_NOT_FOUND"; }
+        @Override public HttpStatus status() { return HttpStatus.NOT_FOUND; }
+    }
+
     // 500 계열
     public static class DbDataCorrupted extends Base {
         public DbDataCorrupted(String msg) { super(msg); }
@@ -36,4 +49,6 @@ public final class BuildingQueryExceptions {
         @Override public String code() { return "BUILDING_DB_ERROR"; }
         @Override public HttpStatus status() { return HttpStatus.INTERNAL_SERVER_ERROR; }
     }
+
+
 }
