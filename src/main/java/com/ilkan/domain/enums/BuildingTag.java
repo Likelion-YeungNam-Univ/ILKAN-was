@@ -6,6 +6,6 @@ public enum BuildingTag {
     PHOTO_STUDIO,       // 4 촬영 스튜디오
     POPUP_STORE,        // 5 팝업스토어
     PARTY_ROOM,         // 7 파티룸
-    RECORDING_STUDIO    // 12 녹음실/음악작업실
-
+    RECORDING_STUDIO,    // 12 녹음실/음악작업실
+    ETC
 }
