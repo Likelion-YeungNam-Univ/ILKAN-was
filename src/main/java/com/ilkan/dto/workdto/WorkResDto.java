@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
+@Schema(description = "일거리조회 DTO")
 public class WorkResDto {
 
     @Schema(description = "일거리 ID", example = "123")
