@@ -9,8 +9,11 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-@Schema(description = "의뢰자 기준 수행자 일거리 지원목록 조회 DTO")
+@Schema(description = "의뢰자 기준 , 수행자 일거리 지원목록 조회 / 수행자 선택 DTO")
 public class WorkApplyListResDto {
+
+    @Schema(description = "수행자 ID", example = "42")
+    private final Long performerId;
 
     @Schema(description = "수행자명", example = "김야호")
     private final String performerName;
@@ -23,6 +26,7 @@ public class WorkApplyListResDto {
 
     public static WorkApplyListResDto fromEntity(TaskApplication application) {
         return WorkApplyListResDto.builder()
+                .performerId(application.getPerformerId().getId())
                 .performerName(application.getPerformerId().getName()) // 수행자 이름
                 .workTitle(application.getTaskId().getTitle())         // 일거리 제목
                 .portfolioUrl(application.getPortfolioUrl())           // 포트폴리오 URL
