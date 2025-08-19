@@ -103,4 +103,16 @@ public class UserWorkController implements UserWorkApi {
         return ResponseEntity.ok(response);
     }
 
+    // 의뢰자기준 수행자 선택
+    @AllowedRoles(Role.REQUESTER)
+    @PostMapping("/{taskId}/approve/{performerId}")
+    public ResponseEntity<WorkApplyListResDto> approvePerformer(
+            @RequestHeader("X-Role") String roleHeader, // 요청자 권한
+            @PathVariable Long taskId,
+            @PathVariable Long performerId) {
+
+        WorkApplyListResDto approvedPerformer = workService.approvePerformer(roleHeader, taskId, performerId);
+        return ResponseEntity.ok(approvedPerformer);
+    }
+
 }
