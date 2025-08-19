@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class BuildingCardRespDto {
+public class BuildingCardResDto {
 
     @Schema(description = "빌딩 ID", example = "101")
     private final Long id;
@@ -34,11 +34,10 @@ public class BuildingCardRespDto {
     @Schema(description = "빌딩 이름", example = "경산시 분위기 좋은 공유 오피스")
     private final String buildingName;
 
-    // Entity -> DTO 변환
-    public static BuildingCardRespDto fromEntity(Building b) {
-        return BuildingCardRespDto.builder()
+    public static BuildingCardResDto fromEntity(Building b) {
+        return BuildingCardResDto.builder()
                 .id(b.getId())
-                .owner(b.getOwner() != null ? b.getOwner().getName() : null)
+                .owner(b.getOwner().getName())
                 .buildingImage(b.getBuildingImage())
                 .buildingPrice(b.getBuildingPrice())
                 .region(b.getBuildingRegion())
