@@ -2,10 +2,19 @@ package com.ilkan.service;
 
 import com.ilkan.exception.RoleExceptions;
 import com.ilkan.domain.enums.Role;
+import com.ilkan.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthService {
+
+    private final UserRepository userRepository;
+
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /**
      * 주어진 역할 문자열이 유효한지 검사한 후, 해당하는 {@link Role} 로 변환
      *
@@ -25,5 +34,11 @@ public class AuthService {
         } catch (IllegalArgumentException e) {
             throw new RoleExceptions.Invalid(roleStr);
         }
+    }
+
+    public String getNameByRole(Role role) {
+        return userRepository.findTopByRoleOrderByIdDesc(role)
+                .map(u -> u.getName())
+                .orElseThrow(() -> new RoleExceptions.NotFound(role));
     }
 }

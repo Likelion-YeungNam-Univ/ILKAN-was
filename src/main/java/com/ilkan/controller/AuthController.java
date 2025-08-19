@@ -27,7 +27,8 @@ public class AuthController implements AuthApi {
     public ResponseEntity<LoginResDto> login(
             @RequestHeader("X-Role") String roleHeader) {
         Role role = authService.validateRole(roleHeader);
-        return ResponseEntity.ok(new LoginResDto(role.name(), "로그인 성공"));
+        String name = authService.getNameByRole(role);
+        return ResponseEntity.ok(new LoginResDto(role.name(), "로그인 성공", name));
     }
 
 }
