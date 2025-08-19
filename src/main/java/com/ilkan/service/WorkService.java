@@ -179,9 +179,39 @@ public class WorkService {
         TaskApplication application = taskApplicationRepository.findById(applyId)
                 .orElseThrow(UserWorkExceptions.NoAppliedWorks::new);
         return WorkApplyDetailResDto.fromEntity(application);
-
-
     }
+
+    // 의뢰자가 수행자 선택
+    @Transactional
+    public WorkApplyListResDto approvePerformer(String roleHeader, Long taskId, Long performerId) {
+        if (!"REQUESTER".equals(roleHeader)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
+
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
+
+        Work work = workRepository.findById(taskId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        if (!work.getRequester().getId().equals(requesterId)) {
+            throw new UserWorkExceptions.InvalidRequest("다른 의뢰자의 일거리입니다.");
+        }
+
+        User performer = userRepository.findById(performerId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 수행자를 찾을 수 없습니다."));
+
+        TaskApplication application = taskApplicationRepository
+                .findByTaskIdAndPerformerId(work, performer)
+                .orElseThrow(() -> new IllegalArgumentException("해당 지원 내역이 없습니다."));
+
+        work.updatePerformer(performer);
+        work.updateStatus(Status.IN_PROGRESS);
+        workRepository.save(work);
+
+        return WorkApplyListResDto.fromEntity(application);
+    }
+
+
 }
 
 

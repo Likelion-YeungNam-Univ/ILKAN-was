@@ -112,6 +112,8 @@ public class Work {
         this.workPhoneNumber = dto.getWorkPhoneNumber();
     }
 
+    public void updatePerformer(User performer){this.performer = performer;}
+
     public void updateStatus(Status status) {
         this.status = status;
     }
@@ -125,4 +127,6 @@ public class Work {
     }
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
+
+
 }

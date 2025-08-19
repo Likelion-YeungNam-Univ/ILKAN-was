@@ -1,5 +1,7 @@
 package com.ilkan.controller.api;
 
+import com.ilkan.auth.AllowedRoles;
+import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.workdto.ApplicationResDto;
 import com.ilkan.dto.workdto.WorkApplyDetailResDto;
 import com.ilkan.dto.workdto.WorkApplyListResDto;
@@ -177,14 +179,14 @@ public interface UserWorkApi {
             ),
             @ApiResponse(responseCode = "403", description = "권한 없음",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
-                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = """
+                            examples = @ExampleObject(value = """
                     {"code":"REQUESTER_FORBIDDEN","message":"의뢰자 권한이 없습니다.","status":403,
                      "path":"/api/v1/myprofile/commissions/{workId}/applies/{applyId}","timestamp":"2025-08-19T14:00:00Z"}""")
                     )
             ),
             @ApiResponse(responseCode = "404", description = "지원서 또는 일거리 없음",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class),
-                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = """
+                            examples = @ExampleObject(value = """
                     {"code":"APPLICATION_NOT_FOUND","message":"해당 지원서를 찾을 수 없습니다.","status":404,
                      "path":"/api/v1/myprofile/commissions/{workId}/applies/{applyId}","timestamp":"2025-08-19T14:00:00Z"}""")
                     )
@@ -201,5 +203,45 @@ public interface UserWorkApi {
             @Parameter(description = "조회할 지원서 ID", required = true, example = "10")
             @PathVariable Long applyId
     );
+
+    @Operation(
+            summary = "의뢰자 기준 수행자 승인",
+            description = "의뢰자가 자신이 등록한 일거리(taskId)에 지원한 수행자(performerId)를 승인하고 상태를 IN_PROGRESS로 변경합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "승인 성공",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = WorkApplyListResDto.class))
+            ),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                                {"code":"REQUESTER_FORBIDDEN","message":"의뢰자 권한이 없습니다.","status":403,
+                                 "path":"/api/v1/tasks/{taskId}/approve/{performerId}","timestamp":"2025-08-19T14:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "해당 수행자 또는 일거리 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                                {"code":"NOT_FOUND","message":"해당 수행자 또는 일거리를 찾을 수 없습니다.","status":404,
+                                 "path":"/api/v1/tasks/{taskId}/approve/{performerId}","timestamp":"2025-08-19T14:00:00Z"}""")
+                    )
+            )
+    })
+    @AllowedRoles(Role.REQUESTER)
+    @PostMapping("/{taskId}/approve/{performerId}")
+    ResponseEntity<WorkApplyListResDto> approvePerformer(
+            @Parameter(description = "요청자 역할 (REQUESTER)", required = true, example = "REQUESTER")
+            @RequestHeader("X-Role") String roleHeader,
+
+            @Parameter(description = "승인할 일거리 ID", required = true, example = "1")
+            @PathVariable Long taskId,
+
+            @Parameter(description = "승인할 수행자 ID", required = true, example = "10")
+            @PathVariable Long performerId
+    );
+
 }
 
