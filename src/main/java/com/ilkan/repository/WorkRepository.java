@@ -2,6 +2,7 @@ package com.ilkan.repository;
 
 import com.ilkan.domain.entity.Work;
 import com.ilkan.domain.enums.Status;
+import com.ilkan.domain.enums.WorkCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,6 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     Optional<Work> findById(Long taskId); // 모집중 일거리 상세조회
 
     Optional<Work> findByIdAndRequesterId(Long taskId, Long requesterId); // 일거리 수정/삭제 시 권한체크용
+
+    Page<Work> findByWorkCategory(WorkCategory category, Pageable pageable);
 }
