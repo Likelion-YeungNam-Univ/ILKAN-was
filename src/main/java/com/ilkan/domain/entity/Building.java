@@ -3,6 +3,7 @@ package com.ilkan.domain.entity;
 import com.ilkan.domain.enums.BuildingStatus;
 import com.ilkan.domain.enums.BuildingTag;
 import com.ilkan.domain.enums.Region;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -37,6 +38,9 @@ public class Building {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner; // 건물주
+
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
     @Column(name = "building_address", nullable = false)
     private String buildingAddress; // 건물 주소
@@ -59,10 +63,10 @@ public class Building {
     private String buildingDescription;
 
     @Column(name = "check_in_time", nullable = false)
-    private LocalDateTime checkInTime;
+    private LocalTime checkInTime;
 
     @Column(name = "check_out_time", nullable = false)
-    private LocalDateTime checkOutTime;
+    private LocalTime checkOutTime;
 
     @Column(name = "building_name", nullable = false)
     private String buildingName; // 건물 이름

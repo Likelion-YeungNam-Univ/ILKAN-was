@@ -1,9 +1,12 @@
 package com.ilkan.controller;
 
+import com.ilkan.auth.AllowedRoles;
 import com.ilkan.controller.api.BuildingQueryApi;
 import com.ilkan.domain.enums.BuildingTag;
 import com.ilkan.domain.enums.Region;
+import com.ilkan.domain.enums.Role;
 import com.ilkan.dto.buildingdto.BuildingCardResDto;
+import com.ilkan.dto.buildingdto.BuildingDetailResDto;
 import com.ilkan.exception.BuildingQueryExceptions;
 import com.ilkan.service.BuildingQueryService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +31,9 @@ public class BuildingQueryController implements BuildingQueryApi {
 
     @Override
     @GetMapping
+    @AllowedRoles({Role.PERFORMER, Role.OWNER, Role.REQUESTER})
+
+    // 공간 목록 조회
     public Page<BuildingCardResDto> list(
             @ParameterObject
             @PageableDefault(size = DEFAULT_SIZE, sort = "id", direction = Sort.Direction.DESC)
@@ -50,5 +53,12 @@ public class BuildingQueryController implements BuildingQueryApi {
         Pageable fixed = PageRequest.of(pageable.getPageNumber(), size, Sort.by(Sort.Direction.DESC, "id"));
 
         return service.search(region, tag, fixed);
+    }
+
+    // 공간 상세 조회
+    @GetMapping("/{id}")
+    @AllowedRoles({Role.PERFORMER, Role.OWNER, Role.REQUESTER})
+    public BuildingDetailResDto detail(@PathVariable Long id) {
+        return service.detail(id);
     }
 }
