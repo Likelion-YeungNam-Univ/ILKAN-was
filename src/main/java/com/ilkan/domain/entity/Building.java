@@ -1,5 +1,6 @@
 package com.ilkan.domain.entity;
 
+import com.ilkan.domain.enums.BuildingStatus;
 import com.ilkan.domain.enums.BuildingTag;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-
 
 @Entity
 @Getter
@@ -55,6 +54,9 @@ public class Building {
 
     @Column(name = "building_name", nullable = false)
     private String buildingName; // 건물 이름
+
+    @Column(name = "building_status")
+    private BuildingStatus buildingStatus; // 건물 심사상태
 
     // ==== 변경 메서드 ====
     public void updateOwner (User owner) {
