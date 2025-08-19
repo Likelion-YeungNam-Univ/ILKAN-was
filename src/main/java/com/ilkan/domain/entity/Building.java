@@ -1,6 +1,7 @@
 package com.ilkan.domain.entity;
 
 import com.ilkan.domain.enums.BuildingTag;
+import com.ilkan.domain.enums.Region;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -44,17 +46,40 @@ public class Building {
     private boolean islegal; // 법적 여부
 
     @Column(name = "building_image", nullable = false)
-    private String buildingImage; // 건물 이미지
+    private String buildingImage; // 건물 대표 이미지
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "building_region", nullable = false)
-    private String buildingRegion; // 건물 지역
+    private Region buildingRegion; // 건물 지역
 
     @Enumerated(EnumType.STRING)
     @Column(name = "building_tag", nullable = false)
     private BuildingTag buildingTag; // 건물 태그
 
+    @Column(name = "building_description", columnDefinition = "TEXT", nullable = false)
+    private String buildingDescription;
+
+    @Column(name = "check_in_time", nullable = false)
+    private LocalDateTime checkInTime;
+
+    @Column(name = "check_out_time", nullable = false)
+    private LocalDateTime checkOutTime;
+
     @Column(name = "building_name", nullable = false)
     private String buildingName; // 건물 이름
+
+    @Column(name = "building_price", nullable = false)
+    private Long buildingPrice;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "building_image1")
+    private String buildingImage1;
+
+    @Column(name = "building_image2")
+    private String buildingImage2;
+
 
     // ==== 변경 메서드 ====
     public void updateOwner (User owner) {
@@ -69,7 +94,7 @@ public class Building {
 
     public void updateBuildingImage (String buildingImage) { this.buildingImage = buildingImage; }
 
-    public void updateBuildingRegion (String buildingRegion) { this.buildingRegion = buildingRegion; }
+    public void updateBuildingRegion (Region buildingRegion) { this.buildingRegion = buildingRegion; }
 
     // 건물 태그수정 불가, 구현X
 
