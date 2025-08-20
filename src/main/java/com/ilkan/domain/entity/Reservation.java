@@ -51,6 +51,12 @@ public class Reservation {
     @Column(name = "reservation_status", nullable = false)
     private ReservationStatus reservationStatus;
 
+    @Column(nullable = false)
+    private Long rentalDays; // 대여일 수
+
+    @Column(nullable = false)
+    private Long totalPrice; // 보수결제 시 대여일 수에 따른 최종결제금액
+
     // ==== 변경 메서드 ====
     public void updatePerformer(User performerId) {
         this.performerId = performerId;
@@ -78,6 +84,16 @@ public class Reservation {
     public void cancel() {
         if (reservationStatus == ReservationStatus.COMPLETE) return; // 필요 시 규칙 조정
         this.reservationStatus = ReservationStatus.CANCELED;
+    }
+
+    // 생성 후 대여정보만 업데이트
+    public void updateRentalInfo(Long rentalDays, Long totalPrice) {
+        this.rentalDays = rentalDays;
+        this.totalPrice = totalPrice;
+    }
+
+    public void updateReservationStatus(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
     }
 
 }
