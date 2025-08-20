@@ -1,6 +1,7 @@
 package com.ilkan.repository;
 
 import com.ilkan.domain.entity.Building;
+import com.ilkan.domain.entity.User;
 import com.ilkan.domain.enums.BuildingStatus;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,6 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
   
     @EntityGraph(attributePaths = {"owner"})
     Page<Building> findAll(Specification<Building> spec, Pageable pageable);
+
+    boolean existsByOwnerAndBuildingName(User owner, String buildingName);
 }
