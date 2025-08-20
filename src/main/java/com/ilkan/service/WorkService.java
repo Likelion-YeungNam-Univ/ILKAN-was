@@ -47,6 +47,49 @@ public class WorkService {
         return works.map(WorkResDto::fromEntity);
     }
 
+    // 의뢰자 프로필에서 진행중인 작업 조회 (프로필 상단버튼 API)
+    @Transactional
+    public WorkResDto updateWorkStatus(String roleHeader, Long workId, Status newStatus) {
+        // 권한 체크: 의뢰자만 가능
+        if (!"REQUESTER".equals(roleHeader)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
+
+        Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
+        Work work = workRepository.findById(workId)
+                .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        // 소유자 체크: 해당 작업의 의뢰자만 상태 변경 가능
+        if (!work.getRequester().getId().equals(requesterId)) {
+            throw new UserWorkExceptions.RequesterForbidden();
+        }
+
+        // 현재 상태
+        Status current = work.getStatus();
+
+        // 전환 허용 규칙:
+        // ASSIGNED → IN_PROGRESS (의뢰자 '준비완료')
+        // IN_PROGRESS → COMPLETED (의뢰자 '보수지급')
+        if (newStatus == Status.IN_PROGRESS) {
+            if (current != Status.ASSIGNED) {
+                throw new UserWorkExceptions.InvalidRequest("현재 상태가 ASSIGNED가 아님!");
+            }
+        } else if (newStatus == Status.COMPLETED) {
+            if (current != Status.IN_PROGRESS) {
+                throw new UserWorkExceptions.InvalidRequest("현재 상태가 IN_PROGRESS가 아님!");
+            }
+        } else {
+            // 그 외 상태로의 직접 변경은 불가 (OPEN, CANCELLED 등)
+            throw new UserWorkExceptions.InvalidRequest("그 외의 상태들로 변경 불가");
+        }
+
+        // 상태 변경
+        work.updateStatus(newStatus);
+
+        return WorkResDto.fromEntity(work);
+    }
+
+
     // 수행자가 수행중인 작업 조회
     @Transactional(readOnly = true)
     public Page<WorkResDto> doingWorksByPerformer(String role, Pageable pageable) {
