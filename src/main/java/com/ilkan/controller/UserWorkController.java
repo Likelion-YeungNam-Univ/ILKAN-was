@@ -4,11 +4,7 @@ import com.ilkan.auth.AllowedRoles;
 import com.ilkan.controller.api.UserWorkApi;
 import com.ilkan.domain.entity.TaskApplication;
 import com.ilkan.domain.enums.Role;
-import com.ilkan.dto.workdto.ApplicationResDto;
-import com.ilkan.dto.workdto.WorkApplyDetailResDto;
-import com.ilkan.dto.workdto.WorkApplyListResDto;
-import com.ilkan.dto.workdto.WorkApplyReqDto;
-import com.ilkan.dto.workdto.WorkResDto;
+import com.ilkan.dto.workdto.*;
 import com.ilkan.service.WorkService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -44,6 +34,20 @@ public class UserWorkController implements UserWorkApi {
         Page<WorkResDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
         return ResponseEntity.ok(worksDto);
     }
+
+    // 진행중인 일거리 조회 (의뢰자 프로필 상단)
+    @AllowedRoles(Role.REQUESTER) // 의뢰자만 가능
+    @PatchMapping("{workId}/status")
+    public ResponseEntity<WorkResDto> updateWorkStatus(
+            @RequestHeader("X-Role") String roleHeader,
+            @PathVariable Long workId,
+            @RequestBody WorkStatusReqDto request
+    ) {
+        // 요청 바디에서 status 꺼내서 서비스에 전달
+        WorkResDto updated = workService.updateWorkStatus(roleHeader, workId, request.getStatus());
+        return ResponseEntity.ok(updated); // 응답은 WorkResDto (응답 DTO)
+    }
+
 
     // 내가 수행중인 일거리 조회 (수행자)
     @AllowedRoles(Role.PERFORMER)
