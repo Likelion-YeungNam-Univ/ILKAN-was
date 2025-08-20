@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "시연용 카드정보 request DTO / DB 저장 X")
 public class ReservationPayReqDto {
-    @Schema(description = "예약 id", example = "1")
-    private Long reservationId;
 
     @Schema(description = "은행명",example = "국민은행")
     private String bankName;
