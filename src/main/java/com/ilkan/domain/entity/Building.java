@@ -83,6 +83,7 @@ public class Building {
     @Column(name = "building_image2")
     private String buildingImage2;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "building_status")
     private BuildingStatus buildingStatus; // 건물 심사상태
 
