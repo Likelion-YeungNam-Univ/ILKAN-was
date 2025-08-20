@@ -2,11 +2,7 @@ package com.ilkan.controller.api;
 
 import com.ilkan.auth.AllowedRoles;
 import com.ilkan.domain.enums.Role;
-import com.ilkan.dto.workdto.ApplicationResDto;
-import com.ilkan.dto.workdto.WorkApplyDetailResDto;
-import com.ilkan.dto.workdto.WorkApplyListResDto;
-import com.ilkan.dto.workdto.WorkApplyReqDto;
-import com.ilkan.dto.workdto.WorkResDto;
+import com.ilkan.dto.workdto.*;
 import com.ilkan.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,12 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "UserWork", description = "사용자 기반 일거리 조회 API")
 @RequestMapping(value = "/api/v1/myprofile/commissions", produces = "application/json")
@@ -52,11 +43,63 @@ public interface UserWorkApi {
                     )
             )
     })
+
     @GetMapping("/upload")
     ResponseEntity<Page<WorkResDto>> getMyUploadedWorks(
             @Parameter(description = "요청자 역할 (REQUESTER)", required = true, example = "REQUESTER")
             @RequestHeader("X-Role") String roleHeader,
             @Parameter(description = "페이지네이션 정보") Pageable pageable
+    );
+
+    @Operation(
+            summary = "일거리 상태 변경",
+            description = "의뢰자(REQUESTER) 전용. 준비완료 버튼 클릭 시 IN_PROGRESS, 보수지급 버튼 클릭 시 COMPLETED로 상태 변경"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "상태 변경 성공",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = WorkResDto.class))
+            ),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                        {"code":"REQUESTER_FORBIDDEN",
+                         "message":"의뢰자 권한이 없습니다.",
+                         "status":403,
+                         "path":"/api/v1/works/{workId}/status",
+                         "timestamp":"2025-08-20T15:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "해당 일거리 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                        {"code":"WORK_NOT_FOUND",
+                         "message":"해당 일거리가 존재하지 않습니다.",
+                         "status":404,
+                         "path":"/api/v1/works/{workId}/status",
+                         "timestamp":"2025-08-20T15:00:00Z"}""")
+                    )
+            ),
+            @ApiResponse(responseCode = "409", description = "상태 전환 불가",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                        {"code":"INVALID_STATUS_TRANSITION",
+                         "message":"현재 상태에서 요청한 상태로 전환할 수 없습니다.",
+                         "status":409,
+                         "path":"/api/v1/works/{workId}/status",
+                         "timestamp":"2025-08-20T15:00:00Z"}""")
+                    )
+            )
+    })
+    @AllowedRoles(Role.REQUESTER)
+    @PatchMapping("{workId}/status")
+     ResponseEntity<WorkResDto> updateWorkStatus(
+            @RequestHeader("X-Role") String roleHeader,
+            @PathVariable Long workId,
+            @RequestBody WorkStatusReqDto request
     );
 
     @Operation(summary = "내가 수행중인 일거리 조회", description = "수행자(PERFORMER) 역할 전용")
