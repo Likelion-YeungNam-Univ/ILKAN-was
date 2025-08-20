@@ -13,7 +13,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BuildingRepository extends JpaRepository<Building, Long> {
-    Page<Building> findByOwner_IdAndBuildingStatus(Long ownerId, BuildingStatus buildingStatus, Pageable pageable); // 건물주 등록한 건물조회
+
+    @EntityGraph(attributePaths = {"owner"})
+    Page<Building> findByOwner_Id(Long ownerId, Pageable pageable);
 
     // 동시성 제어용 (예약 생성 시)
     @Lock(LockModeType.PESSIMISTIC_WRITE)

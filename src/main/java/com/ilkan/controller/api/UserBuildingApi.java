@@ -53,7 +53,7 @@ public interface UserBuildingApi {
             @Parameter(description = "페이지네이션 정보") @PageableDefault Pageable pageable
     );
 
-    @Operation(summary = "등록한 건물 조회", description = "건물주(OWNER) 역할 전용")
+    @Operation(summary = "등록한 건물 조회", description = "건물주(OWNER) 역할 전용. 상태와 무관하게 해당 건물주가 등록한 모든 건물 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(mediaType = "application/json",

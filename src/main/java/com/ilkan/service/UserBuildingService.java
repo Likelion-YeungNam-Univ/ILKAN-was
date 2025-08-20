@@ -45,7 +45,7 @@ public class UserBuildingService {
             throw new UserBuildingExceptions.OwnerForbidden();
         }
         Long ownerId = RoleMapper.getUserIdByRole(roleHeader);
-        Page<Building> buildings = buildingRepository.findByOwner_IdAndBuildingStatus(ownerId, BuildingStatus.REGISTERED, pageable);
+        Page<Building> buildings = buildingRepository.findByOwner_Id(ownerId, pageable);
         if (buildings.isEmpty()) { // 조회 결과가 없으면 예외
             throw new UserBuildingExceptions.OwnerBuildingNotFound();
         }
