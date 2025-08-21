@@ -1,6 +1,7 @@
 package com.ilkan.domain.reservation.scheduler;
 
 import com.ilkan.domain.reservation.entity.Reservation;
+import com.ilkan.domain.reservation.entity.enums.ReservationStatus;
 import com.ilkan.domain.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,12 +23,17 @@ public class ReservationStatusScheduler {
     public void tick() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        // 1. IN_USE인 예약 목록 조회
-        List<Reservation> toInUse = reservationRepo.findToInUse(now);
+        // RESERVED → IN_USE
+        var toInUse = reservationRepo
+                .findAllByReservationStatusAndStartTimeLessThanEqualAndEndTimeGreaterThan(
+                        ReservationStatus.RESERVED, now, now);
         toInUse.forEach(Reservation::toInUse);
 
-        // 2. COMPLETE인 예약 목록 조회
-        List<Reservation> toComplete = reservationRepo.findToComplete(now);
+
+        // RESERVED/IN_USE → COMPLETE
+        var toComplete = reservationRepo
+                .findAllByReservationStatusInAndEndTimeLessThanEqual(
+                        List.of(ReservationStatus.RESERVED, ReservationStatus.IN_USE), now);
         toComplete.forEach(Reservation::toComplete);
     }
 }
