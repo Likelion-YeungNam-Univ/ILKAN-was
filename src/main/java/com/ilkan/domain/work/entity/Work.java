@@ -56,7 +56,7 @@ public class Work {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // 등록시간
 
-    @Column
+    @Column(nullable = false)
     private Long price; // 가격
 
     @Enumerated(EnumType.STRING)
@@ -72,7 +72,7 @@ public class Work {
     @Column(name = "task_duration", nullable = false)
     private String taskDuration; // 일거리 작업기간
 
-    @Column
+    @Column(nullable = false)
     private Long headCount; // 모집인원
 
     @Column
@@ -84,17 +84,17 @@ public class Work {
     @Column
     private String etc; // 기타조건
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime recruitmentPeriod; // 모집 기한
 
-    @Column
+    @Column(nullable = false)
     private String workEmail; // 일거리등록시 사용 이메일
 
-    @Column
+    @Column(nullable = false)
     private String workPhoneNumber; // 일거리등록시 사용 번호
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(nullable = false)
     private WorkCategory workCategory;
 
     // ==== 변경 메서드 ====
