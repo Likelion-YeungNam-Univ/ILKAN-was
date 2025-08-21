@@ -1,6 +1,6 @@
 package com.ilkan.exception;
 
-import com.ilkan.domain.enums.Role;
+import com.ilkan.domain.profile.entity.enums.Role;
 import org.springframework.http.HttpStatus;
 
 public final class RoleExceptions {
