@@ -10,6 +10,7 @@ import com.ilkan.dto.buildingdto.BuildingCreateRes;
 import com.ilkan.exception.BuildingCommandExceptions;
 import com.ilkan.exception.RoleExceptions;
 import com.ilkan.repository.BuildingRepository;
+import com.ilkan.repository.ReservationRepository;
 import com.ilkan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class BuildingService {
 
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
+    private final ReservationRepository reservationRepository;
 
     /**
      * 건물주(OWNER) 역할의 유저가 새로운 건물을 등록합니다.
@@ -71,4 +73,32 @@ public class BuildingService {
         catch (Exception e) { throw ex.get(); }
     }
     @FunctionalInterface private interface SupplierX { RuntimeException get(); }
+
+    /**
+     * 건물 하드 삭제. 건물에 예약이 1건이라도 존재하면 409로 차단.
+     *
+     * @throws RoleExceptions.Missing X-Role 헤더 없음
+     * @throws RoleExceptions.Invalid 알 수 없는 역할 문자열
+     * @throws BuildingCommandExceptions.NotFound 건물이 없을 때
+     * @throws BuildingCommandExceptions.DeleteBlockedByReservations 예약 존재 시
+     */
+    @Transactional
+    public void deleteBuilding(String roleHeader, Long buildingId) {
+        if (roleHeader == null || roleHeader.isBlank()) throw new RoleExceptions.Missing();
+        final Role role;
+        try { role = Role.valueOf(roleHeader.trim().toUpperCase(Locale.ROOT)); }
+        catch (IllegalArgumentException e) { throw new RoleExceptions.Invalid(roleHeader); }
+
+        var building = buildingRepository.findById(buildingId)
+                .orElseThrow(() -> new BuildingCommandExceptions.NotFound(buildingId));
+
+        // 예약이 1건이라도 있으면 차단
+        if (reservationRepository.existsByBuildingId_Id(buildingId)) {
+            Long cnt = null;
+            try { cnt = reservationRepository.countByBuildingId_Id(buildingId); } catch (Exception ignore) {}
+            throw new BuildingCommandExceptions.DeleteBlockedByReservations(buildingId, cnt);
+        }
+
+        buildingRepository.delete(building);
+    }
 }
