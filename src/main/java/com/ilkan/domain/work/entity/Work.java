@@ -97,6 +97,18 @@ public class Work {
     @Column(nullable = false)
     private WorkCategory workCategory;
 
+    @Column(nullable = false)
+    private boolean performerReady; // 수행자 준비완료 상태
+
+    @Column(nullable = false)
+    private boolean requesterReady; // 의뢰자 준비완료 상태
+
+    @Column(nullable = false)
+    private boolean requesterPaid;  // 의뢰자 보수 지급 여부
+
+    @Column(nullable = false)
+    private boolean performerDone;  // 수행자 수행 완료 여부
+
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
     public void updateFromDto(WorkReqDto dto) {
@@ -129,5 +141,12 @@ public class Work {
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
 
+    public void updatePerformerReady(boolean performerReady) {this.performerReady = performerReady;}
+
+    public void updateRequesterReady(boolean requesterReady) {this.requesterReady = requesterReady;}
+
+    public void updateRequesterPaid(boolean requesterPaid) {this.requesterPaid = requesterPaid;}
+
+    public void updatePerformerDone(boolean performerDone) {this.performerDone = true;}
 
 }
