@@ -1,6 +1,6 @@
 package com.ilkan.config;
 
-import com.ilkan.auth.RoleCheckInterceptor;
+import com.ilkan.security.RoleCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
