@@ -25,4 +25,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
         and r.endTime <= :now
     """)
     List<Reservation> findToComplete(@Param("now") LocalDateTime now);
+
+    boolean existsByBuildingId_Id(Long buildingId);
+
+    long countByBuildingId_Id(Long buildingId);
+
 }
