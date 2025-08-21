@@ -63,7 +63,7 @@ public class UserWorkController implements UserWorkApi {
             @RequestBody WorkStatusReqDto request
     ) {
         // 요청 바디에서 status 꺼내서 서비스에 전달
-        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request.getStatus());
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +75,7 @@ public class UserWorkController implements UserWorkApi {
             @PathVariable Long workId,
             @RequestBody WorkStatusReqDto request
     ) {
-        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request.getStatus());
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId);
         return ResponseEntity.ok(updated);
     }
 
