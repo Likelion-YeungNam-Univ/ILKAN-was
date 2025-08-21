@@ -1,5 +1,6 @@
 package com.ilkan.domain.profile.controller;
 
+import com.ilkan.domain.work.service.WorkSetStatusService;
 import com.ilkan.security.AllowedRoles;
 import com.ilkan.domain.profile.api.UserWorkApi;
 import com.ilkan.domain.profile.dto.performer.WorkStatusReqDto;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "UserWork", description = "사용자 기반 일거리 API")
 public class UserWorkController implements UserWorkApi {
     private final WorkService workService;
+    private final WorkSetStatusService workSetStatusService;
 
     // 내가 등록한 일거리 조회 (의뢰자)
     @AllowedRoles(Role.REQUESTER)
@@ -40,19 +42,42 @@ public class UserWorkController implements UserWorkApi {
         return ResponseEntity.ok(worksDto);
     }
 
-    // 진행중인 일거리 조회 (의뢰자 프로필 상단)
-    @AllowedRoles(Role.REQUESTER) // 의뢰자만 가능
-    @PatchMapping("{workId}/status")
-    public ResponseEntity<WorkResDto> updateWorkStatus(
+    // 내가 등록한 진행중 일거리 조회 (의뢰자)
+    @AllowedRoles(Role.REQUESTER)
+    @GetMapping("/working")
+    public ResponseEntity<Page<WorkResDto>> doingWorksByRequester(
+            @RequestHeader("X-Role") String roleHeader,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<WorkResDto> worksDto = workService.doingWorksByRequester(roleHeader, pageable);
+        return ResponseEntity.ok(worksDto);
+    }
+
+    // 의뢰자 전용 상태 변경 (예: 의뢰자 준비완료 -> status = IN_PROGRESS 요청,
+    // 의뢰자 보수지급 관련 요청 등)
+    @AllowedRoles(Role.REQUESTER)
+    @PatchMapping("{workId}/status/requester")
+    public ResponseEntity<WorkResDto> updateWorkStatusByRequester(
             @RequestHeader("X-Role") String roleHeader,
             @PathVariable Long workId,
             @RequestBody WorkStatusReqDto request
     ) {
         // 요청 바디에서 status 꺼내서 서비스에 전달
-        WorkResDto updated = workService.updateWorkStatus(roleHeader, workId, request.getStatus());
-        return ResponseEntity.ok(updated); // 응답은 WorkResDto (응답 DTO)
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request.getStatus());
+        return ResponseEntity.ok(updated);
     }
 
+    // 수행자 전용 상태 변경 (예: 수행자 준비완료, 수행완료 눌렀을 때)
+    @AllowedRoles(Role.PERFORMER)
+    @PatchMapping("{workId}/status/performer")
+    public ResponseEntity<WorkResDto> updateWorkStatusByPerformer(
+            @RequestHeader("X-Role") String roleHeader,
+            @PathVariable Long workId,
+            @RequestBody WorkStatusReqDto request
+    ) {
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request.getStatus());
+        return ResponseEntity.ok(updated);
+    }
 
     // 내가 수행중인 일거리 조회 (수행자)
     @AllowedRoles(Role.PERFORMER)
