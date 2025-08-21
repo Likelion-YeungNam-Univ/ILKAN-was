@@ -65,6 +65,7 @@ public class WorkDetailResDto {
                 .preferred(work.getPreferred())
                 .etc(work.getEtc())
                 .description(work.getDescription())
+                .recruitmentPeriod(work.getRecruitmentPeriod())
                 .build();
     }
 
