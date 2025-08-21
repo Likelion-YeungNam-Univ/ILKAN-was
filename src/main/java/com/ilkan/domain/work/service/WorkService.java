@@ -99,9 +99,6 @@ public class WorkService {
         Long performerId = RoleMapper.getUserIdByRole(role);
         Page<Work> works = workRepository.findByPerformer_IdAndStatus(performerId, Status.IN_PROGRESS, pageable);
 
-        if (works.isEmpty()) {
-            throw new UserWorkExceptions.NoDoingWorks(); // 수행중인 일거리 없음 예외
-        }
 
         return works.map(WorkResDto::fromEntity);
     }
@@ -119,10 +116,6 @@ public class WorkService {
         Page<TaskApplication> applications =
                 taskApplicationRepository.findByPerformerId_IdAndStatus(performerId, Status.APPLY_TO, pageable);
 
-        if (applications.isEmpty()) {
-            throw new UserWorkExceptions.NoAppliedWorks(); // 지원한 일거리 없음 예외
-        }
-
         return applications.map(ApplicationResDto::fromEntity);
     }
 
@@ -131,10 +124,6 @@ public class WorkService {
     @Transactional(readOnly = true)
     public Page<WorkListResDto> getWorkList(WorkCategory category, Pageable pageable) {
         Page<Work> works = workRepository.findByWorkCategory(category, pageable); // 카테고리 필터만 사용
-
-        if (works.isEmpty()) {
-            throw new UserWorkExceptions.WorkNotFound(); // 일거리 없음 예외
-        }
 
         return works.map(WorkListResDto::fromEntity);
     }

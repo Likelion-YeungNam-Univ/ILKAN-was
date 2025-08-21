@@ -31,9 +31,7 @@ public class UserBuildingService {
         }
         Long performerId = RoleMapper.getUserIdByRole(roleHeader);
         Page<Reservation> reservations = userBuildingRepository.findByPerformerId_IdAndReservationStatus(performerId, ReservationStatus.IN_USE, pageable);
-        if (reservations.isEmpty()) { // 조회 결과가 없으면 예외
-            throw new UserBuildingExceptions.UserBuildingNotFound();
-        }
+
         return reservations.map(UserBuildingResDto::fromEntity);
     }
 
@@ -45,9 +43,7 @@ public class UserBuildingService {
         }
         Long ownerId = RoleMapper.getUserIdByRole(roleHeader);
         Page<Building> buildings = buildingRepository.findByOwner_Id(ownerId, pageable);
-        if (buildings.isEmpty()) { // 조회 결과가 없으면 예외
-            throw new UserBuildingExceptions.OwnerBuildingNotFound();
-        }
+
         return buildings.map(OwnerBuildingResDto::fromEntity);
     }
 
@@ -62,9 +58,7 @@ public class UserBuildingService {
         Page<Reservation> reservationsInUse = userBuildingRepository
                 .findByBuildingId_Owner_IdAndReservationStatus(ownerId, ReservationStatus.IN_USE, pageable);
 
-        if (reservationsInUse.isEmpty()) {
-            throw new UserBuildingExceptions.OwnerBuildingNotFound();
-        }
+
         return reservationsInUse.map(OwnersInUseResDto::fromEntity);
     }
 
