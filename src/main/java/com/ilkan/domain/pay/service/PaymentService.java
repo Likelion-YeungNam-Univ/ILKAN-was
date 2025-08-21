@@ -56,7 +56,6 @@ public class PaymentService {
         if (building == null) throw new IllegalStateException("Reservation has no building associated.");
 
         Long dailyPrice = building.getBuildingPrice();
-        if (dailyPrice == null) throw new IllegalStateException("Building price not configured.");
 
         // 5) 총액 계산
         Long totalPrice = rentalDays * dailyPrice;

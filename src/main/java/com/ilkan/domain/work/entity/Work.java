@@ -56,7 +56,7 @@ public class Work {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // 등록시간
 
-    @Column
+    @Column(nullable = false)
     private Long price; // 가격
 
     @Enumerated(EnumType.STRING)
@@ -72,7 +72,7 @@ public class Work {
     @Column(name = "task_duration", nullable = false)
     private String taskDuration; // 일거리 작업기간
 
-    @Column
+    @Column(nullable = false)
     private Long headCount; // 모집인원
 
     @Column
@@ -84,18 +84,30 @@ public class Work {
     @Column
     private String etc; // 기타조건
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime recruitmentPeriod; // 모집 기한
 
-    @Column
+    @Column(nullable = false)
     private String workEmail; // 일거리등록시 사용 이메일
 
-    @Column
+    @Column(nullable = false)
     private String workPhoneNumber; // 일거리등록시 사용 번호
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(nullable = false)
     private WorkCategory workCategory;
+
+    @Column(nullable = false)
+    private boolean performerReady; // 수행자 준비완료 상태
+
+    @Column(nullable = false)
+    private boolean requesterReady; // 의뢰자 준비완료 상태
+
+    @Column(nullable = false)
+    private boolean requesterPaid;  // 의뢰자 보수 지급 여부
+
+    @Column(nullable = false)
+    private boolean performerDone;  // 수행자 수행 완료 여부
 
     // ==== 변경 메서드 ====
     // 등록시간은 수정불가
@@ -129,5 +141,12 @@ public class Work {
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
 
+    public void updatePerformerReady(boolean performerReady) {this.performerReady = performerReady;}
+
+    public void updateRequesterReady(boolean requesterReady) {this.requesterReady = requesterReady;}
+
+    public void updateRequesterPaid(boolean requesterPaid) {this.requesterPaid = requesterPaid;}
+
+    public void updatePerformerDone(boolean performerDone) {this.performerDone = true;}
 
 }

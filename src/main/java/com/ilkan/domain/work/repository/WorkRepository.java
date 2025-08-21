@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface WorkRepository extends JpaRepository<Work, Long> {
     Page<Work> findByRequesterId(Long requesterId, Pageable pageable); // 내가(의뢰자) 등록한 일거리조회
 
-    Page<Work> findByPerformer_IdAndStatus(Long performerId, Status status, Pageable pageable);// 내가(수행자) 수행중인 일거리 조회
+    Page<Work> findByPerformer_IdAndStatusIn(Long performerId, Collection<Status> statuses, Pageable pageable); // 수행자 동시버튼
+    Page<Work> findByRequester_IdAndStatusIn(Long requesterId, Collection<Status> statuses, Pageable pageable); // 의뢰자 동시버튼
 
     Page<Work> findAll(Pageable pageable); // 모든 일거리조회
 
