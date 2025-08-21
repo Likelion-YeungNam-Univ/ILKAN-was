@@ -19,6 +19,12 @@ public class BuildingDetailResDto {
     @Schema(description = "건물 ID", example = "1")
     private final Long id;
 
+    @Schema(description = "건물주 이름", example = "이나현")
+    private final String owner;
+
+    @Schema(description = "건물주 프로필 사진", example = "https://cdn.example.com/u/3/profile.jpg")
+    private final String  profileImage;
+
     @Schema(description = "빌딩 제목", example = "경산시 공유 오피스 회의실")
     private final String building_name;
 
@@ -100,6 +106,8 @@ public class BuildingDetailResDto {
 
         return BuildingDetailResDto.builder()
                 .id(b.getId())
+                .owner(b.getOwner().getName())
+                .profileImage(b.getOwner().getProfileImage())
                 .building_name(b.getBuildingName())
                 .typeLabel(typeLabelKor)                    // enum.getKor() 결과
                 .tag(b.getBuildingTag() != null ? b.getBuildingTag().name() : null)
