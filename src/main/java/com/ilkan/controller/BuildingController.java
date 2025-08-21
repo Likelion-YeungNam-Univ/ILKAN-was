@@ -32,5 +32,15 @@ public class BuildingController implements BuildingCommandApi {
                 .created(URI.create("/api/v1/buildings/" + res.getId()))
                 .body(res);
     }
+
+    @AllowedRoles(Role.OWNER)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBuilding(
+            @RequestHeader("X-Role") String roleHeader,
+            @PathVariable("id") Long id
+    ) {
+        buildingService.deleteBuilding(roleHeader, id);
+        return ResponseEntity.noContent().build(); // 204
+    }
 }
 
