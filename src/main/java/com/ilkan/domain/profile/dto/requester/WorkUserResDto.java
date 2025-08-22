@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@Schema(description = "의뢰자 일거리 조회 DTO")
+@Schema(description = "의뢰자 일거리 수정 DTO")
 public class WorkUserResDto {
 
     @Schema(description = "일거리 ID", example = "14")
