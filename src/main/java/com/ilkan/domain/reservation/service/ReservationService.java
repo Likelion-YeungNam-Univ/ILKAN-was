@@ -14,6 +14,7 @@ import com.ilkan.domain.building.repository.BuildingRepository;
 import com.ilkan.domain.reservation.repository.ReservationDayRepository;
 import com.ilkan.domain.reservation.repository.ReservationRepository;
 import com.ilkan.domain.auth.repository.UserRepository;
+import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,8 @@ public class ReservationService {
         if (role != Role.PERFORMER) {
                 throw new ReservationExceptions.Forbidden();
         }
-        User performer = userRepo.findFirstByRole(Role.PERFORMER)
+        Long performerId = RoleMapper.getUserIdByRole(role.name());
+        User performer = userRepo.findById(performerId)
                 .orElseThrow(ReservationExceptions.PerformerNotFound::new);
 
 

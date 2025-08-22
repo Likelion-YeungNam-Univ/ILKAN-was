@@ -12,6 +12,7 @@ import com.ilkan.exception.RoleExceptions;
 import com.ilkan.domain.building.repository.BuildingRepository;
 import com.ilkan.domain.reservation.repository.ReservationRepository;
 import com.ilkan.domain.auth.repository.UserRepository;
+import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,8 @@ public class BuildingService {
         try { role = Role.valueOf(roleHeader.trim().toUpperCase(Locale.ROOT)); }
         catch (IllegalArgumentException e) { throw new RoleExceptions.Invalid(roleHeader); }
 
-        User owner = userRepository.findTopByRoleOrderByIdDesc(role)
+        Long ownerId = RoleMapper.getUserIdByRole(role.name());
+        User owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RoleExceptions.NotFound(role));
 
         Region region = parseEnumOrThrow(req.getBuildingRegion(), Region.class,

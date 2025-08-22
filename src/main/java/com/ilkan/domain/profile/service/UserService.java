@@ -5,6 +5,7 @@
     import com.ilkan.domain.profile.dto.UserProfileResDto;
     import com.ilkan.exception.RoleExceptions;
     import com.ilkan.domain.auth.repository.UserRepository;
+    import com.ilkan.util.RoleMapper;
     import lombok.RequiredArgsConstructor;
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,8 @@
 
         @Transactional(readOnly = true)
         public UserProfileResDto getUserProfile(Role role) {
-            User user = userRepository.findFirstByRole(role)
+            Long userId = RoleMapper.getUserIdByRole(role.name()); // Role → userId 매핑
+            User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RoleExceptions.NotFound(role));
 
 
