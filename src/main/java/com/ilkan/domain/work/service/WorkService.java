@@ -137,7 +137,12 @@ public class WorkService {
     // 일거리 목록 조회
     @Transactional(readOnly = true)
     public Page<WorkListResDto> getWorkList(WorkCategory category, Pageable pageable) {
-        Page<Work> works = workRepository.findByWorkCategory(category, pageable); // 카테고리 필터만 사용
+        Page<Work> works;
+        if (category == null) {
+            works = workRepository.findAll(pageable);
+        } else {
+            works = workRepository.findByWorkCategory(category, pageable);
+        }
 
         return works.map(WorkListResDto::fromEntity);
     }
