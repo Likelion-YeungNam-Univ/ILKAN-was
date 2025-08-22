@@ -1,6 +1,7 @@
 package com.ilkan.domain.work.service;
 
 import com.ilkan.domain.profile.dto.performer.WorkResDto;
+import com.ilkan.domain.profile.dto.performer.WorkStatusReqDto;
 import com.ilkan.domain.work.entity.Work;
 import com.ilkan.domain.work.entity.enums.Status;
 import com.ilkan.domain.work.repository.WorkRepository;
@@ -20,10 +21,14 @@ public class WorkSetStatusService {
      * roleHeader: "REQUESTER" 또는 "PERFORMER"
      */
     @Transactional
-    public WorkResDto updateWorkStatus(String roleHeader, Long workId) {
-        // 작업 조회
+    public WorkResDto updateWorkStatus(String roleHeader, Long workId, WorkStatusReqDto workStatusReqDto) {
         Work work = workRepository.findById(workId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        // 작업 시간 업데이트
+        if (workStatusReqDto.getTaskStart() != null) work.updateTaskStart(workStatusReqDto.getTaskStart());
+        if (workStatusReqDto.getTaskEnd() != null) work.updateTaskEnd(workStatusReqDto.getTaskEnd());
+
 
         // 현재 상태
         Status current = work.getStatus();
