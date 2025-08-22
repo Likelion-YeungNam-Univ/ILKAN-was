@@ -40,7 +40,7 @@ public class WorksController implements WorksApi {
     // 카테고리별 일거리 조회 (category 필수)
     @GetMapping
     public ResponseEntity<Page<WorkListResDto>> getWorkList(
-            @RequestParam WorkCategory category, // 필수로 변경
+            @RequestParam(required = false) WorkCategory category, // 필수로 변경
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<WorkListResDto> worksList = workService.getWorkList(category, pageable);
