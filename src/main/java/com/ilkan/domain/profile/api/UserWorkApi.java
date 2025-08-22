@@ -62,10 +62,10 @@ public interface UserWorkApi {
                             examples = @ExampleObject(value = "{\"code\":\"INVALID_STATUS\",\"message\":\"잘못된 상태 변경 요청\",\"status\":400}")))
     })
     @AllowedRoles(Role.REQUESTER)
-    @PatchMapping("{workId}/status/requester")
+    @PatchMapping("{taskId}/status/requester")
     ResponseEntity<WorkResDto> updateWorkStatusByRequester(
             @RequestHeader("X-Role") String roleHeader,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @RequestBody WorkStatusReqDto request
     );
 
@@ -77,10 +77,10 @@ public interface UserWorkApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @AllowedRoles(Role.PERFORMER)
-    @PatchMapping("{workId}/status/performer")
+    @PatchMapping("{taskId}/status/performer")
     ResponseEntity<WorkResDto> updateWorkStatusByPerformer(
             @RequestHeader("X-Role") String roleHeader,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @RequestBody WorkStatusReqDto request
     );
 
@@ -143,10 +143,10 @@ public interface UserWorkApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/{workId}/applies/{applyId}")
+    @GetMapping("/{taskId}/applies/{applyId}")
     ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
             @RequestHeader("X-Role") String role,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @PathVariable Long applyId
     );
 
