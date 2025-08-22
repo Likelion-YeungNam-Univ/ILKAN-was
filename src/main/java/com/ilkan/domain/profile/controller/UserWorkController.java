@@ -56,25 +56,25 @@ public class UserWorkController implements UserWorkApi {
     // 의뢰자 전용 상태 변경 (예: 의뢰자 준비완료 -> status = IN_PROGRESS 요청,
     // 의뢰자 보수지급 관련 요청 등)
     @AllowedRoles(Role.REQUESTER)
-    @PatchMapping("{workId}/status/requester")
+    @PatchMapping("{taskId}/status/requester")
     public ResponseEntity<WorkResDto> updateWorkStatusByRequester(
             @RequestHeader("X-Role") String roleHeader,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @RequestBody WorkStatusReqDto request
     ) {
-        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request);
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, taskId, request);
         return ResponseEntity.ok(updated);
     }
 
     // 수행자 전용 상태 변경 (예: 수행자 준비완료, 수행완료 눌렀을 때)
     @AllowedRoles(Role.PERFORMER)
-    @PatchMapping("{workId}/status/performer")
+    @PatchMapping("{taskId}/status/performer")
     public ResponseEntity<WorkResDto> updateWorkStatusByPerformer(
             @RequestHeader("X-Role") String roleHeader,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @RequestBody WorkStatusReqDto request
     ) {
-        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, workId, request);
+        WorkResDto updated = workSetStatusService.updateWorkStatus(roleHeader, taskId, request);
         return ResponseEntity.ok(updated);
     }
 
@@ -126,13 +126,13 @@ public class UserWorkController implements UserWorkApi {
 
     // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/{workId}/applies/{applyId}")
+    @GetMapping("/{taskId}/applies/{applyId}")
     public ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
             @RequestHeader("X-Role") String role,
-            @PathVariable Long workId,
+            @PathVariable Long taskId,
             @PathVariable Long applyId
     ) {
-        WorkApplyDetailResDto response = workService.getWorkApplyDetail(role, workId, applyId);
+        WorkApplyDetailResDto response = workService.getWorkApplyDetail(role, taskId, applyId);
         return ResponseEntity.ok(response);
     }
 
