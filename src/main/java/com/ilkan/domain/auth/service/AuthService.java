@@ -2,7 +2,9 @@ package com.ilkan.domain.auth.service;
 
 import com.ilkan.exception.RoleExceptions;
 import com.ilkan.domain.profile.entity.enums.Role;
+import com.ilkan.domain.profile.entity.User;
 import com.ilkan.domain.auth.repository.UserRepository;
+import com.ilkan.util.RoleMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -37,8 +39,9 @@ public class AuthService {
     }
 
     public String getNameByRole(Role role) {
-        return userRepository.findTopByRoleOrderByIdDesc(role)
-                .map(u -> u.getName())
+        Long userId = RoleMapper.getUserIdByRole(role.name());
+        return userRepository.findById(userId)
+                .map(User::getName)
                 .orElseThrow(() -> new RoleExceptions.NotFound(role));
     }
 }
