@@ -1,6 +1,10 @@
 spring:
   application:
     name: ILKAN-was
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
   datasource:
     url: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}
@@ -15,3 +19,19 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+
+  gemini:
+    api:
+      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-genera:generateContent?key="
+      key: "${GEMINI_API_KEY}"
+    timeout:
+      connect-ms: 5000
+      read-ms: 20000
+
+app:
+  s3:
+    bucket: ilkan-image
+    region: ap-northeast-2
+  cdn-base-url: "https://ilkan-image.s3.ap-northeast-2.amazonaws.com"
+
+
