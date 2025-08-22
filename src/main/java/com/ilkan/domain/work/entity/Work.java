@@ -131,13 +131,8 @@ public class Work {
         this.status = status;
     }
 
-    public void updateTaskPeriod(LocalDateTime taskStart, LocalDateTime taskEnd) {
-        if (taskStart.isAfter(taskEnd)) {
-            throw new IllegalArgumentException("시작일은 마감일보다 이후일 수 없습니다.");
-        }
-        this.taskStart = taskStart;
-        this.taskEnd = taskEnd;
-    }
+    public void updateTaskStart(LocalDateTime taskStart) {this.taskStart = taskStart;}
+    public void updateTaskEnd(LocalDateTime taskEnd) {this.taskEnd = taskEnd;}
 
     public void updateWorkCategory(WorkCategory workCategory) {this.workCategory = workCategory;}
 
@@ -147,6 +142,6 @@ public class Work {
 
     public void updateRequesterPaid(boolean requesterPaid) {this.requesterPaid = requesterPaid;}
 
-    public void updatePerformerDone(boolean performerDone) {this.performerDone = true;}
+    public void updatePerformerDone(boolean performerDone) {this.performerDone = performerDone;}
 
 }

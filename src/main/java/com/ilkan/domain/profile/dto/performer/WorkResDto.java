@@ -22,6 +22,9 @@ public class WorkResDto {
     @Schema(description = "의뢰자 정보")
     private final UserResDto requester;
 
+    @Schema(description = "선택된 수행자 정보", example = "김이박")
+    private final UserResDto performer;
+
     @Schema(description = "제목", example = "홈페이지 제작")
     private final String title;
 
@@ -52,6 +55,7 @@ public class WorkResDto {
         return WorkResDto.builder()
                 .taskId(work.getId())
                 .requester(UserResDto.fromEntity(work.getRequester()))
+                .performer(work.getPerformer() != null ? UserResDto.fromEntity(work.getPerformer()) : null)
                 .title(work.getTitle())
                 .description(work.getDescription())
                 .createdAt(work.getCreatedAt())

@@ -53,13 +53,6 @@ public class WorkReqDto {
     @Schema(description = "일거리 카테고리", example = "DESIGN")
     private final WorkCategory category;
 
-    @Schema(description = "작업 시작 시간", example = "2025-08-20T09:00:00")
-    private final LocalDateTime taskStart;
-
-    @Schema(description = "작업 마감 시간", example = "2025-08-22T18:00:00")
-    private final LocalDateTime taskEnd;
-
-
 
     public Work toEntity(User requester) {
         return Work.builder()
@@ -78,8 +71,6 @@ public class WorkReqDto {
                 .requester(requester)
                 .workCategory(this.category) // 추가
                 .status(Status.OPEN) // 기본상태는 모집중으로
-                .taskStart(this.taskStart)
-                .taskEnd(this.taskEnd)
                 .build();
     }
 }

@@ -24,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -48,17 +50,23 @@ public class WorkService {
      * @throws UserWorkExceptions.RequesterForbidden 권한이 없는 경우
      * @throws UserWorkExceptions.NoUploadedWorks 등록한 작업이 없는 경우
      */
-    // 의뢰자가 등록한 작업 조회
+    // 의뢰자가 등록한 작업 조회 (OPEN, ASSIGNED 상태만)
     @Transactional(readOnly = true)
     public Page<WorkResDto> getWorksByRequester(String role, Pageable pageable) {
         if (!"REQUESTER".equals(role)) {
             throw new UserWorkExceptions.RequesterForbidden();
         }
+
         Long requesterId = RoleMapper.getUserIdByRole(role);
-        Page<Work> works = workRepository.findByRequesterId(requesterId, pageable);
+
+        // 필터링 조건 (OPEN, ASSIGNED)
+        List<Status> allowedStatuses = Arrays.asList(Status.OPEN, Status.ASSIGNED);
+
+        Page<Work> works = workRepository.findByRequesterIdAndStatusIn(requesterId, allowedStatuses, pageable);
 
         return works.map(WorkResDto::fromEntity);
     }
+
 
     /**
      // 의뢰자 진행중 목록 조회 (빈 Page 반환)
@@ -321,6 +329,3 @@ public class WorkService {
 
 
 }
-
-
-
