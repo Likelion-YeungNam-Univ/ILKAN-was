@@ -94,7 +94,7 @@ public class Work {
     private String workPhoneNumber; // 일거리등록시 사용 번호
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private WorkCategory workCategory;
 
     @Column(nullable = false)
