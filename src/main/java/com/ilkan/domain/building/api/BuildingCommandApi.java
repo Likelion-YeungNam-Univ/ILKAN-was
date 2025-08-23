@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "BuildingCommand", description = "공간(건물) 등록/삭제 API")
 @RequestMapping(value = "/api/v1/buildings", produces = "application/json")
@@ -22,6 +25,11 @@ public interface BuildingCommandApi {
                     - 요청 헤더: **X-Role = OWNER** 필수
                     - 동일 소유자는 동일한 이름의 건물을 등록할 수 없습니다.
                     - 지역(region), 태그(tag) 값은 Enum 형식(대문자)이어야 합니다.
+                    - 전송 형식: **multipart/form-data**
+                      - data: application/json (BuildingCreateReq)
+                      - mainImage: file (필수)
+                      - subImage1: file (선택)
+                      - subImage2: file (선택)
                     """
     )
     @ApiResponses({
@@ -196,11 +204,14 @@ public interface BuildingCommandApi {
                     )
             )
     })
-    @PostMapping
-    ResponseEntity<BuildingCreateRes> createBuilding(
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BuildingCreateRes> createBuilding(
             @Parameter(description = "역할 헤더(OWNER)", required = true, example = "OWNER")
             @RequestHeader("X-Role") String roleHeader,
-            @RequestBody BuildingCreateReq request
+            @RequestPart("data") @Valid BuildingCreateReq request,
+            @RequestPart("mainImage") MultipartFile mainImage,
+            @RequestPart(value = "subImage1", required = false) MultipartFile subImage1,
+            @RequestPart(value = "subImage2", required = false) MultipartFile subImage2
     );
 
     @Operation(
