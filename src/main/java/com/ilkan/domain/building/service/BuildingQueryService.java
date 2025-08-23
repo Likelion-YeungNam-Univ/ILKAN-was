@@ -5,6 +5,7 @@ import com.ilkan.domain.building.entity.enums.BuildingTag;
 import com.ilkan.domain.building.entity.enums.Region;
 import com.ilkan.domain.building.dto.BuildingCardResDto;
 import com.ilkan.domain.building.dto.BuildingDetailResDto;
+import com.ilkan.domain.file.service.FileStorageService;
 import com.ilkan.exception.BuildingQueryExceptions;
 import com.ilkan.domain.building.repository.BuildingRepository;
 import com.ilkan.domain.building.repository.BuildingSpecs;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuildingQueryService {
 
     private final BuildingRepository repo;
+    private final FileStorageService fileStorageService;
 
     /**
      * 빌딩 목록을 region/tag 조건과 페이지네이션으로 조회
@@ -42,7 +44,8 @@ public class BuildingQueryService {
                     .where(BuildingSpecs.regionEq(region))
                     .and(BuildingSpecs.tagEq(tag));
 
-            return repo.findAll(spec, pageable).map(BuildingCardResDto::fromEntity);
+            return repo.findAll(spec, pageable)
+                    .map(b -> BuildingCardResDto.fromEntity(b, toUrlNullable(b.getBuildingImage())));
         } catch (IllegalArgumentException e) {
             throw new BuildingQueryExceptions.DbDataCorrupted(e.getMessage());
         } catch (DataAccessException e) {
@@ -77,12 +80,21 @@ public class BuildingQueryService {
                     .orElseThrow(() -> new BuildingQueryExceptions.NotFound(id));
 
             String label = BuildingTag.toLabel(b.getBuildingTag()); // enum → 한글 라벨
-            return BuildingDetailResDto.fromEntity(b, label);
+
+            String mainUrl = toUrlNullable(b.getBuildingImage());
+            String sub1Url = toUrlNullable(b.getBuildingImage1());
+            String sub2Url = toUrlNullable(b.getBuildingImage2());
+
+            return BuildingDetailResDto.fromEntity(b, label, mainUrl, sub1Url, sub2Url);
 
         } catch (IllegalArgumentException e) {
             throw new BuildingQueryExceptions.DbDataCorrupted(e.getMessage());
         } catch (DataAccessException e) {
             throw new BuildingQueryExceptions.DbError(e.getMostSpecificCause().getMessage());
         }
+    }
+
+    private String toUrlNullable(String key) {
+        return (key == null || key.isBlank()) ? null : fileStorageService.getFileUrl(key);
     }
 }
