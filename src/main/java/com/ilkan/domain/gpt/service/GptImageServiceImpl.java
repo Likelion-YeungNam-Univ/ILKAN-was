@@ -1,7 +1,6 @@
 // src/main/java/com/ilkan/domain/gpt/service/GptImageServiceImpl.java
 package com.ilkan.domain.gpt.service;
 
-import com.ilkan.domain.gpt.config.GptImageProps;
 import com.ilkan.domain.gpt.dto.ChatRequestDto;
 import com.ilkan.domain.gpt.dto.GptImageResultDto;
 import com.ilkan.exception.GptImageExceptions;
@@ -22,8 +21,6 @@ public class GptImageServiceImpl implements ChatGPTService {
 
     @Value("${openai.api.key}")
     private String apiKey;
-
-    private final GptImageProps props;
 
     private static final String API_URL = "https://api.openai.com/v1/images/edits";
 
@@ -53,10 +50,7 @@ public class GptImageServiceImpl implements ChatGPTService {
         }
 
         body.add("prompt", requestDto.getPrompt());
-        body.add("model", props.getModel());
-        body.add("size", props.getSize());
-        body.add("n", String.valueOf(props.getN()));
-        body.add("response_format", props.getResponseFormat());
+        body.add("model", "gpt-image-1");
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
