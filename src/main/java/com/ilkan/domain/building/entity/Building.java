@@ -51,6 +51,12 @@ public class Building {
     @Column(name = "building_image", nullable = false)
     private String buildingImage; // 건물 대표 이미지
 
+    @Column(name = "building_image1")
+    private String buildingImage1;
+
+    @Column(name = "building_image2")
+    private String buildingImage2;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "building_region", nullable = false)
     private Region buildingRegion; // 건물 지역
@@ -77,32 +83,19 @@ public class Building {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "building_image1")
-    private String buildingImage1;
-
-    @Column(name = "building_image2")
-    private String buildingImage2;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "building_status")
     private BuildingStatus buildingStatus; // 건물 심사상태
 
     // ==== 변경 메서드 ====
-    public void updateOwner (User owner) {
-        this.owner = owner;
-    }
-
-    public void updateBuildingAddress (String buildingAddress) {
-        this.buildingAddress = buildingAddress;
-    }
-
-    public void updateIslegal (boolean islegal) { this.islegal = islegal; }
 
     public void updateBuildingImage (String buildingImage) { this.buildingImage = buildingImage; }
 
-    public void updateBuildingRegion (Region buildingRegion) { this.buildingRegion = buildingRegion; }
+    public void updateBuildingImage1 (String buildingImage1) {
+        this.buildingImage1 = buildingImage1;
+    }
 
-    // 건물 태그수정 불가, 구현X
-
-    public void updateBuildingName (String buildingName) {this.buildingName = buildingName;}
+    public void updateBuildingImage2 (String buildingImage2) {
+        this.buildingImage2 = buildingImage2;
+    }
 }

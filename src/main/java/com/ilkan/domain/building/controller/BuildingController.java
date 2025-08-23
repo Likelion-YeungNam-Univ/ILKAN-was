@@ -8,9 +8,12 @@ import com.ilkan.domain.building.dto.BuildingCreateRes;
 import com.ilkan.domain.building.service.BuildingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -22,15 +25,17 @@ public class BuildingController implements BuildingCommandApi {
 
     @Override
     @AllowedRoles(Role.OWNER)
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BuildingCreateRes> createBuilding(
             @RequestHeader("X-Role") String roleHeader,
-            @Valid @RequestBody BuildingCreateReq req
+            @RequestPart("data") @Valid BuildingCreateReq req,         // JSON
+            @RequestPart("mainImage") MultipartFile mainImage,         // 파일
+            @RequestPart(value="subImage1", required=false) MultipartFile subImage1,
+            @RequestPart(value="subImage2", required=false) MultipartFile subImage2
     ) {
-        BuildingCreateRes res = buildingService.createBuilding(roleHeader, req);
-        return ResponseEntity
-                .created(URI.create("/api/v1/buildings/" + res.getId()))
-                .body(res);
+        return ResponseEntity.ok(
+                buildingService.createBuilding(roleHeader, req, mainImage, subImage1, subImage2)
+        );
     }
 
     @AllowedRoles(Role.OWNER)

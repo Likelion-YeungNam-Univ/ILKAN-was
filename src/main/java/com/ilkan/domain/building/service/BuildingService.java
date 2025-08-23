@@ -1,6 +1,7 @@
 package com.ilkan.domain.building.service;
 
 import com.ilkan.domain.building.entity.Building;
+import com.ilkan.domain.file.service.FileStorageService;
 import com.ilkan.domain.profile.entity.User;
 import com.ilkan.domain.building.entity.enums.BuildingTag;
 import com.ilkan.domain.building.entity.enums.Region;
@@ -16,7 +17,9 @@ import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Locale;
 
 @Service
@@ -26,6 +29,7 @@ public class BuildingService {
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
     private final ReservationRepository reservationRepository;
+    private final FileStorageService fileStorageService;
 
     /**
      * 건물주(OWNER) 역할의 유저가 새로운 건물을 등록합니다.
@@ -42,9 +46,13 @@ public class BuildingService {
      * @throws BuildingCommandExceptions.DuplicatedName 동일 소유자의 건물명이 중복된 경우
      */
     @Transactional
-    public BuildingCreateRes createBuilding(String roleHeader, BuildingCreateReq req) {
+    public BuildingCreateRes createBuilding(String roleHeader, BuildingCreateReq req, MultipartFile mainImage, MultipartFile subImage1, MultipartFile subImage2) {
 
         if (roleHeader == null || roleHeader.isBlank()) throw new RoleExceptions.Missing();
+        if (mainImage == null || mainImage.isEmpty()) {
+            throw new IllegalArgumentException("대표 이미지는 필수입니다.");
+        }
+
         final Role role;
         try { role = Role.valueOf(roleHeader.trim().toUpperCase(Locale.ROOT)); }
         catch (IllegalArgumentException e) { throw new RoleExceptions.Invalid(roleHeader); }
@@ -65,8 +73,31 @@ public class BuildingService {
 
         Building entity = req.toEntity(owner, region, tag);
 
+        String keyMain = uploadNullable(ownerId, mainImage);
+        String keySub1 = uploadNullable(ownerId, subImage1);
+        String keySub2 = uploadNullable(ownerId, subImage2);
+
+        entity.updateBuildingImage(keyMain);
+        if (keySub1 != null) entity.updateBuildingImage1(keySub1);
+        if (keySub2 != null) entity.updateBuildingImage2(keySub2);
+
         Building saved = buildingRepository.save(entity);
+
         return BuildingCreateRes.fromEntity(saved);
+    }
+
+    private String uploadNullable(Long ownerId, MultipartFile file) {
+        if (file == null || file.isEmpty()) return null;
+        try {
+            FileStorageService.UploadResult r = fileStorageService.upload(ownerId, file);
+            return r.key();
+        } catch (IOException e) {
+            throw new RuntimeException("S3 업로드 실패", e);
+        }
+    }
+
+    private String toUrl(String key) {
+        return key == null ? null : fileStorageService.getFileUrl(key);
     }
 
     // 문자열 -> enum
