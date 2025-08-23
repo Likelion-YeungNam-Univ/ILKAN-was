@@ -228,13 +228,28 @@ public class WorkService {
         }
 
         Long performerId = RoleMapper.getUserIdByRole(roleHeader);
+
+        // 1. Work 조회
         Work work = workRepository.findById(taskId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
+
+        // 2. Performer 조회
         User performer = userRepository.findById(performerId)
                 .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
 
-        return taskApplicationRepository.save(dto.toEntity(work, performer));
+        // 3. Work 상태 변경
+        work.updateStatus(Status.APPLY_TO);
+
+        // 4. TaskApplication 엔티티 생성
+        TaskApplication application = dto.toEntity(work, performer);
+
+        // 5. DB 반영 (둘 다 저장)
+        taskApplicationRepository.save(application);
+        workRepository.save(work);
+
+        return application;
     }
+
 
     /**
      * 의뢰자 기준 수행자 지원 목록 조회
