@@ -21,7 +21,7 @@ public class ReservationStatusScheduler {
     @Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
     @Transactional
     public void tick() {
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime now = LocalDateTime.now(java.time.ZoneOffset.UTC);
 
         // RESERVED → IN_USE
         var toInUse = reservationRepo
