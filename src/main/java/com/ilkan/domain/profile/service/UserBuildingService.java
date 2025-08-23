@@ -1,14 +1,15 @@
 package com.ilkan.domain.profile.service;
 
 import com.ilkan.domain.building.entity.Building;
-import com.ilkan.domain.reservation.entity.Reservation;
-import com.ilkan.domain.reservation.entity.enums.ReservationStatus;
+import com.ilkan.domain.building.repository.BuildingRepository;
 import com.ilkan.domain.profile.dto.owner.OwnerBuildingResDto;
 import com.ilkan.domain.profile.dto.owner.OwnersInUseResDto;
+import com.ilkan.domain.profile.dto.owner.OwnersReservedResDto;
 import com.ilkan.domain.profile.dto.performer.UserBuildingResDto;
-import com.ilkan.exception.UserBuildingExceptions;
-import com.ilkan.domain.building.repository.BuildingRepository;
 import com.ilkan.domain.profile.repository.UserBuildingRepository;
+import com.ilkan.domain.reservation.entity.Reservation;
+import com.ilkan.domain.reservation.entity.enums.ReservationStatus;
+import com.ilkan.exception.UserBuildingExceptions;
 import com.ilkan.util.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,21 @@ public class UserBuildingService {
 
         return reservationsInUse.map(OwnersInUseResDto::fromEntity);
     }
+
+    @Transactional(readOnly = true)
+    public Page<OwnersReservedResDto> getReservedBuildings(String roleHeader, Pageable pageable) {
+        if (!"OWNER".equals(roleHeader)) {
+            throw new UserBuildingExceptions.OwnerForbidden();
+        }
+
+        Long ownerId = RoleMapper.getUserIdByRole(roleHeader);
+        Page<Reservation> reservedReservations = userBuildingRepository
+                .findByBuildingId_Owner_IdAndReservationStatus(ownerId, ReservationStatus.RESERVED, pageable);
+
+        return reservedReservations.map(OwnersReservedResDto::fromEntity);
+    }
+
+
 
 
 }
