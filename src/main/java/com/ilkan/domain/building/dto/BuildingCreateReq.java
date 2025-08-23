@@ -26,16 +26,6 @@ public class BuildingCreateReq {
     @NotBlank
     private String buildingAddress;
 
-    @Schema(description = "대표 이미지 URL", example = "https://cdn.example.com/building/main.jpg")
-    @NotBlank
-    private String buildingImage;
-
-    @Schema(description = "추가 이미지1 URL", example = "https://cdn.example.com/building/sub1.jpg")
-    private String buildingImage1;
-
-    @Schema(description = "추가 이미지2 URL", example = "https://cdn.example.com/building/sub2.jpg")
-    private String buildingImage2;
-
     @Schema(description = "빌딩 이름", example = "경산시 분위기 좋은 공유 오피스")
     @NotBlank
     private String buildingName;
@@ -67,9 +57,6 @@ public class BuildingCreateReq {
                 .owner(owner)
                 .phoneNumber(phoneNumber)
                 .buildingAddress(buildingAddress)
-                .buildingImage(buildingImage)
-                .buildingImage1(buildingImage1)
-                .buildingImage2(buildingImage2)
                 .buildingRegion(region)
                 .buildingTag(tag)
                 .buildingDescription(buildingDescription)
