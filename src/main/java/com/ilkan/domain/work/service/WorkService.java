@@ -241,18 +241,25 @@ public class WorkService {
         User performer = userRepository.findById(performerId)
                 .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
 
-        // 3. Work 상태 변경
+        // 3. 중복 지원 체크
+        boolean alreadyApplied = taskApplicationRepository.existsByTaskIdAndPerformerId(work, performer);
+        if (alreadyApplied) {
+            throw new UserWorkExceptions.AlreadyApplied();
+        }
+
+        // 4. Work 상태 변경
         work.updateStatus(Status.APPLY_TO);
 
-        // 4. TaskApplication 엔티티 생성
+        // 5. TaskApplication 엔티티 생성
         TaskApplication application = dto.toEntity(work, performer);
 
-        // 5. DB 반영 (둘 다 저장)
+        // 6. DB 반영 (둘 다 저장)
         taskApplicationRepository.save(application);
         workRepository.save(work);
 
         return application;
     }
+
 
 
     /**
