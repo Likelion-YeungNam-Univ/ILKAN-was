@@ -16,14 +16,10 @@ public final class GptImageExceptions {
     /** base64 디코딩 실패 */
     public static class InvalidBase64 extends RuntimeException {
         public InvalidBase64(String msg, Throwable cause) { super(msg, cause); }
-        public InvalidBase64(String msg) { super(msg); }
     }
 
     /** 업로드 실패(S3 등) - SDK 자체 예외(S3Exception)는 별도 핸들러가 받음 */
     public static class UploadFailed extends RuntimeException {
         public UploadFailed(String msg, Throwable cause) { super(msg, cause); }
-        public UploadFailed(String msg) { super(msg); }
     }
-
-    private GptImageExceptions() {}
 }

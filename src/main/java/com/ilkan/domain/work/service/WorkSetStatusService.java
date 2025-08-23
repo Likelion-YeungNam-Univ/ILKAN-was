@@ -53,7 +53,7 @@ public class WorkSetStatusService {
                 }
                 work.updatePerformerReady(true);
             } else {
-                throw new UserWorkExceptions.InvalidRequest("권한 없음");
+                throw new UserWorkExceptions.InvalidRequest("권한이 없습니다.");
             }
             // 둘 다 준비되었을 때 IN_PROGRESS로 전환
             if (work.isRequesterReady() && work.isPerformerReady()) {
@@ -76,7 +76,7 @@ public class WorkSetStatusService {
                 }
                 work.updateStatus(Status.COMPLETE_WAITING);
             } else {
-                throw new UserWorkExceptions.InvalidRequest("권한 없음");
+                throw new UserWorkExceptions.InvalidRequest("권한이 없습니다.");
             }
 
             workRepository.save(work);
@@ -93,7 +93,7 @@ public class WorkSetStatusService {
                 workRepository.save(work);
                 return WorkResDto.fromEntity(work);
             } else {
-                throw new UserWorkExceptions.InvalidRequest("PAY_WAITING 상태에서는 의뢰자만 완료 가능");
+                throw new UserWorkExceptions.InvalidRequest("현재 상태(PAY_WAITING)에서는 의뢰자만 완료할 수 있습니다.");
             }
         }
         // ---- COMPLETE_WAITING: 수행자가 완료 클릭 시
@@ -106,12 +106,12 @@ public class WorkSetStatusService {
                 workRepository.save(work);
                 return WorkResDto.fromEntity(work);
             } else {
-                throw new UserWorkExceptions.InvalidRequest("COMPLETE_WAITING 상태에서는 수행자만 완료 가능");
+                throw new UserWorkExceptions.InvalidRequest("현재 상태(COMPLETE_WAITING)에서는 수행자만 완료할 수 있습니다.");
             }
         }
         // 그 외 상태는 변경불가
         else {
-            throw new UserWorkExceptions.InvalidRequest("현재 상태에서 요청한 상태로 변경할 수 없습니다.");
+            throw new UserWorkExceptions.InvalidRequest("현재 상태에서는 작업 상태를 변경할 수 없습니다.");
         }
     }
 }

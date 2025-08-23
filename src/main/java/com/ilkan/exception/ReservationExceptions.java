@@ -14,14 +14,14 @@ public final class ReservationExceptions {
 
     // 1. 빌딩을 찾을 수 없는 경우
     public static class BuildingNotFound extends Base {
-        public BuildingNotFound() { super("building not found"); }
+        public BuildingNotFound() { super("해당 건물을 찾을 수 없습니다."); }
         @Override public String code() { return "BUILDING_NOT_FOUND"; }
         @Override public HttpStatus status() { return HttpStatus.NOT_FOUND; }
     }
 
     // 2. 수행자를 찾을 수 없는 경우
     public static class PerformerNotFound extends Base {
-        public PerformerNotFound() { super("performer not found"); }
+        public PerformerNotFound() { super("해당 수행자를 찾을 수 없습니다."); }
         @Override public String code() { return "PERFORMER_NOT_FOUND"; }
         @Override public HttpStatus status() { return HttpStatus.NOT_FOUND; }
     }
@@ -42,7 +42,7 @@ public final class ReservationExceptions {
 
     // 5. 예약이 존재하지 않을 경우
     public static class ReservationNotFound extends Base {
-        public ReservationNotFound() { super("reservation not found"); }
+        public ReservationNotFound() { super("예약을 찾을 수 없습니다."); }
         @Override public String code() { return "RESERVATION_NOT_FOUND"; }
         @Override public HttpStatus status() { return HttpStatus.NOT_FOUND; }
     }
