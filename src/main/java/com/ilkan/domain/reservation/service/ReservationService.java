@@ -117,7 +117,7 @@ public class ReservationService {
      */
     private void validateRange(LocalDate from, LocalDate to) {
         if (from == null || to == null || !from.isBefore(to)) {
-            throw new ReservationExceptions.InvalidRange("invalid range");
+            throw new ReservationExceptions.InvalidRange("시작일이 종료일과 같거나, 이후일 수 없습니다.");
         }
         if (from.plusMonths(6).isBefore(to)) { // 최대 6개월 같은 가드
             throw new ReservationExceptions.InvalidRange("최대 6개월 범위만 지정할 수 있습니다.");

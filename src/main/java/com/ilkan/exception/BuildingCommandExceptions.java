@@ -21,7 +21,7 @@ public final class BuildingCommandExceptions {
         private final String region;
 
         public InvalidRegion(String region) {
-            super("유효하지 않은 지역: " + region);
+            super("잘못된 지역 값입니다: \"" + region + "\"");
             this.region = region;
         }
 
@@ -44,7 +44,7 @@ public final class BuildingCommandExceptions {
         private final String tag;
 
         public InvalidTag(String tag) {
-            super("유효하지 않은 태그: " + tag);
+            super("잘못된 태그 값입니다: \"" + tag + "\"");
             this.tag = tag;
         }
 
@@ -67,7 +67,7 @@ public final class BuildingCommandExceptions {
         private final String name;
 
         public DuplicatedName(String name) {
-            super("동일 소유자의 중복 건물명: " + name);
+            super("동일한 이름의 건물이 이미 존재합니다: \"" + name + "\"");
             this.name = name;
         }
 
