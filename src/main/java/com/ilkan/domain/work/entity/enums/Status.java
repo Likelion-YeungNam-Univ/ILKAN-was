@@ -14,6 +14,6 @@ public enum Status {
     // 진행중(마이페이지에 표시할 그룹) 상태 집합 반환
     // 언제든 이 메서드 하나만 바꾸면 모든 조회가 같이 바뀜
     public static java.util.Set<Status> activeStatuses() {
-        return java.util.EnumSet.of(ASSIGNED, IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
+        return java.util.EnumSet.of(IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
     }
 }
