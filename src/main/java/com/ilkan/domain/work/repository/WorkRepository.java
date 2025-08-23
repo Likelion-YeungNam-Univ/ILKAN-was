@@ -24,7 +24,11 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
 
     Optional<Work> findByIdAndRequesterId(Long taskId, Long requesterId); // 일거리 수정/삭제 시 권한체크용
 
-    Page<Work> findByWorkCategory(WorkCategory category, Pageable pageable);
+    // 전체 OPEN 상태 일거리 조회
+    Page<Work> findByStatus(Status status, Pageable pageable);
+
+    // 카테고리 + OPEN 상태 조회
+    Page<Work> findByWorkCategoryAndStatus(WorkCategory category, Status status, Pageable pageable);
 
     // 지금 시간 이전인데 아직 시작 안한 Work
     List<Work> findByTaskStartBeforeAndStatus(LocalDateTime now, Status status);

@@ -134,18 +134,22 @@ public class WorkService {
      * @param pageable 페이지 정보
      * @return WorkListResDto로 변환한 Page 객체
      */
-    // 일거리 목록 조회
+    // 일거리 목록 조회 (카테고리 + OPEN 상태 필터)
     @Transactional(readOnly = true)
     public Page<WorkListResDto> getWorkList(WorkCategory category, Pageable pageable) {
         Page<Work> works;
+
         if (category == null) {
-            works = workRepository.findAll(pageable);
+            // 전체 중에서 Status가 OPEN인 것만 조회
+            works = workRepository.findByStatus(Status.OPEN, pageable);
         } else {
-            works = workRepository.findByWorkCategory(category, pageable);
+            // 카테고리 + Status가 OPEN인 것만 조회
+            works = workRepository.findByWorkCategoryAndStatus(category, Status.OPEN, pageable);
         }
 
         return works.map(WorkListResDto::fromEntity);
     }
+
 
     /**
      * 일거리 상세 조회
