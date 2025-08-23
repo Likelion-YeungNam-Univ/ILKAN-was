@@ -127,14 +127,6 @@ public class GlobalExceptionHandler {
                 .body(apiError("METHOD_NOT_ALLOWED", "지원하지 않는 메서드입니다.", 405, req.getRequestURI()));
     }
 
-    // 최종 Fallback
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleUnknown(Exception e, HttpServletRequest req) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(apiError("INTERNAL_ERROR", "서버 에러가 발생했습니다.", 500, req.getRequestURI()));
-    }
-
-
     private ApiErrorResponse apiError(String code, String message, int status, String path) {
         return ApiErrorResponse.builder()
                 .code(code)
