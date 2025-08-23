@@ -1,5 +1,6 @@
 package com.ilkan.domain.profile.dto.owner;
 
+import com.ilkan.domain.building.entity.Building;
 import com.ilkan.domain.reservation.entity.Reservation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(description = "자신의 건물중 사용중인것을 조회 DTO")
 public class OwnersInUseResDto {
+
+    @Schema(description = "예약 ID", example = "1")
+    private Long reservationId;
+
+    @Schema(description = "빌딩 ID", example = "1")
+    private Long buildingId;
 
     @Schema(description = "건물 이름", example = "경산시 공유오피스")
     private final String buildingName;
@@ -36,10 +43,13 @@ public class OwnersInUseResDto {
     private final LocalDateTime endTime;
 
     public static OwnersInUseResDto fromEntity(Reservation reservation) {
+        Building building = reservation.getBuildingId();
         return OwnersInUseResDto.builder()
-                .buildingName(reservation.getBuildingId().getBuildingName())
-                .buildingAddress(reservation.getBuildingId().getBuildingAddress())
-                .buildingImage(reservation.getBuildingId().getBuildingImage())
+                .reservationId(reservation.getId())
+                .buildingId(building.getId())
+                .buildingName(building.getBuildingName())
+                .buildingAddress(building.getBuildingAddress())
+                .buildingImage(building.getBuildingImage())
                 .checkInTime(reservation.getStartTime())    // 수행자가 실제 체크인한 시간
                 .checkOutTime(reservation.getEndTime())    // 수행자가 체크아웃한 시간
                 .startTime(reservation.getStartTime())     // 예약 시작 시간

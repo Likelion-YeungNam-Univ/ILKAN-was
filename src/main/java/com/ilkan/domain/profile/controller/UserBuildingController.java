@@ -1,12 +1,13 @@
 package com.ilkan.domain.profile.controller;
 
-import com.ilkan.security.AllowedRoles;
 import com.ilkan.domain.profile.api.UserBuildingApi;
-import com.ilkan.domain.profile.entity.enums.Role;
 import com.ilkan.domain.profile.dto.owner.OwnerBuildingResDto;
 import com.ilkan.domain.profile.dto.owner.OwnersInUseResDto;
+import com.ilkan.domain.profile.dto.owner.OwnersReservedResDto;
 import com.ilkan.domain.profile.dto.performer.UserBuildingResDto;
+import com.ilkan.domain.profile.entity.enums.Role;
 import com.ilkan.domain.profile.service.UserBuildingService;
+import com.ilkan.security.AllowedRoles;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,6 +63,16 @@ public class UserBuildingController implements UserBuildingApi {
         return ResponseEntity.ok(buildings);
     }
 
+    // 건물주 - 자신이 등록한 건물 중 예약된 것 조회
+    @AllowedRoles(Role.OWNER)
+    @GetMapping("/reserved")
+    public ResponseEntity<Page<OwnersReservedResDto>> getReservedBuildings(
+            @RequestHeader("X-Role") String roleHeader,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
+        // 서비스 호출 -> 예약 상태가 RESERVED인 건물만 조회
+        Page<OwnersReservedResDto> reservedBuildings = ownerBuildingService.getReservedBuildings(roleHeader, pageable);
 
+        return ResponseEntity.ok(reservedBuildings);
+    }
 }

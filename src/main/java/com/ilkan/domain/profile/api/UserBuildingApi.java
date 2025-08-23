@@ -2,6 +2,7 @@ package com.ilkan.domain.profile.api;
 
 import com.ilkan.domain.profile.dto.owner.OwnerBuildingResDto;
 import com.ilkan.domain.profile.dto.owner.OwnersInUseResDto;
+import com.ilkan.domain.profile.dto.owner.OwnersReservedResDto;
 import com.ilkan.domain.profile.dto.performer.UserBuildingResDto;
 import com.ilkan.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -108,5 +109,29 @@ public interface UserBuildingApi {
 
     );
 
+    @Operation(summary = "예약된 건물 조회", description = "건물주(OWNER) 역할 전용, 예약 상태가 RESERVED인 자신의 건물 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OwnersReservedResDto.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = "{\"code\":\"OWNER_FORBIDDEN\",\"message\":\"건물주 권한이 없습니다.\",\"status\":403,\"path\":\"/api/v1/myprofile/buildings/reserved\",\"timestamp\":\"2025-08-23T15:00:00Z\"}")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "예약된 건물이 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(value = "{\"code\":\"OWNER_RESERVED_BUILDING_NOT_FOUND\",\"message\":\"예약된 건물이 없습니다.\",\"status\":404,\"path\":\"/api/v1/myprofile/buildings/reserved\",\"timestamp\":\"2025-08-23T15:00:00Z\"}")
+                    )
+            )
+    })
+    @GetMapping("/reserved")
+    ResponseEntity<Page<OwnersReservedResDto>> getReservedBuildings(
+            @Parameter(description = "건물주 역할 (OWNER)", required = true, example = "OWNER")
+            @RequestHeader("X-Role") String roleHeader,
+            @Parameter(description = "페이지네이션 정보") @PageableDefault Pageable pageable
+    );
 
 }
