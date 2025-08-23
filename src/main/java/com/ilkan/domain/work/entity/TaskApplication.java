@@ -40,6 +40,10 @@ public class TaskApplication {
     @JoinColumn(name = "performer_id", nullable = false)
     private User performerId; // 수행자 id
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requester_id", nullable = false)
+    private User requesterId; // 의뢰자 id
+
     @Enumerated(EnumType.STRING)
     @Column
     private Status status;
