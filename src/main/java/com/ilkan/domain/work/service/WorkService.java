@@ -283,8 +283,10 @@ public class WorkService {
             throw new UserWorkExceptions.InvalidRequest("다른 의뢰자의 일거리 입니다."); // 다른 의뢰자의 작업 접근 불가
         }
 
-        TaskApplication application = taskApplicationRepository.findById(applyId)
+        TaskApplication application = taskApplicationRepository
+                .findByIdAndTaskId_Id(applyId, workId)
                 .orElseThrow(UserWorkExceptions.NoAppliedWorks::new);
+
         return WorkApplyDetailResDto.fromEntity(application);
     }
 
