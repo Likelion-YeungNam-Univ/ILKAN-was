@@ -25,6 +25,7 @@ public class WorkApplyReqDto {
         return TaskApplication.builder()
                 .taskId(work)
                 .performerId(performer)
+                .requesterId(work.getRequester())
                 .bio(this.bio)
                 .portfolioUrl(this.portfolioUrl)
                 .status(Status.APPLY_TO)
