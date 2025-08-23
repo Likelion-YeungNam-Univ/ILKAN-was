@@ -34,11 +34,11 @@ public class BuildingCardResDto {
     @Schema(description = "빌딩 이름", example = "경산시 분위기 좋은 공유 오피스")
     private final String buildingName;
 
-    public static BuildingCardResDto fromEntity(Building b) {
+    public static BuildingCardResDto fromEntity(Building b, String imageUrl) {
         return BuildingCardResDto.builder()
                 .id(b.getId())
                 .owner(b.getOwner().getName())
-                .buildingImage(b.getBuildingImage())
+                .buildingImage(imageUrl)
                 .buildingPrice(b.getBuildingPrice())
                 .region(b.getBuildingRegion())
                 .tag(b.getBuildingTag())
