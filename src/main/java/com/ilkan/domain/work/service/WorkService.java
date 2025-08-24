@@ -79,7 +79,7 @@ public class WorkService {
         }
         Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
 
-        Set<Status> activeStatuses = Status.activeStatuses();
+        Set<Status> activeStatuses = Status.RequesterActiveStatuses();
         Page<Work> works = workRepository.findByRequester_IdAndStatusIn(requesterId, activeStatuses, pageable);
 
         return works.map(WorkResDto::fromEntity);
