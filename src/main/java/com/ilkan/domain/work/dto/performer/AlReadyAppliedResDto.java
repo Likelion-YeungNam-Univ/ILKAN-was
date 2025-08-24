@@ -17,4 +17,7 @@ public class AlReadyAppliedResDto {
 
     @Schema(description = "신규 지원 시 response", example = "지원 정보 쭉")
     private final ApplicationResDto application;
+
+    @Schema(description = "중복지원 / 지원완료 메시지", example = "이미 지원된 일거리 입니다!")
+    private final String message;
 }
