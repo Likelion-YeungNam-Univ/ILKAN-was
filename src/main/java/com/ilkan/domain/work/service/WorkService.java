@@ -233,7 +233,14 @@ public class WorkService {
             throw new UserWorkExceptions.PerformerForbidden();
         }
 
+
         Long performerId = RoleMapper.getUserIdByRole(roleHeader);
+
+        // 중복 지원 체크
+        boolean alreadyApplied = taskApplicationRepository.existsByTaskId_IdAndPerformerId_Id(taskId, performerId);
+        if (alreadyApplied) {
+            throw new UserWorkExceptions.AlreadyApplied();
+        }
 
         // 1. Work 조회
         Work work = workRepository.findById(taskId)
@@ -243,19 +250,14 @@ public class WorkService {
         User performer = userRepository.findById(performerId)
                 .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
 
-        // 3. 중복 지원 체크
-        boolean alreadyApplied = taskApplicationRepository.existsByTaskIdAndPerformerId(work, performer);
-        if (alreadyApplied) {
-            throw new UserWorkExceptions.AlreadyApplied();
-        }
 
-        // 4. Work 상태 변경
+        // 3. Work 상태 변경
         work.updateStatus(Status.APPLY_TO);
 
-        // 5. TaskApplication 엔티티 생성
+        // 4. TaskApplication 엔티티 생성
         TaskApplication application = dto.toEntity(work, performer);
 
-        // 6. DB 반영 (둘 다 저장)
+        // 5. DB 반영 (둘 다 저장)
         taskApplicationRepository.save(application);
         workRepository.save(work);
 
