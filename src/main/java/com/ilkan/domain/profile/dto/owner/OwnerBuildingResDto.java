@@ -28,6 +28,10 @@ public class OwnerBuildingResDto {
     @Schema(description = "가격", example = "200원")
     private Long buildingPrice;
 
+    @Schema(description = "빌딩 주소", example = "서울시 ..구")
+    private String buildingAddress;
+
+
     public static OwnerBuildingResDto fromEntity(Building building) {
         return OwnerBuildingResDto.builder()
                 .buildingId(building.getId())
@@ -35,6 +39,7 @@ public class OwnerBuildingResDto {
                 .buildingName(building.getBuildingName())
                 .buildingStatus(building.getBuildingStatus())
                 .buildingPrice(building.getBuildingPrice())
+                .buildingAddress(building.getBuildingAddress())
                 .build();
     }
 
