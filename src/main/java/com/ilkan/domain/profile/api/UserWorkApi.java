@@ -132,6 +132,7 @@ public interface UserWorkApi {
     @GetMapping("/applies")
     ResponseEntity<Page<WorkApplyListResDto>> getApplicants(
             @RequestHeader("X-Role") String roleHeader,
+            @PathVariable Long taskId,
             Pageable pageable
     );
 
