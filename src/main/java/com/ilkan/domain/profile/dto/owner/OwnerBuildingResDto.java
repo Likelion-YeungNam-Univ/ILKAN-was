@@ -31,7 +31,7 @@ public class OwnerBuildingResDto {
     public static OwnerBuildingResDto fromEntity(Building building) {
         return OwnerBuildingResDto.builder()
                 .buildingId(building.getId())
-                .buildingImage(building.getBuildingImage())
+                .buildingImage("https://ilkan-image.s3.ap-northeast-2.amazonaws.com/" + building.getBuildingImage())
                 .buildingName(building.getBuildingName())
                 .buildingStatus(building.getBuildingStatus())
                 .buildingPrice(building.getBuildingPrice())

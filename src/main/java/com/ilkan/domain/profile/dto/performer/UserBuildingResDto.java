@@ -52,7 +52,7 @@ public class UserBuildingResDto {
                 .endTime(reservation.getEndTime())
                 .buildingName(reservation.getBuildingId().getBuildingName())
                 .reservationStatus(reservation.getReservationStatus())
-                .buildingImage(reservation.getBuildingId().getBuildingImage())
+                .buildingImage("https://ilkan-image.s3.ap-northeast-2.amazonaws.com/" + reservation.getBuildingId().getBuildingImage())
                 .build();
     }
 }
