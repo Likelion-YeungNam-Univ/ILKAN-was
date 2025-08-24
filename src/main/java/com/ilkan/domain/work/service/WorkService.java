@@ -220,13 +220,13 @@ public class WorkService {
      * @param roleHeader 사용자 역할 헤더
      * @param taskId 신청할 작업 ID
      * @param dto WorkApplyReqDto
-     * @return 저장된 TaskApplication
+     * @return 저장된 ApplicationResDto
      * @throws UserWorkExceptions.PerformerForbidden 권한이 없는 경우
      * @throws UserWorkExceptions.WorkNotFound 작업을 찾지 못한 경우
      */
     // 수행자 일거리 신청
     @Transactional
-    public TaskApplication applyWork(String roleHeader, Long taskId, WorkApplyReqDto dto) {
+    public ApplicationResDto applyWork(String roleHeader, Long taskId, WorkApplyReqDto dto) {
         if (!"PERFORMER".equals(roleHeader)) {
             throw new UserWorkExceptions.PerformerForbidden();
         }
@@ -257,7 +257,8 @@ public class WorkService {
         taskApplicationRepository.save(application);
         workRepository.save(work);
 
-        return application;
+        return ApplicationResDto.fromEntity(application);
+
     }
 
 
