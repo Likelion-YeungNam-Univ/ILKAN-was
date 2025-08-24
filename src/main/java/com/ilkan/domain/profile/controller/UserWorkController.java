@@ -1,17 +1,16 @@
 package com.ilkan.domain.profile.controller;
 
-import com.ilkan.domain.work.service.WorkSetStatusService;
-import com.ilkan.security.AllowedRoles;
 import com.ilkan.domain.profile.api.UserWorkApi;
+import com.ilkan.domain.profile.dto.performer.WorkResDto;
 import com.ilkan.domain.profile.dto.performer.WorkStatusReqDto;
-import com.ilkan.domain.work.entity.TaskApplication;
 import com.ilkan.domain.profile.entity.enums.Role;
+import com.ilkan.domain.work.dto.performer.WorkApplyReqDto;
 import com.ilkan.domain.work.dto.requester.ApplicationResDto;
 import com.ilkan.domain.work.dto.requester.WorkApplyDetailResDto;
-import com.ilkan.domain.work.dto.performer.WorkApplyReqDto;
-import com.ilkan.domain.profile.dto.performer.WorkResDto;
 import com.ilkan.domain.work.dto.requester.WorkApplyListResDto;
 import com.ilkan.domain.work.service.WorkService;
+import com.ilkan.domain.work.service.WorkSetStatusService;
+import com.ilkan.security.AllowedRoles;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -108,8 +114,7 @@ public class UserWorkController implements UserWorkApi {
             @PathVariable Long taskId,
             @RequestBody WorkApplyReqDto dto
     ) {
-        TaskApplication application = workService.applyWork(role, taskId, dto);
-        ApplicationResDto response = ApplicationResDto.fromEntity(application);
+        ApplicationResDto response = workService.applyWork(role, taskId, dto);
         return ResponseEntity.ok(response);
     }
 
