@@ -49,6 +49,9 @@ public class WorkResDto {
     @Schema(description = "모집 기한", example = "~25/08/30")
     private final LocalDateTime recruitmentPeriod; // 모집 기한
 
+    @Schema(description = "수행자 준비완료 버튼 클릭 여부")
+    private final boolean performerReady;
+
 
     // DB에서 조회한 Entity를 API 응답용 DTO로 변환하기 위함
     public static WorkResDto fromEntity(Work work) {
@@ -64,6 +67,7 @@ public class WorkResDto {
                 .taskStart(work.getTaskStart())
                 .taskEnd(work.getTaskEnd())
                 .recruitmentPeriod(work.getRecruitmentPeriod())
+                .performerReady(work.isPerformerReady())
                 .build();
     }
 }
