@@ -13,12 +13,11 @@ import java.util.Optional;
 public interface TaskApplicationRepository extends JpaRepository<TaskApplication,Long> {
     Page<TaskApplication> findByPerformerId_IdAndStatus(Long performerId, Status status, Pageable pageable); // 수행자 자신이 지원한 일거리 내역조회
 
-    Page<TaskApplication> findByTaskId_Requester_IdAndStatus(Long requesterId, Status status, Pageable pageable); // 의뢰자 기준 해당 일거리 지원서목록 조회
-
     Optional<TaskApplication> findByTaskIdAndPerformerId(Work taskId, User performerId);
 
     Optional<TaskApplication> findByIdAndTaskId_Id(Long applyId, Long taskId);
 
     boolean existsByTaskIdAndPerformerId(Work taskId, User performerId);
 
+    Page<TaskApplication> findByTaskId_Id(Long taskId, Pageable pageable);
 }

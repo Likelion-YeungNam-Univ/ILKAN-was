@@ -272,14 +272,14 @@ public class WorkService {
      */
     // 의뢰자 기준 수행자들이 지원한 지원서 목록 조회
     @Transactional(readOnly = true)
-    public Page<WorkApplyListResDto> getApplicantsByRequester(String roleHeader, Pageable pageable) {
+    public Page<WorkApplyListResDto> getApplicantsByRequester(String roleHeader, Long taskId, Pageable pageable) {
         if (!"REQUESTER".equals(roleHeader)) {
             throw new UserWorkExceptions.RequesterForbidden();
         }
 
         Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Page<TaskApplication> applications = taskApplicationRepository
-                .findByTaskId_Requester_IdAndStatus(requesterId, Status.APPLY_TO, pageable);
+                .findByTaskId_Id(taskId, pageable);
 
         return applications.map(WorkApplyListResDto::fromEntity);
     }
