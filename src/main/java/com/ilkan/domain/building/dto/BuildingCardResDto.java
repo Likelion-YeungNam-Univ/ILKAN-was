@@ -34,6 +34,10 @@ public class BuildingCardResDto {
     @Schema(description = "빌딩 이름", example = "경산시 분위기 좋은 공유 오피스")
     private final String buildingName;
 
+    @Schema(description = "빌딩 주소", example = "서울시 ..구")
+    private String buildingAddress;
+
+
     public static BuildingCardResDto fromEntity(Building b, String imageUrl) {
         return BuildingCardResDto.builder()
                 .id(b.getId())
@@ -43,6 +47,7 @@ public class BuildingCardResDto {
                 .region(b.getBuildingRegion())
                 .tag(b.getBuildingTag())
                 .buildingName(b.getBuildingName())
+                .buildingAddress(b.getBuildingAddress())
                 .build();
     }
 }
