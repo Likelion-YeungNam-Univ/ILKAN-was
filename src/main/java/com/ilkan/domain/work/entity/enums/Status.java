@@ -13,6 +13,6 @@ public enum Status {
 
     // 진행중(마이페이지에 표시할 그룹) 상태 집합 반환
     public static java.util.Set<Status> activeStatuses() {
-        return java.util.EnumSet.of(IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
+        return java.util.EnumSet.of(ASSIGNED, IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
     }
 }
