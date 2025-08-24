@@ -127,12 +127,13 @@ public class UserWorkController implements UserWorkApi {
 
     // 의뢰자 기준 수행자들이 지원한 지원서 목록조회
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/applies")
+    @GetMapping("/{taskId}")
     public ResponseEntity<Page<WorkApplyListResDto>> getApplicants(
             @RequestHeader("X-Role") String roleHeader,
+            @PathVariable Long taskId,
             @PageableDefault(sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<WorkApplyListResDto> applicants = workService.getApplicantsByRequester(roleHeader, pageable);
+        Page<WorkApplyListResDto> applicants = workService.getApplicantsByRequester(roleHeader, taskId, pageable);
         return ResponseEntity.ok(applicants);
     }
 

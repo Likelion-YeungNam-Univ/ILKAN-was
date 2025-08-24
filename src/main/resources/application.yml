@@ -1,35 +1,42 @@
-spring:
-  application:
-    name: ILKAN-was
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+  spring:
+    application:
+      name: ILKAN-was
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 20MB
+    mvc:
+      async:
+        request-timeout: 300000
 
-  datasource:
-    url: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    datasource:
+      url: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
+    jpa:
       hibernate:
-        format_sql: true
-    show-sql: true
+        ddl-auto: update
+      properties:
+        hibernate.jdbc.time_zone: UTC
+        hibernate:
+          format_sql: true
+      show-sql: true
 
-  openai:
-    api:
-      key: ${OPENAI_API_KEY}
+    openai:
+      api:
+        key: ${OPENAI_API_KEY}
 
+  server:
+    tomcat:
+      connection-timeout: 30s
+      keep-alive-timeout: 120s
 
-
-app:
-  s3:
-    bucket: ilkan-image
-    region: ap-northeast-2
-  cdn-base-url: "https://ilkan-image.s3.ap-northeast-2.amazonaws.com"
+  app:
+    s3:
+      bucket: ilkan-image
+      region: ap-northeast-2
+    cdn-base-url: "https://ilkan-image.s3.ap-northeast-2.amazonaws.com"
 
 

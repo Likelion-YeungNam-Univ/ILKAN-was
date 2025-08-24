@@ -49,7 +49,7 @@ public class OwnersInUseResDto {
                 .buildingId(building.getId())
                 .buildingName(building.getBuildingName())
                 .buildingAddress(building.getBuildingAddress())
-                .buildingImage(building.getBuildingImage())
+                .buildingImage("https://ilkan-image.s3.ap-northeast-2.amazonaws.com/" + building.getBuildingImage())
                 .checkInTime(reservation.getStartTime())    // 수행자가 실제 체크인한 시간
                 .checkOutTime(reservation.getEndTime())    // 수행자가 체크아웃한 시간
                 .startTime(reservation.getStartTime())     // 예약 시작 시간

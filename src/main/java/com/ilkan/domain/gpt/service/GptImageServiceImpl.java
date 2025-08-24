@@ -22,6 +22,8 @@ public class GptImageServiceImpl implements ChatGPTService {
     @Value("${openai.api.key}")
     private String apiKey;
 
+    private final RestTemplate restTemplate;
+
     private static final String API_URL = "https://api.openai.com/v1/images/edits";
 
     /**
@@ -34,9 +36,14 @@ public class GptImageServiceImpl implements ChatGPTService {
      */
     @Override
     public GptImageResultDto editImage(ChatRequestDto requestDto) {
-        RestTemplate restTemplate = new RestTemplate();
 
         MultipartFile imageFile = requestDto.getImage();
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new GptImageExceptions.InvalidRequest("이미지 파일이 비어있습니다.");
+        }
+        if (requestDto.getPrompt() == null || requestDto.getPrompt().isBlank()) {
+            throw new GptImageExceptions.InvalidRequest("프롬프트가 비어있습니다.");
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);

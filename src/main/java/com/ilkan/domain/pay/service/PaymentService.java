@@ -23,17 +23,17 @@ public class PaymentService {
     public ReservationPayResDto processFakePayment(Long reservationId, ReservationPayReqDto req) {
         // 1) 예약 조회 (id 기반)
         Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new EntityNotFoundException("Reservation not found: " + reservationId));
+                .orElseThrow(() -> new EntityNotFoundException("해당 예약을 찾을 수 없습니다. (id=" + reservationId + ")"));
 
         // 시연용 카드정보 간단 검증
         if (req != null) {
             // 카드번호가 제공되면 숫자와 대시(-)만 허용하는 간단한 포맷 체크
             if (req.getCardNumber() != null && !req.getCardNumber().matches("[0-9-]+")) {
-                throw new IllegalArgumentException("cardNumber 형식이 올바르지 않습니다.");
+                throw new IllegalArgumentException("카드 번호 형식이 올바르지 않습니다. (숫자와 '-'만 허용)");
             }
             // 만약 만료일(expiry) 포맷 체크를 원하면 간단히 검증 가능 (MM/YY)
             if (req.getExpiry() != null && !req.getExpiry().matches("(0[1-9]|1[0-2])/(\\d{2})")) {
-                throw new IllegalArgumentException("expiry 형식은 MM/YY 이어야 합니다.");
+                throw new IllegalArgumentException("카드 만료일 형식은 MM/YY 이어야 합니다.");
             }
         }
 
@@ -53,7 +53,7 @@ public class PaymentService {
 
         // 4) 하루 단가: reservation에서 building 참조로 가져오기
         Building building = reservation.getBuildingId();
-        if (building == null) throw new IllegalStateException("Reservation has no building associated.");
+        if (building == null) throw new IllegalStateException("해당 예약에 연결된 건물이 없습니다.");
 
         Long dailyPrice = building.getBuildingPrice();
 

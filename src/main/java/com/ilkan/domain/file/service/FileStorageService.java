@@ -30,10 +30,10 @@ public class FileStorageService {
      */
 
     public UploadResult upload(Long userId, MultipartFile file) throws IOException {
-        if (file.isEmpty()) throw new IllegalArgumentException("empty file");
-        if (file.getSize() > 20L * 1024 * 1024) throw new IllegalArgumentException("file too large");
+        if (file.isEmpty()) throw new IllegalArgumentException("업로드할 파일이 비어 있습니다.");
+        if (file.getSize() > 20L * 1024 * 1024) throw new IllegalArgumentException("파일 크기는 최대 20MB까지 허용됩니다.");
         String ct = file.getContentType() == null ? "application/octet-stream" : file.getContentType();
-        if (!ct.startsWith("image/")) throw new IllegalArgumentException("only image/* allowed");
+        if (!ct.startsWith("image/")) throw new IllegalArgumentException("이미지 파일만 업로드할 수 있습니다.");
 
         String safe = (file.getOriginalFilename()==null ? "file" :
                 file.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_"));
@@ -66,7 +66,7 @@ public class FileStorageService {
      */
 
     public String uploadBytes(Long userId, byte[] bytes, String contentType, String baseName) {
-        if (bytes == null || bytes.length == 0) throw new IllegalArgumentException("empty bytes");
+        if (bytes == null || bytes.length == 0) throw new IllegalArgumentException("업로드할 데이터가 비어 있습니다.");
         if (contentType == null || !contentType.startsWith("image/")) {
             contentType = "image/png"; // 기본 png로
         }
