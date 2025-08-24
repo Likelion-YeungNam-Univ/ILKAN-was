@@ -60,8 +60,8 @@ public class WorkService {
 
         Long requesterId = RoleMapper.getUserIdByRole(role);
 
-        // 필터링 조건 (OPEN, ASSIGNED)
-        List<Status> allowedStatuses = Arrays.asList(Status.OPEN, Status.ASSIGNED);
+        // 필터링 조건 (OPEN, ASSIGNED, APPLY_TO)
+        List<Status> allowedStatuses = Arrays.asList(Status.OPEN, Status.ASSIGNED, Status.APPLY_TO);
 
         Page<Work> works = workRepository.findByRequesterIdAndStatusIn(requesterId, allowedStatuses, pageable);
 
