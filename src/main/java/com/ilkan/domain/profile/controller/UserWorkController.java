@@ -4,6 +4,7 @@ import com.ilkan.domain.profile.api.UserWorkApi;
 import com.ilkan.domain.profile.dto.performer.WorkResDto;
 import com.ilkan.domain.profile.dto.performer.WorkStatusReqDto;
 import com.ilkan.domain.profile.entity.enums.Role;
+import com.ilkan.domain.work.dto.performer.AlReadyAppliedResDto;
 import com.ilkan.domain.work.dto.performer.WorkApplyReqDto;
 import com.ilkan.domain.work.dto.requester.ApplicationResDto;
 import com.ilkan.domain.work.dto.requester.WorkApplyDetailResDto;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -109,14 +111,19 @@ public class UserWorkController implements UserWorkApi {
     // 일거리 지원 (수행자)
     @AllowedRoles(Role.PERFORMER)
     @PostMapping("/{taskId}/requests")
-    public ResponseEntity<ApplicationResDto> applyWork(
+    public ResponseEntity<AlReadyAppliedResDto> applyWork(
             @RequestHeader("X-Role") String role,
             @PathVariable Long taskId,
             @RequestBody WorkApplyReqDto dto
     ) {
-        ApplicationResDto response = workService.applyWork(role, taskId, dto);
-        return ResponseEntity.ok(response);
+        AlReadyAppliedResDto res = workService.applyWork(role, taskId, dto);
+        if (res.isAlreadyApplied()) {
+            // 의미적으로 충돌이므로 409 반환 (body에 기존 지원서 포함)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(res);
+        }
+        return ResponseEntity.ok(res);
     }
+
 
     // 의뢰자 기준 수행자들이 지원한 지원서 목록조회
     @AllowedRoles(Role.REQUESTER)
