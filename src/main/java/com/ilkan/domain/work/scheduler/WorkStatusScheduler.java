@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -17,9 +18,9 @@ public class WorkStatusScheduler {
     private final WorkRepository workRepository;
 
     // 1분마다 실행
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(cron = "0 * * * * *", zone = "UTC")
     public void updateWorkStatus() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
         // 시작해야 할 Work 찾기
         List<Work> toStart = workRepository.findByTaskStartBeforeAndStatus(now, Status.ASSIGNED);
