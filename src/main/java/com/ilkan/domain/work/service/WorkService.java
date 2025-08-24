@@ -5,6 +5,7 @@ import com.ilkan.domain.profile.dto.performer.WorkResDto;
 import com.ilkan.domain.profile.entity.User;
 import com.ilkan.domain.work.dto.WorkDetailResDto;
 import com.ilkan.domain.work.dto.WorkListResDto;
+import com.ilkan.domain.work.dto.performer.AlReadyAppliedResDto;
 import com.ilkan.domain.work.dto.performer.WorkApplyReqDto;
 import com.ilkan.domain.work.dto.requester.ApplicationResDto;
 import com.ilkan.domain.work.dto.requester.WorkApplyDetailResDto;
@@ -59,8 +60,8 @@ public class WorkService {
 
         Long requesterId = RoleMapper.getUserIdByRole(role);
 
-        // 필터링 조건 (OPEN, ASSIGNED)
-        List<Status> allowedStatuses = Arrays.asList(Status.OPEN, Status.ASSIGNED);
+        // 필터링 조건 (OPEN, ASSIGNED, APPLY_TO)
+        List<Status> allowedStatuses = Arrays.asList(Status.OPEN, Status.ASSIGNED, Status.APPLY_TO);
 
         Page<Work> works = workRepository.findByRequesterIdAndStatusIn(requesterId, allowedStatuses, pageable);
 
@@ -226,44 +227,53 @@ public class WorkService {
      * @throws UserWorkExceptions.PerformerForbidden 권한이 없는 경우
      * @throws UserWorkExceptions.WorkNotFound 작업을 찾지 못한 경우
      */
-    // 수행자 일거리 신청
+    // 수행자 일거리 신청 (서비스)
     @Transactional
-    public ApplicationResDto applyWork(String roleHeader, Long taskId, WorkApplyReqDto dto) {
+    public AlReadyAppliedResDto applyWork(String roleHeader, Long taskId, WorkApplyReqDto dto) {
         if (!"PERFORMER".equals(roleHeader)) {
             throw new UserWorkExceptions.PerformerForbidden();
         }
 
-
         Long performerId = RoleMapper.getUserIdByRole(roleHeader);
 
-        // 중복 지원 체크
-        boolean alreadyApplied = taskApplicationRepository.existsByTaskId_IdAndPerformerId_Id(taskId, performerId);
-        if (alreadyApplied) {
-            throw new UserWorkExceptions.AlreadyApplied();
-        }
-
-        // 1. Work 조회
+        // 1) Work 조회
         Work work = workRepository.findById(taskId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
 
-        // 2. Performer 조회
+        // 2) 중복 지원 체크 (ID 기준)
+        boolean alreadyApplied = taskApplicationRepository.existsByTaskId_IdAndPerformerId_Id(taskId, performerId);
+        if (alreadyApplied) {
+            // 이미 지원한 경우: 기존 지원서 가져와서 DTO로 포장
+            TaskApplication existing = taskApplicationRepository
+                    .findFirstByTaskId_IdAndPerformerId_IdOrderByAppliedAtDesc(taskId, performerId)
+                    .orElseThrow(() -> new IllegalStateException("지원 기록이 존재하지만 조회에 실패했습니다."));
+            ApplicationResDto appDto = ApplicationResDto.fromEntity(existing);
+            return AlReadyAppliedResDto.builder()
+                    .alreadyApplied(true)
+                    .application(appDto)
+                    .build();
+        }
+
+        // 3) Performer(User) 조회
         User performer = userRepository.findById(performerId)
                 .orElseThrow(UserWorkExceptions.PerformerForbidden::new);
 
-
-        // 3. Work 상태 변경
+        // 4) Work 상태 변경
         work.updateStatus(Status.APPLY_TO);
-
-        // 4. TaskApplication 엔티티 생성
-        TaskApplication application = dto.toEntity(work, performer);
-
-        // 5. DB 반영 (둘 다 저장)
-        taskApplicationRepository.save(application);
         workRepository.save(work);
 
-        return ApplicationResDto.fromEntity(application);
+        // 5) TaskApplication 생성 및 저장
+        TaskApplication application = dto.toEntity(work, performer);
+        taskApplicationRepository.save(application);
 
+        // 6) DTO 변환 후 반환 (alreadyApplied = false)
+        ApplicationResDto appDto = ApplicationResDto.fromEntity(application);
+        return AlReadyAppliedResDto.builder()
+                .alreadyApplied(false)
+                .application(appDto)
+                .build();
     }
+
 
 
 

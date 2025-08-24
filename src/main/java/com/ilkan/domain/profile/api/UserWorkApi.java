@@ -3,6 +3,7 @@ package com.ilkan.domain.profile.api;
 import com.ilkan.domain.profile.dto.performer.WorkResDto;
 import com.ilkan.domain.profile.dto.performer.WorkStatusReqDto;
 import com.ilkan.domain.profile.entity.enums.Role;
+import com.ilkan.domain.work.dto.performer.AlReadyAppliedResDto;
 import com.ilkan.domain.work.dto.performer.WorkApplyReqDto;
 import com.ilkan.domain.work.dto.requester.ApplicationResDto;
 import com.ilkan.domain.work.dto.requester.WorkApplyDetailResDto;
@@ -117,11 +118,12 @@ public interface UserWorkApi {
     })
     @AllowedRoles(Role.PERFORMER)
     @PostMapping("/{taskId}/requests")
-    ResponseEntity<ApplicationResDto> applyWork(
+    ResponseEntity<AlReadyAppliedResDto> applyWork(
             @RequestHeader("X-Role") String role,
             @PathVariable Long taskId,
             @RequestBody WorkApplyReqDto dto
     );
+
 
     @Operation(summary = "지원자 목록 조회", description = "의뢰자가 등록한 일거리에 지원한 수행자 목록")
     @ApiResponses({
