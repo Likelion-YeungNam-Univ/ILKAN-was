@@ -23,5 +23,4 @@ public interface TaskApplicationRepository extends JpaRepository<TaskApplication
 
     Optional<TaskApplication> findFirstByTaskId_IdAndPerformerId_IdOrderByAppliedAtDesc(Long taskId, Long performerId);
 
-    Page<TaskApplication> findByTaskId_Id(Long taskId, Pageable pageable);
 }
