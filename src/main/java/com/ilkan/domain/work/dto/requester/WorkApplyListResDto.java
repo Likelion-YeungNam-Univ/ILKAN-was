@@ -18,8 +18,8 @@ public class WorkApplyListResDto {
     @Schema(description = "수행자명", example = "김야호")
     private final String performerName;
 
-    @Schema(description = "일거리 제목", example = "디자인 로고 생성")
-    private final String workTitle;
+    @Schema(description = "자기소개", example = "안녕하세요 저는~")
+    private final String bio;
 
     @Schema(description = "포트폴리오 URL", example = "https://~~~~")
     private final String portfolioUrl;
@@ -28,7 +28,7 @@ public class WorkApplyListResDto {
         return WorkApplyListResDto.builder()
                 .performerId(application.getPerformerId().getId())
                 .performerName(application.getPerformerId().getName()) // 수행자 이름
-                .workTitle(application.getTaskId().getTitle())         // 일거리 제목
+                .bio(application.getBio())
                 .portfolioUrl(application.getPortfolioUrl())           // 포트폴리오 URL
                 .build();
     }
