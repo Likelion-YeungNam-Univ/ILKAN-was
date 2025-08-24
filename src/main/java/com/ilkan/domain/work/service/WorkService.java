@@ -251,6 +251,7 @@ public class WorkService {
             return AlReadyAppliedResDto.builder()
                     .alreadyApplied(true)
                     .application(appDto)
+                    .message("이미 지원한 일거리입니다!")
                     .build();
         }
 
@@ -271,6 +272,7 @@ public class WorkService {
         return AlReadyAppliedResDto.builder()
                 .alreadyApplied(false)
                 .application(appDto)
+                .message("지원 완료되었습니다.")
                 .build();
     }
 
