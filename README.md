@@ -11,6 +11,11 @@
 
 <br>
 
+## 🛠️ System Architecture
+<img width="1001" height="612" alt="Image" src="https://github.com/user-attachments/assets/dcafa642-638f-46bd-814b-620d8c5d48e9" />
+
+<br>
+
 ## 👋 Commit Message 규칙
 
 | **메시지 타입** | **설명** |
