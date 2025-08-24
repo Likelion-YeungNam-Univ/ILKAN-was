@@ -138,14 +138,16 @@ public class WorkService {
     @Transactional(readOnly = true)
     public Page<WorkListResDto> getWorkList(WorkCategory category, Pageable pageable) {
         Page<Work> works;
+        List<Status> visibleStatuses = Arrays.asList(Status.OPEN, Status.APPLY_TO);
 
         if (category == null) {
-            // 전체 중에서 Status가 OPEN인 것만 조회
-            works = workRepository.findByStatus(Status.OPEN, pageable);
+            // 전체 중에서 OPEN 또는 APPLY_TO인 것만 조회
+            works = workRepository.findByStatusIn(visibleStatuses, pageable);
         } else {
-            // 카테고리 + Status가 OPEN인 것만 조회
-            works = workRepository.findByWorkCategoryAndStatus(category, Status.OPEN, pageable);
+            // 카테고리 + OPEN/APPLY_TO
+            works = workRepository.findByWorkCategoryAndStatusIn(category, visibleStatuses, pageable);
         }
+
 
         return works.map(WorkListResDto::fromEntity);
     }
