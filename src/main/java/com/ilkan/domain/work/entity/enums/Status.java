@@ -15,4 +15,8 @@ public enum Status {
     public static java.util.Set<Status> activeStatuses() {
         return java.util.EnumSet.of(ASSIGNED, IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
     }
+
+    public static java.util.Set<Status> RequesterActiveStatuses() {
+        return java.util.EnumSet.of(IN_PROGRESS, PAY_WAITING, COMPLETE_WAITING);
+    }
 }
