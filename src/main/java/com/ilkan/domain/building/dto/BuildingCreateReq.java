@@ -65,7 +65,7 @@ public class BuildingCreateReq {
                 .buildingName(buildingName)
                 .buildingPrice(buildingPrice)
                 .email(email)
-                .buildingStatus(BuildingStatus.REGISTERED)
+                    .buildingStatus(BuildingStatus.END_REVIEW)
                 .islegal(true)
                 .build();
     }
