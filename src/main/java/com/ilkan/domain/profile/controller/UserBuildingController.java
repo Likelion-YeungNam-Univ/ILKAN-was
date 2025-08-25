@@ -46,7 +46,7 @@ public class UserBuildingController implements UserBuildingApi {
     @GetMapping("/registered")
     public ResponseEntity<Page<OwnerBuildingResDto>> getRegisteredBuildings(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 50, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OwnerBuildingResDto> buildings = ownerBuildingService.getRegisteredBuildings(roleHeader, pageable);
         return ResponseEntity.ok(buildings);
@@ -57,7 +57,7 @@ public class UserBuildingController implements UserBuildingApi {
     @GetMapping("/inuse")
     public ResponseEntity<Page<OwnersInUseResDto>> getBuildingsInUse(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 25, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OwnersInUseResDto> buildings = ownerBuildingService.getBuildingsInUse(roleHeader, pageable);
         return ResponseEntity.ok(buildings);
@@ -68,7 +68,7 @@ public class UserBuildingController implements UserBuildingApi {
     @GetMapping("/reserved")
     public ResponseEntity<Page<OwnersReservedResDto>> getReservedBuildings(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 25, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         // 서비스 호출 -> 예약 상태가 RESERVED인 건물만 조회
         Page<OwnersReservedResDto> reservedBuildings = ownerBuildingService.getReservedBuildings(roleHeader, pageable);
