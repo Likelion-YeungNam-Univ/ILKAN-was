@@ -139,13 +139,13 @@ public class UserWorkController implements UserWorkApi {
 
     // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/{taskId}/applies/{applyId}")
+    @GetMapping("/{taskId}/applies/{performerId}")
     public ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
             @RequestHeader("X-Role") String role,
             @PathVariable Long taskId,
-            @PathVariable Long applyId
+            @PathVariable Long performerId
     ) {
-        WorkApplyDetailResDto response = workService.getWorkApplyDetail(role, taskId, applyId);
+        WorkApplyDetailResDto response = workService.getWorkApplyDetail(role, taskId, performerId);
         return ResponseEntity.ok(response);
     }
 

@@ -304,7 +304,7 @@ public class WorkService {
      * 의뢰자 기준 수행자 지원 상세 조회
      * @param roleHeader 사용자 역할 헤더
      * @param workId 작업 ID
-     * @param applyId 지원 ID
+     * @param performerId 지원 ID
      * @return WorkApplyDetailResDto
      * @throws UserWorkExceptions.RequesterForbidden 권한이 없는 경우
      * @throws UserWorkExceptions.WorkNotFound 작업을 찾지 못한 경우
@@ -313,7 +313,7 @@ public class WorkService {
      */
     // 의뢰자기준 수행자들이 지원한 지원서 상세 조회
     @Transactional(readOnly = true)
-    public WorkApplyDetailResDto getWorkApplyDetail(String roleHeader, Long workId, Long applyId) {
+    public WorkApplyDetailResDto getWorkApplyDetail(String roleHeader, Long workId, Long performerId) {
         if (!"REQUESTER".equals(roleHeader)) {
             throw new UserWorkExceptions.RequesterForbidden();
         }
@@ -327,7 +327,7 @@ public class WorkService {
         }
 
         TaskApplication application = taskApplicationRepository
-                .findByIdAndTaskId_Id(applyId, workId)
+                .findByPerformerId_IdAndTaskId_Id(performerId, workId)
                 .orElseThrow(UserWorkExceptions.NoAppliedWorks::new);
 
         return WorkApplyDetailResDto.fromEntity(application);

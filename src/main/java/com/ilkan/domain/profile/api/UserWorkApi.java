@@ -146,11 +146,11 @@ public interface UserWorkApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @AllowedRoles(Role.REQUESTER)
-    @GetMapping("/{taskId}/applies/{applyId}")
+    @GetMapping("/{taskId}/applies/{performerId}")
     ResponseEntity<WorkApplyDetailResDto> getWorkApplyDetail(
             @RequestHeader("X-Role") String role,
             @PathVariable Long taskId,
-            @PathVariable Long applyId
+            @PathVariable Long performerId
     );
 
     @Operation(summary = "수행자 승인(배정)", description = "의뢰자가 특정 지원자를 승인하여 배정")
