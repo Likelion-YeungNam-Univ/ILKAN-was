@@ -11,6 +11,11 @@
 
 <br>
 
+## 🛠️ System Architecture
+<img width="1001" height="612" alt="Image" src="https://github.com/user-attachments/assets/dcafa642-638f-46bd-814b-620d8c5d48e9" />
+
+<br>
+
 ## 👋 Commit Message 규칙
 
 | **메시지 타입** | **설명** |
@@ -30,11 +35,22 @@ fix: 회원가입 에러 수정
 
 <br>
 
+## 🧠 Branch Strategy
+### [Github FLow](https://letzgorats.tistory.com/entry/Git-%ED%98%91%EC%97%85-%ED%94%8C%EB%A1%9C%EC%9A%B0%EB%A5%BC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EC%9E%90)
+- ⭐ main 브랜치는 항상 최신 버전 유지 ⭐
+- 개발, 수정사항, 리팩토링 등 모든 작업은 main 브랜치에서 분기된 브랜치에서 작업
+- 이슈 생성하고 브랜치 생성, 개발까지 완료되면 dev 브랜치로 PR
+- 리뷰, 테스트 후 main 브랜치로 PR
+- 다음 작업도 최신 main 브랜치에서 분기된 브랜치에서 작업
+- ⭐ PR 올리기 전 로컬 dev 브랜치 pull 해서 최신 상태 유지 후, 개발 브랜치로 이동하여 로컬 dev 브랜치 merge 하고 conflict 있다면 해결 후 원격 개발 브랜치로 push ⭐
+
+<br>
+
 ## 🌿 Branch Naming 규칙
 
 - 이슈 생성 시 부여된 **Jira Key**를 **앞에 붙여서 작성**합니다.  
-- 띄어쓰기 대신 대괄호로 감싸 가독성을 높입니다.
+- 띄어쓰기 대신 언더바를 사용해 가독성을 높입니다.
 
 💡 **사용 예시:**  
-[ILKAN-1] loginPage
+ILKAN-1_feat/Search
 
