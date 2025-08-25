@@ -43,7 +43,7 @@ public class UserWorkController implements UserWorkApi {
     @GetMapping("/upload")
     public ResponseEntity<Page<WorkResDto>> getMyUploadedWorks(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 25, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         // 서비스 호출하여 DTO로 변환된 페이징 결과 조회
         Page<WorkResDto> worksDto = workService.getWorksByRequester(roleHeader, pageable);
@@ -55,7 +55,7 @@ public class UserWorkController implements UserWorkApi {
     @GetMapping("/working")
     public ResponseEntity<Page<WorkResDto>> doingWorksByRequester(
             @RequestHeader("X-Role") String roleHeader,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 25, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<WorkResDto> worksDto = workService.doingWorksByRequester(roleHeader, pageable);
         return ResponseEntity.ok(worksDto);
