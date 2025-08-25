@@ -265,6 +265,7 @@ public class WorkService {
 
         // 5) TaskApplication 생성 및 저장
         TaskApplication application = dto.toEntity(work, performer);
+        application.updateStatus(work.getStatus());
         taskApplicationRepository.save(application);
 
         // 6) DTO 변환 후 반환 (alreadyApplied = false)
