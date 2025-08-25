@@ -21,7 +21,7 @@ public final class RoleExceptions {
 
     // 2. X-ROLE 값이 유효하지 않은 경우
     public static class Invalid extends Base {
-        public Invalid(String role) { super("유효하지 않은 역할 값입니다: " + role); }
+        public Invalid(String role) { super("유효하지 않은 역할 값입니다"); }
         @Override public String code() { return "ROLE_INVALID"; }
         @Override public HttpStatus status() { return HttpStatus.UNAUTHORIZED; }
     }
@@ -37,7 +37,7 @@ public final class RoleExceptions {
     public static class NotFound extends Base {
         private final Role role;
         public NotFound(Role role) {
-            super("역할에 해당하는 유저가 없습니다. =" + role);
+            super("역할에 해당하는 유저가 없습니다.");
             this.role = role;
         }
         @Override public String code() { return "USER_NOT_FOUND"; }
