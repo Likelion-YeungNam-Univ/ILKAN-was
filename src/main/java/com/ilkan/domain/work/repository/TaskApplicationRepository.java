@@ -15,7 +15,7 @@ public interface TaskApplicationRepository extends JpaRepository<TaskApplication
 
     Optional<TaskApplication> findByTaskIdAndPerformerId(Work taskId, User performerId);
 
-    Optional<TaskApplication> findByIdAndTaskId_Id(Long applyId, Long taskId);
+    Optional<TaskApplication> findByPerformerId_IdAndTaskId_Id(Long performerId, Long taskId);
 
     boolean existsByTaskId_IdAndPerformerId_Id(Long taskId, Long performerId);
 
