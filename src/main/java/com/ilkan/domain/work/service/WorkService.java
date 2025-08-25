@@ -365,6 +365,7 @@ public class WorkService {
                 .findByTaskIdAndPerformerId(work, performer)
                 .orElseThrow(() -> new IllegalArgumentException("해당 지원 내역이 없습니다."));
 
+        application.updateStatus(Status.ASSIGNED);
         work.updatePerformer(performer);
         // 상태는 ASSIGNED로 변경 (배정됨). 준비완료 플래그는 false로 초기화.
         work.updateStatus(Status.ASSIGNED);
