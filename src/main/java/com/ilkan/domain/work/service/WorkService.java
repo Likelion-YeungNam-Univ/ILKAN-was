@@ -2,6 +2,7 @@ package com.ilkan.domain.work.service;
 
 import com.ilkan.domain.auth.repository.UserRepository;
 import com.ilkan.domain.profile.dto.performer.WorkResDto;
+import com.ilkan.domain.profile.dto.requester.WorkUserResDto;
 import com.ilkan.domain.profile.entity.User;
 import com.ilkan.domain.work.dto.WorkDetailResDto;
 import com.ilkan.domain.work.dto.WorkListResDto;
@@ -195,12 +196,12 @@ public class WorkService {
      */
     // 일거리 수정
     @Transactional
-    public Work updateWork(Long taskId, String roleHeader, WorkReqDto dto) {
+    public WorkUserResDto updateWork(Long taskId, String roleHeader, WorkReqDto dto) {
         Long requesterId = RoleMapper.getUserIdByRole(roleHeader);
         Work work = workRepository.findByIdAndRequesterId(taskId, requesterId)
                 .orElseThrow(UserWorkExceptions.WorkNotFound::new);
         work.updateFromDto(dto);
-        return work;
+        return WorkUserResDto.fromEntity(work);
     }
 
     /**

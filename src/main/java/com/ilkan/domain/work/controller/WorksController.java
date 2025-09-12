@@ -75,8 +75,8 @@ public class WorksController implements WorksApi {
             @RequestHeader("X-Role") String roleHeader,
             @RequestBody WorkReqDto dto) {
 
-        Work updatedWork = workService.updateWork(taskId, roleHeader, dto);
-        return ResponseEntity.ok(WorkUserResDto.fromEntity(updatedWork));
+        WorkUserResDto updatedWork = workService.updateWork(taskId, roleHeader, dto);
+        return ResponseEntity.ok(updatedWork);
     }
 
     // 의뢰자 일거리 삭제
