@@ -29,7 +29,6 @@ public class WorkSetStatusService {
         // 권한 정책: 예제에서는 의뢰자만 작업시간을 업데이트 할 수 있도록 권한 체크 추가
         if ((workStatusReqDto.getTaskStart() != null || workStatusReqDto.getTaskEnd() != null)) {
             if (!"REQUESTER".equals(roleHeader)) {
-                // 만약 수행자도 허용하려면 이 체크를 제거하거나 역할 조건을 수정하세요.
                 throw new UserWorkExceptions.RequesterForbidden();
             }
             // DTO 내부에서 검증까지 수행하고 엔티티에 적용
